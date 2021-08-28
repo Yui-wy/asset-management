@@ -314,8 +314,6 @@ func (m *ListUserReq) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Id
-
 	return nil
 }
 
@@ -670,8 +668,6 @@ func (m *VerifyPasswordReply) Validate() error {
 
 	// no validation rules for Ok
 
-	// no validation rules for Id
-
 	return nil
 }
 
@@ -810,9 +806,9 @@ func (m *UpdatePasswordReply) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Username
+	// no validation rules for Id
 
-	// no validation rules for Ok
+	// no validation rules for Username
 
 	return nil
 }
@@ -883,7 +879,7 @@ func (m *ListUserReply_User) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Name
+	// no validation rules for Username
 
 	return nil
 }

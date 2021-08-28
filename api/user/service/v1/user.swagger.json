@@ -24,7 +24,7 @@
           "type": "string",
           "format": "int64"
         },
-        "name": {
+        "username": {
           "type": "string"
         }
       }
@@ -109,11 +109,12 @@
     "v1UpdatePasswordReply": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
         "username": {
           "type": "string"
-        },
-        "ok": {
-          "type": "boolean"
         }
       }
     },
@@ -122,10 +123,6 @@
       "properties": {
         "ok": {
           "type": "boolean"
-        },
-        "id": {
-          "type": "string",
-          "format": "int64"
         }
       }
     }
