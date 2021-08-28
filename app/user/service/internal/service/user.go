@@ -26,7 +26,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*p
 	user, err := s.uc.Create(ctx, &biz.User{
 		Username: req.Username,
 		Password: req.Password,
-		IsDelete: false,
+		IsDeleted: false,
 	})
 	if err != nil {
 		return nil, err
@@ -62,7 +62,7 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
 	user, err := s.uc.Update(ctx, &biz.User{
 		Id:       req.Id,
-		IsDelete: true,
+		IsDeleted: true,
 	})
 	return &pb.DeleteUserReply{
 		Id:       user.Id,

@@ -4,6 +4,7 @@ import (
 	"github.com/Yui-wy/material/app/user/service/internal/conf"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
 	// init mysql driver
@@ -11,7 +12,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData)
+var ProviderSet = wire.NewSet(NewData, NewDB)
 
 // Data .
 type Data struct {
@@ -20,17 +21,28 @@ type Data struct {
 	log *log.Helper
 }
 
-// // new DB
-// func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB{
-// 	log := log.NewHelp(log.With(logger, "module", "user-service/data/gorm"))
+// new DB
+func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
+	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
 
-// 	db,err := gorm.Open(mysql.Open(conf.))
-// }
+	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
+	if err != nil {
+		log.Fatalf("failed opening connection to mysql: %v", err)
+	}
+	// if err := db.AutoMigrate(&)
+	return db
+}
 
 // NewData .
-func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
-	cleanup := func() {
-		log.NewHelper(logger).Info("closing the data resources")
+func NewData(db *gorm.DB, logger log.Logger) (*Data, func(), error) {
+	log := log.NewHelper(log.With(logger, "module", "user-service/data"))
+
+	d := &Data{
+		db:  db,
+		log: log,
 	}
-	return &Data{}, cleanup, nil
+	cleanup := func() {
+		log.Info("closing the data resources")
+	}
+	return d, cleanup, nil
 }

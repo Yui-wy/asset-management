@@ -15,7 +15,7 @@ service User {
     rpc CreateUser(CreateUserReq) returns (CreateUserReply) {}
     // 列出用户
     rpc ListUser(ListUserReq) returns (ListUserReply) {}
-    //删除用户
+    // 删除用户
     rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {}
     // 验证密码
     rpc VerifyPassword(VerifyPasswordReq) returns (VerifyPasswordReply) {}
@@ -24,11 +24,11 @@ service User {
 }
 
 message GetUserReq {
-    int64 id = 1;
+    uint32 id = 1;
 }
 
 message GetUserReply {
-    int64 id        = 1;
+    uint32 id        = 1;
     string username = 2;
 }
 
@@ -38,28 +38,28 @@ message CreateUserReq {
 }
 
 message CreateUserReply {
-    int64 id        = 1;
+    uint32 id        = 1;
     string username = 2;
 }
 
 message ListUserReq {
-    repeated int64 ids = 1;
+    repeated uint32 ids = 1;
 }
 
 message ListUserReply {
     message User {
-        int64 id        = 1;
+        uint32 id        = 1;
         string username = 2;
     }
     repeated User results = 1;
 }
 
 message DeleteUserReq {
-    int64 id = 1;
+    uint32 id = 1;
 }
 
 message DeleteUserReply {
-    int64 id        = 1;
+    uint32 id        = 1;
     string username = 2;
 }
 
@@ -73,11 +73,11 @@ message VerifyPasswordReply {
 }
 
 message UpdatePasswordReq {
-    int64 id        = 1;
+    uint32 id        = 1;
     string password = 2;
 }
 
 message UpdatePasswordReply {
-    int64 id        = 1;
+    uint32 id        = 1;
     string username = 2;
 }
