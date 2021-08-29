@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package assets.service.v1;
+
+import "google/api/annotations.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package          = "api/assets/service/v1;v1";
+option java_multiple_files = true;
+
+// 接口
+service Assets {
+    // 得到资产
+    rpc GetAssets(GetAssetsReq) returns (GetAssetsReply) {}
+    // 列出资产
+    rpc ListAssets(ListAssetsReq) returns (ListAssetsReply) {}
+    // 列出通过类目列出资产(资产编号like语句)
+    rpc ListAssetsByClasses(ListAssetsByClassesReq)
+        returns (ListAssetsByClassesReply) {}
+    // 创建资产
+    rpc CreateAssets(CreateAssetsReq) returns (CreateAssetsReply) {}
+    // 报废资产
+    rpc DeleteAssets(DeleteAssetsReq) returns (DeleteAssetsReply) {}
+    // 修改资产信息
+    rpc UpdateAssets(UpdateAssetsdReq) returns (UpdateAssetsReply) {}
+
+    // 区域信息(超级管理员)
+    rpc GetArea(GetAreaReq) returns (GetAreaReply) {}
+    // 添加区域(超级管理员)
+    rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {}
+    // 删除区域(超级管理员)
+    rpc DeleteArea(DeleteAreaReq) returns (DeleteAreaReply) {}
+
+    // 用户信息 (区域管理员)
+    rpc GetUser(GetUserReq) returns (GetUserReply) {}
+    // 创建用户信息 (超级管理员, 区域管理员)
+    rpc CreateUser(CreateUserReq) returns (CreateUserReply) {}
+    // 修改用户区域 (超级管理员, 区域管理员)
+    rpc UpdateUserArea(UpdateUserAreaReq) returns (UpdateUserAreaReply) {}
+
+    // 分级类目
+    rpc CreateClasses(CreateClassesReq) returns (CreateClassesReq) {}
+    // 得到全部类目
+    rpc GetClasses(GetClassesReq) returns (GetClassesReply) {}
+}
+
+message GetAssetsReq {
+    uint64 id = 1;
+}
+
+message GetAssetsReply {
+    uint64 id         = 1;
+    string assetsName = 2;
+}
+
+message CreateAssetsReq {
+    string assetsName = 1;
+    string password   = 2;
+}
+
+message CreateAssetsReply {
+    uint64 id         = 1;
+    string assetsName = 2;
+}
+
+message ListAssetsReq {
+    repeated uint64 ids = 1;
+    int64 pageNum       = 2;
+    int64 pageSize      = 3;
+}
+
+message ListAssetsReply {
+    message Assets {
+        uint64 id         = 1;
+        string assetsName = 2;
+    }
+    repeated Assets results = 1;
+}
+
+message DeleteAssetsReq {
+    uint64 id = 1;
+}
+
+message DeleteAssetsReply {
+    uint64 id         = 1;
+    string assetsName = 2;
+}
+
+message UpdateAssetsdReq {
+    uint64 id = 1;
+}
+
+message UpdateAssetsReply {
+    uint64 id         = 1;
+    string assetsName = 2;
+}
+// ===========================================
+message GetUserReq {
+    int32 uid = 1;
+}
+
+message GetUserReply {
+    int32 uid            = 1;
+    repeated int32 areas = 2;
+}
+
+message CreateUserReq {
+    int32 uid   = 1;
+    int32 power = 2;
+
+}
