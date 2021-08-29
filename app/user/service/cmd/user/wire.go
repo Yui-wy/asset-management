@@ -1,3 +1,4 @@
+//go:build wireinject
 // +build wireinject
 
 // The build tag makes sure the stub is not built in the final build.
@@ -5,11 +6,11 @@
 package main
 
 import (
-	"github.com/Yui-wy/material/app/user/service/internal/biz"
-	"github.com/Yui-wy/material/app/user/service/internal/conf"
-	"github.com/Yui-wy/material/app/user/service/internal/data"
-	"github.com/Yui-wy/material/app/user/service/internal/server"
-	"github.com/Yui-wy/material/app/user/service/internal/service"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/biz"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/data"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/server"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"

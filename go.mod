@@ -1,4 +1,4 @@
-module github.com/Yui-wy/material
+module github.com/Yui-wy/asset-management
 
 go 1.17
 

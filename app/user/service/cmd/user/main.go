@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/Yui-wy/material/app/user/service/internal/conf"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"

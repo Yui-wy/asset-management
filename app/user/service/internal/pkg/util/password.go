@@ -1,6 +1,10 @@
 package util
 
 import (
+	"crypto/md5"
+	"fmt"
+	"math/rand"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -12,4 +16,8 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+func CreateMD5Random(username string) string {
+	return fmt.Sprintf("%x", md5.Sum([]byte(fmt.Sprintf("%s%.6f", username, rand.Float32()+1))))
 }

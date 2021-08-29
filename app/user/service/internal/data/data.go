@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/Yui-wy/material/app/user/service/internal/conf"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
 	"gorm.io/driver/mysql"
@@ -12,7 +12,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
 
 // Data .
 type Data struct {

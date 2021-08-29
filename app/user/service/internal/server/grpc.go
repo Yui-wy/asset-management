@@ -1,10 +1,10 @@
 package server
 
 import (
-	v1 "github.com/Yui-wy/material/api/user/service/v1"
+	v1 "github.com/Yui-wy/asset-management/api/user/service/v1"
 
-	"github.com/Yui-wy/material/app/user/service/internal/conf"
-	"github.com/Yui-wy/material/app/user/service/internal/service"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"

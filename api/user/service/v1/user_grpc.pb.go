@@ -24,7 +24,7 @@ type UserClient interface {
 	CreateUser(ctx context.Context, in *CreateUserReq, opts ...grpc.CallOption) (*CreateUserReply, error)
 	// 列出用户
 	ListUser(ctx context.Context, in *ListUserReq, opts ...grpc.CallOption) (*ListUserReply, error)
-	//删除用户
+	// 删除用户
 	DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserReply, error)
 	// 验证密码
 	VerifyPassword(ctx context.Context, in *VerifyPasswordReq, opts ...grpc.CallOption) (*VerifyPasswordReply, error)
@@ -104,7 +104,7 @@ type UserServer interface {
 	CreateUser(context.Context, *CreateUserReq) (*CreateUserReply, error)
 	// 列出用户
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
-	//删除用户
+	// 删除用户
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error)
 	// 验证密码
 	VerifyPassword(context.Context, *VerifyPasswordReq) (*VerifyPasswordReply, error)

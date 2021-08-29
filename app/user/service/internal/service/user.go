@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	pb "github.com/Yui-wy/material/api/user/service/v1"
-	"github.com/Yui-wy/material/app/user/service/internal/biz"
+	pb "github.com/Yui-wy/asset-management/api/user/service/v1"
+	"github.com/Yui-wy/asset-management/app/user/service/internal/biz"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -24,8 +24,8 @@ func NewUserService(uc *biz.UserUseCase, logger log.Logger) *UserService {
 
 func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*pb.CreateUserReply, error) {
 	user, err := s.uc.Create(ctx, &biz.User{
-		Username: req.Username,
-		Password: req.Password,
+		Username:  req.Username,
+		Password:  req.Password,
 		IsDeleted: false,
 	})
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetU
 }
 
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
-	users, err := s.uc.List(ctx, req.Ids)
+	users, err := s.uc.List(ctx, req.Ids, req.PageNum, req.PageSize)
 	rs := make([]*pb.ListUserReply_User, 0)
 	for _, x := range users {
 		rs = append(rs, &pb.ListUserReply_User{
@@ -60,9 +60,8 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
-	user, err := s.uc.Update(ctx, &biz.User{
-		Id:       req.Id,
-		IsDeleted: true,
+	user, err := s.uc.Deleted(ctx, &biz.User{
+		Id: req.Id,
 	})
 	return &pb.DeleteUserReply{
 		Id:       user.Id,
