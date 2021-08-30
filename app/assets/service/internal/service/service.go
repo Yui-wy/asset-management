@@ -16,11 +16,13 @@ type AssetsService struct {
 
 	log *log.Helper
 	arc *biz.AreaUseCase
+	uc  *biz.UserUseCase
 }
 
-func NewAssetsService(logger log.Logger, arc *biz.AreaUseCase) *AssetsService {
+func NewAssetsService(logger log.Logger, arc *biz.AreaUseCase, uc *biz.UserUseCase) *AssetsService {
 	return &AssetsService{
 		log: log.NewHelper(log.With(logger, "module", "service/assets")),
 		arc: arc,
+		uc:  uc,
 	}
 }

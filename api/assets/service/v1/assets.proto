@@ -271,7 +271,7 @@ message UpdateUserAreaReply {
 }
 
 message ListUserReq {
-    repeated uint32 areaId = 1;
+    repeated uint32 areaIds = 1;
 }
 
 message ListUserReply {
