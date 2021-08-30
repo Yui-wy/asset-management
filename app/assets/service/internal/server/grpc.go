@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "github.com/Yui-wy/asset-management/api/user/service/v1"
+	v1 "github.com/Yui-wy/asset-management/api/assets/service/v1"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/conf"
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/service"
@@ -12,7 +12,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, assets *service.AssetsService, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -29,6 +29,6 @@ func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger)
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterUserServer(srv, user)
+	v1.RegisterAssetsServer(srv, assets)
 	return srv
 }

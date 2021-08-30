@@ -12,7 +12,7 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData, NewDB, NewAreaRepo)
 
 // Data .
 type Data struct {
@@ -23,13 +23,16 @@ type Data struct {
 
 // new DB
 func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
-	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
+	log := log.NewHelper(log.With(logger, "module", "assets-service/data/gorm"))
 
 	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
 	}
-	// if err := db.AutoMigrate(&)
+	var models = []interface{}{&Area{}}
+	if err := db.AutoMigrate(models); err != nil {
+		log.Fatal(err)
+	}
 	return db
 }
 

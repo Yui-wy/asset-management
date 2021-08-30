@@ -96,7 +96,7 @@ func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageS
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
 		Where("is_deleted = false").
-		Find(&us)
+		Find(&us, ids)
 	if result.Error != nil {
 		return nil, result.Error
 	}

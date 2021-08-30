@@ -1,7 +1,26 @@
 package service
 
-import "github.com/google/wire"
+import (
+	"github.com/go-kratos/kratos/v2/log"
+	"github.com/google/wire"
+
+	pb "github.com/Yui-wy/asset-management/api/assets/service/v1"
+	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
+)
 
 // ProviderSet is service providers.
-var ProviderSet = wire.NewSet(NewUserService)
+var ProviderSet = wire.NewSet(NewAssetsService)
 
+type AssetsService struct {
+	pb.UnimplementedAssetsServer
+
+	log *log.Helper
+	arc *biz.AreaUseCase
+}
+
+func NewAssetsService(logger log.Logger, arc *biz.AreaUseCase) *AssetsService {
+	return &AssetsService{
+		log: log.NewHelper(log.With(logger, "module", "service/assets")),
+		arc: arc,
+	}
+}

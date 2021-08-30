@@ -3,7 +3,6 @@ syntax = "proto3";
 package assets.service.v1;
 
 import "google/api/annotations.proto";
-// import "google/protobuf/timestamp.proto";
 
 option go_package          = "api/assets/service/v1;v1";
 option java_multiple_files = true;
@@ -14,32 +13,32 @@ service Assets {
     rpc GetAssets(GetAssetsReq) returns (GetAssetsReply) {}
     // 列出资产
     rpc ListAssets(ListAssetsReq) returns (ListAssetsReply) {}
-    // 列出通过类目列出资产(资产编号like语句)
-    rpc ListAssetsByClasses(ListAssetsByClassesReq)
-        returns (ListAssetsByClassesReply) {}
     // 创建资产
     rpc CreateAssets(CreateAssetsReq) returns (CreateAssetsReply) {}
     // 报废资产
     rpc DeleteAssets(DeleteAssetsReq) returns (DeleteAssetsReply) {}
     // 修改资产信息
     rpc UpdateAssets(UpdateAssetsdReq) returns (UpdateAssetsReply) {}
-
-    // 区域信息(超级管理员)
+    // 区域信息
     rpc GetArea(GetAreaReq) returns (GetAreaReply) {}
+    // 区域信息
+    rpc ListAreas(ListAreasReq) returns (ListAreasReply) {}
     // 添加区域(超级管理员)
     rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {}
+    // 修改区域(超级管理员)
+    rpc UpdateArea(UpdateAreaReq) returns (UpdateAreaReply) {}
     // 删除区域(超级管理员)
     rpc DeleteArea(DeleteAreaReq) returns (DeleteAreaReply) {}
-
     // 用户信息 (区域管理员)
     rpc GetUser(GetUserReq) returns (GetUserReply) {}
     // 创建用户信息 (超级管理员, 区域管理员)
     rpc CreateUser(CreateUserReq) returns (CreateUserReply) {}
     // 修改用户区域 (超级管理员, 区域管理员)
     rpc UpdateUserArea(UpdateUserAreaReq) returns (UpdateUserAreaReply) {}
-
+    // 通过区域列出用户
+    rpc ListUser(ListUserReq) returns (ListUserReply) {}
     // 分级类目
-    rpc CreateClasses(CreateClassesReq) returns (CreateClassesReq) {}
+    rpc CreateClasses(CreateClassesReq) returns (CreateClassesReply) {}
     // 得到全部类目
     rpc GetClasses(GetClassesReq) returns (GetClassesReply) {}
 }
@@ -48,33 +47,96 @@ message GetAssetsReq {
     uint64 id = 1;
 }
 
+/*
+a. ID
+b. 资产编号（再定）(自动生成)
+c. 类别ID
+d. 区域ID
+e. 详细位置
+f. 资产描述
+g. 资产图片(地址)
+h. 资产报价
+i. 购入日期
+j. 订单号
+k. 入库日期
+l. 入库申请流水号（申请单号）
+m. 报废日期
+n. 报废申请流水号（报废单号）
+o. 资产状态标识(0:入库;1:入库申请中;2:采购中;3:采购申请中;4.报废;5:报废申请中)
+*/
 message GetAssetsReply {
-    uint64 id         = 1;
-    string assetsName = 2;
-}
-
-message CreateAssetsReq {
-    string assetsName = 1;
-    string password   = 2;
-}
-
-message CreateAssetsReply {
-    uint64 id         = 1;
-    string assetsName = 2;
+    uint64 id          = 1;
+    string assetCode   = 2;
+    string class       = 3;
+    string area        = 4;
+    string address     = 5;
+    string assetInfo   = 6;
+    string picUrl      = 7;
+    float price        = 8;
+    int64 orderAt      = 9;
+    string orderNum    = 10;
+    int64 storageAt    = 11;
+    string storageNum  = 12;
+    int64 scrappedAt   = 13;
+    string scrappedNum = 14;
+    int32 stateNum     = 15;
+    string state       = 16;
 }
 
 message ListAssetsReq {
-    repeated uint64 ids = 1;
-    int64 pageNum       = 2;
-    int64 pageSize      = 3;
+    message Condition {
+        string assetCode   = 1;
+        string area        = 2;
+        int32 stateNum     = 3;
+        int64 lowStorageAt = 4;
+        int64 upStorageAt  = 5;
+    }
+    Condition con  = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
 }
 
 message ListAssetsReply {
     message Assets {
-        uint64 id         = 1;
-        string assetsName = 2;
+        uint64 id          = 1;
+        string assetCode   = 2;
+        string class       = 3;
+        string area        = 4;
+        string address     = 5;
+        string assetInfo   = 6;
+        string picUrl      = 7;
+        float price        = 8;
+        int64 orderAt      = 9;
+        string orderNum    = 10;
+        int64 storageAt    = 11;
+        string storageNum  = 12;
+        int64 scrappedAt   = 13;
+        string scrappedNum = 14;
+        int32 stateNum     = 15;
+        string state       = 16;
     }
     repeated Assets results = 1;
+}
+
+message CreateAssetsReq {
+    string assetCode = 1;
+    string class     = 2;
+    string area      = 3;
+    string address   = 4;
+    string assetInfo = 5;
+    string picUrl    = 6;
+    float price      = 7;
+    int64 orderAt    = 8;
+    string orderNum  = 9;
+    int32 stateNum   = 10;
+}
+
+message CreateAssetsReply {
+    uint64 id        = 1;
+    string assetCode = 2;
+    string assetInfo = 3;
+    int32 stateNum   = 4;
+    string state     = 5;
 }
 
 message DeleteAssetsReq {
@@ -82,30 +144,178 @@ message DeleteAssetsReq {
 }
 
 message DeleteAssetsReply {
-    uint64 id         = 1;
-    string assetsName = 2;
+    uint64 id        = 1;
+    string assetCode = 2;
+    string assetInfo = 3;
+    int32 stateNum   = 4;
+    string state     = 5;
 }
 
 message UpdateAssetsdReq {
-    uint64 id = 1;
+    uint64 id        = 1;
+    string class     = 2;
+    string address   = 3;
+    string assetInfo = 4;
+    string picUrl    = 5;
+    float price      = 6;
+    int64 orderAt    = 7;
+    string orderNum  = 8;
 }
 
 message UpdateAssetsReply {
-    uint64 id         = 1;
-    string assetsName = 2;
+    uint64 id        = 1;
+    string assetCode = 2;
+    string assetInfo = 3;
+    int32 stateNum   = 4;
+    string state     = 5;
 }
 // ===========================================
+// 区域
+message GetAreaReq {
+    uint32 id = 1;
+}
+
+message GetAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message ListAreasReq {}
+
+message ListAreasReply {
+    message Areas {
+        uint32 id       = 1;
+        string areaInfo = 2;
+    }
+    repeated Areas areas = 3;
+}
+
+message CreateAreaReq {
+    string areaInfo = 1;
+}
+
+message CreateAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message UpdateAreaReq {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message UpdateAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message DeleteAreaReq {
+    uint32 id = 1;
+}
+
+message DeleteAreaReply {
+    bool ok = 1;
+}
+
+// ===========================================
+// 用户
 message GetUserReq {
-    int32 uid = 1;
+    uint64 uid = 1;
 }
 
 message GetUserReply {
-    int32 uid            = 1;
-    repeated int32 areas = 2;
+    message Areas {
+        uint32 areaId   = 1;
+        string areaInfo = 2;
+    }
+    uint64 uid           = 1;
+    int32 power          = 2;
+    repeated Areas areas = 3;
 }
 
 message CreateUserReq {
-    int32 uid   = 1;
-    int32 power = 2;
+    message Areas {
+        uint32 areaId = 1;
+    }
+    uint64 uid           = 1;
+    int32 power          = 2;
+    repeated Areas areas = 3;
+}
 
+message CreateUserReply {
+    message Areas {
+        uint32 areaId   = 1;
+        string areaInfo = 2;
+    }
+    uint64 uid           = 1;
+    int32 power          = 2;
+    repeated Areas areas = 3;
+}
+
+message UpdateUserAreaReq {
+    message Areas {
+        uint32 areaId = 1;
+    }
+    uint64 uid           = 1;
+    repeated Areas areas = 2;
+}
+
+message UpdateUserAreaReply {
+    message Areas {
+        uint32 areaId   = 1;
+        string areaInfo = 2;
+    }
+    uint64 uid           = 1;
+    int32 power          = 2;
+    repeated Areas areas = 3;
+}
+
+message ListUserReq {
+    repeated uint32 areaId = 1;
+}
+
+message ListUserReply {
+    message User {
+        message Areas {
+            uint32 areaId   = 1;
+            string areaInfo = 2;
+        }
+        uint64 uid           = 1;
+        int32 power          = 2;
+        repeated Areas areas = 3;
+    }
+    repeated User results = 1;
+}
+// ===========================================
+// 类目
+message CreateClassesReq {
+    message Classes {
+        string code    = 1;
+        string clzInfo = 2;
+        int32 power    = 3;
+        int32 pClz     = 4;
+    }
+    repeated Classes clz = 1;
+}
+
+message CreateClassesReply {
+    message Classes {
+        string code    = 1;
+        string clzInfo = 2;
+        int32 power    = 3;
+        int32 pClz     = 4;
+    }
+    repeated Classes clz = 1;
+}
+
+message GetClassesReq {}
+
+message GetClassesReply {
+    message Classes {
+        string code    = 1;
+        string clzInfo = 2;
+        int32 power    = 3;
+        int32 pClz     = 4;
+    }
+    repeated Classes clz = 1;
 }
