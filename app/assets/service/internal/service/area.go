@@ -17,6 +17,9 @@ func (s *AssetsService) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.Ge
 
 func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*pb.ListAreasReply, error) {
 	areas, err := s.arc.List(ctx)
+	if err != nil {
+		return nil, err
+	}
 	rs := make([]*pb.ListAreasReply_Areas, 0)
 	for _, x := range areas {
 		rs = append(rs, &pb.ListAreasReply_Areas{
@@ -25,6 +28,23 @@ func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*p
 		})
 	}
 	return &pb.ListAreasReply{
+		Areas: rs,
+	}, err
+}
+
+func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsReq) (*pb.GetAreaByIdsReply, error) {
+	areas, err := s.arc.GetByIds(ctx, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	rs := make([]*pb.GetAreaByIdsReply_Areas, 0)
+	for _, x := range areas {
+		rs = append(rs, &pb.GetAreaByIdsReply_Areas{
+			Id:       x.Id,
+			AreaInfo: x.AreaInfo,
+		})
+	}
+	return &pb.GetAreaByIdsReply{
 		Areas: rs,
 	}, err
 }

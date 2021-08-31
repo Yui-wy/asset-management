@@ -17,7 +17,7 @@ type areaRepo struct {
 
 type Area struct {
 	ID        uint   `gorm:"primarykey"`
-	AreaInfo  string `gorm:"not null;uniqueIndex:info"`
+	AreaInfo  string `gorm:"not null;uniqueIndex:area_info"`
 	IsDeleted bool   `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -34,6 +34,7 @@ func NewAreaRepo(data *Data, logger log.Logger) biz.AreaRepo {
 func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error) {
 	a := Area{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&a, id)
+	// repo.log.Debugf("Get Area. ID:", id)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -43,12 +44,33 @@ func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error)
 	}, nil
 }
 
+func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32) ([]*biz.Area, error) {
+	var as []Area
+	result := repo.data.db.WithContext(ctx).
+		Where("is_deleted = false").
+		Where("id IN ?", ids).
+		Find(&as)
+	if result.Error != nil {
+		// repo.log.Errorf("GetAreasByIds error. %d", result.Error)
+		return nil, result.Error
+	}
+	bas := make([]*biz.Area, 0)
+	for _, a := range as {
+		bas = append(bas, &biz.Area{
+			Id:       uint32(a.ID),
+			AreaInfo: a.AreaInfo,
+		})
+	}
+	return bas, nil
+}
+
 func (repo *areaRepo) ListArea(ctx context.Context) ([]*biz.Area, error) {
 	var as []Area
 	result := repo.data.db.WithContext(ctx).
 		Where("is_deleted = false").
 		Find(&as)
 	if result.Error != nil {
+		// repo.log.Errorf("ListArea error. %d", result.Error)
 		return nil, result.Error
 	}
 	bas := make([]*biz.Area, 0)
@@ -68,6 +90,7 @@ func (repo *areaRepo) CreateArea(ctx context.Context, a *biz.Area) (*biz.Area, e
 	}
 	result := repo.data.db.WithContext(ctx).Create(&ac)
 	if result.Error != nil {
+		// repo.log.Errorf("CreateArea error. %d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.Area{

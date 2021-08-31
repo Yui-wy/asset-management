@@ -31,6 +31,8 @@ type AssetsClient interface {
 	// 区域信息
 	GetArea(ctx context.Context, in *GetAreaReq, opts ...grpc.CallOption) (*GetAreaReply, error)
 	// 区域信息
+	GetAreaByIds(ctx context.Context, in *GetAreaByIdsReq, opts ...grpc.CallOption) (*GetAreaByIdsReply, error)
+	// 区域信息
 	ListAreas(ctx context.Context, in *ListAreasReq, opts ...grpc.CallOption) (*ListAreasReply, error)
 	// 添加区域(超级管理员)
 	CreateArea(ctx context.Context, in *CreateAreaReq, opts ...grpc.CallOption) (*CreateAreaReply, error)
@@ -108,6 +110,15 @@ func (c *assetsClient) UpdateAssets(ctx context.Context, in *UpdateAssetsdReq, o
 func (c *assetsClient) GetArea(ctx context.Context, in *GetAreaReq, opts ...grpc.CallOption) (*GetAreaReply, error) {
 	out := new(GetAreaReply)
 	err := c.cc.Invoke(ctx, "/assets.service.v1.Assets/GetArea", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *assetsClient) GetAreaByIds(ctx context.Context, in *GetAreaByIdsReq, opts ...grpc.CallOption) (*GetAreaByIdsReply, error) {
+	out := new(GetAreaByIdsReply)
+	err := c.cc.Invoke(ctx, "/assets.service.v1.Assets/GetAreaByIds", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -221,6 +232,8 @@ type AssetsServer interface {
 	// 区域信息
 	GetArea(context.Context, *GetAreaReq) (*GetAreaReply, error)
 	// 区域信息
+	GetAreaByIds(context.Context, *GetAreaByIdsReq) (*GetAreaByIdsReply, error)
+	// 区域信息
 	ListAreas(context.Context, *ListAreasReq) (*ListAreasReply, error)
 	// 添加区域(超级管理员)
 	CreateArea(context.Context, *CreateAreaReq) (*CreateAreaReply, error)
@@ -264,6 +277,9 @@ func (UnimplementedAssetsServer) UpdateAssets(context.Context, *UpdateAssetsdReq
 }
 func (UnimplementedAssetsServer) GetArea(context.Context, *GetAreaReq) (*GetAreaReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetArea not implemented")
+}
+func (UnimplementedAssetsServer) GetAreaByIds(context.Context, *GetAreaByIdsReq) (*GetAreaByIdsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAreaByIds not implemented")
 }
 func (UnimplementedAssetsServer) ListAreas(context.Context, *ListAreasReq) (*ListAreasReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAreas not implemented")
@@ -412,6 +428,24 @@ func _Assets_GetArea_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AssetsServer).GetArea(ctx, req.(*GetAreaReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Assets_GetAreaByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAreaByIdsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AssetsServer).GetAreaByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/assets.service.v1.Assets/GetAreaByIds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AssetsServer).GetAreaByIds(ctx, req.(*GetAreaByIdsReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -626,6 +660,10 @@ var Assets_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetArea",
 			Handler:    _Assets_GetArea_Handler,
+		},
+		{
+			MethodName: "GetAreaByIds",
+			Handler:    _Assets_GetAreaByIds_Handler,
 		},
 		{
 			MethodName: "ListAreas",

@@ -7,17 +7,19 @@ import (
 )
 
 type User struct {
-	Id    uint64
-	Uid   uint64
-	Power int32
-	Areas []*Area
+	Id      uint64
+	Uid     uint64
+	Power   int32
+	AreaIds []uint32
 }
 
 type UserRepo interface {
-	GetUser(ctx context.Context, id uint64) (*User, error)
+	// user
+	GetUser(ctx context.Context, uid uint64) (*User, error)
 	CreateUser(ctx context.Context, u *User) (*User, error)
 	UpdateUser(ctx context.Context, u *User) (*User, error)
-	ListUser(ctx context.Context, areaIds []uint32) ([]*User, error)
+	// 通过区域得到用户
+	ListUser(ctx context.Context, power int32, areaIds []uint32) ([]*User, error)
 }
 
 type UserUseCase struct {
@@ -44,6 +46,6 @@ func (uc *UserUseCase) Update(ctx context.Context, user *User) (*User, error) {
 	return uc.repo.UpdateUser(ctx, user)
 }
 
-func (uc *UserUseCase) List(ctx context.Context, areaIds []uint32) ([]*User, error) {
-	return uc.repo.ListUser(ctx, areaIds)
+func (uc *UserUseCase) List(ctx context.Context, power int32, areaIds []uint32) ([]*User, error) {
+	return uc.repo.ListUser(ctx, power, areaIds)
 }

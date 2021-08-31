@@ -11,4 +11,6 @@ enum ErrorReason {
 
     // 未知错误
     UNKNOWN_ERROR = 0;
+    // 没有此区域
+    NO_AREA_ERROR = 1;
 }

@@ -17,6 +17,7 @@ type AssetsService struct {
 	log *log.Helper
 	arc *biz.AreaUseCase
 	uc  *biz.UserUseCase
+	cc  *biz.ClassUseCase
 }
 
 func NewAssetsService(logger log.Logger, arc *biz.AreaUseCase, uc *biz.UserUseCase) *AssetsService {

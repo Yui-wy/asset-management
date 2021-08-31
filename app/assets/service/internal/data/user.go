@@ -15,15 +15,41 @@ type userRepo struct {
 	log  *log.Helper
 }
 
+const (
+	SUPER_ADMIN_USER = 0
+	AREA_ADMIN_USER  = 1
+	AREA_USER        = 2
+)
+
+var TABLE_MAP = map[int32]string{
+	SUPER_ADMIN_USER: "",
+	AREA_ADMIN_USER:  "admin_areas",
+	AREA_USER:        "user_areas",
+}
+
 type User struct {
-	ID         uint   `gorm:"primarykey"`
-	Username   string `gorm:"not null;uniqueIndex:username"`
-	Password   string
-	UpdataSign string `gorm:"not null"`
-	IsDeleted  bool   `gorm:"not null"`
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  time.Time
+	ID            uint   `gorm:"primarykey"`
+	Uid           uint64 `gorm:"not null,uniqueIndex"`
+	Power         int32  `gorm:"not null"`
+	AreaTableName string `gorm:"not null"`
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+}
+
+type AdminArea struct {
+	ID        uint   `gorm:"primarykey"`
+	Uid       uint64 `gorm:"not null,index"`
+	Aid       uint32 `gorm:"not null,index"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type UserArea struct {
+	ID        uint   `gorm:"primarykey"`
+	Uid       uint64 `gorm:"not null,uniqueIndex"`
+	Aid       uint32 `gorm:"not null,index"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
@@ -33,150 +59,164 @@ func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	}
 }
 
-func (repo *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error) {
-	return nil, nil
+func (repo *userRepo) GetUser(ctx context.Context, uid uint64) (*biz.User, error) {
+	/* 先得到user, 得到areaId */
+	u := User{}
+	result := repo.data.db.WithContext(ctx).First(&u, uid)
+	if result != nil {
+		return nil, result.Error
+	}
+	var areaIdMaps []map[string]interface{}
+	result = repo.data.db.WithContext(ctx).Table(TABLE_MAP[u.Power]).Find(&areaIdMaps)
+	if result != nil {
+		return nil, result.Error
+	}
+	areaIds := make([]uint32, 0)
+	for _, areaIdMap := range areaIdMaps {
+		areaIds = append(areaIds, areaIdMap["aid"].(uint32))
+	}
+	return &biz.User{
+		Uid:     u.Uid,
+		Power:   u.Power,
+		AreaIds: areaIds,
+	}, nil
 }
 
 func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, error) {
-	return nil, nil
+	/* 先创建user, 在关联areaId */
+	uc := User{
+		Uid:           u.Uid,
+		Power:         u.Power,
+		AreaTableName: TABLE_MAP[u.Power],
+	}
+	result := repo.data.db.WithContext(ctx).Create(&uc)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	if u.Power == SUPER_ADMIN_USER {
+		return &biz.User{
+			Id:      uint64(uc.ID),
+			Uid:     uc.Uid,
+			Power:   uc.Power,
+			AreaIds: nil,
+		}, nil
+	}
+	var umap = []map[string]interface{}{}
+	for _, aid := range u.AreaIds {
+		umap = append(umap, map[string]interface{}{
+			"uid": uc.Uid,
+			"aid": aid,
+		})
+	}
+	result = repo.data.db.WithContext(ctx).
+		Table(TABLE_MAP[u.Power]).
+		Create(umap)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &biz.User{
+		Id:      uint64(uc.ID),
+		Uid:     uc.Uid,
+		Power:   uc.Power,
+		AreaIds: u.AreaIds,
+	}, nil
 }
 
 func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, error) {
-	return nil, nil
+	/*
+		如果传入areaIds为空, 则删除全部区域。
+	*/
+	uu := User{}
+	result := repo.data.db.WithContext(ctx).First(&uu, u.Uid)
+	if result != nil {
+		return nil, result.Error
+	}
+	result = repo.data.db.WithContext(ctx).
+		Exec("DELETE FROM `?` WHERE uid=?", TABLE_MAP[u.Power], uu.Uid)
+	if result != nil {
+		return nil, result.Error
+	}
+	if len(u.AreaIds) == 0 {
+		return &biz.User{
+			Id:      uint64(uu.ID),
+			Uid:     uu.Uid,
+			Power:   uu.Power,
+			AreaIds: u.AreaIds,
+		}, nil
+	}
+	var umap = []map[string]interface{}{}
+	for _, aid := range u.AreaIds {
+		umap = append(umap, map[string]interface{}{
+			"uid": uu.Uid,
+			"aid": aid,
+		})
+	}
+	result = repo.data.db.WithContext(ctx).
+		Table(TABLE_MAP[u.Power]).
+		Create(umap)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &biz.User{
+		Id:      uint64(uu.ID),
+		Uid:     uu.Uid,
+		Power:   uu.Power,
+		AreaIds: u.AreaIds,
+	}, nil
 }
 
-func (repo *userRepo) ListUser(ctx context.Context, areaIds []uint32) ([]*biz.User, error) {
-	return nil, nil
+func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint32) ([]*biz.User, error) {
+	/*
+		通过areaId, 得到user组
+		若没有areaIds,返回全部user
+	*/
+	var us []*User
+	if len(areaIds) == 0 {
+		// 搜索全部
+		result := repo.data.db.WithContext(ctx).Find(&us)
+		if result.Error != nil {
+			return nil, result.Error
+		}
+	} else {
+		// 按Areaids搜索
+		results := []map[string]interface{}{}
+		result := repo.data.db.WithContext(ctx).
+			Table(TABLE_MAP[power]).
+			Where("aid = ?", areaIds[0]).Find(&results)
+		if result.Error != nil {
+			return nil, result.Error
+		}
+		uids := make([]uint64, 0)
+		for _, v := range results {
+			uids = append(uids, v["uid"].(uint64))
+		}
+		for i := 1; i < len(areaIds); i++ {
+			results = []map[string]interface{}{}
+			result = repo.data.db.WithContext(ctx).
+				Table(TABLE_MAP[power]).
+				Where("aid = ?", areaIds[i]).Where("uid IN ?", uids).Find(&results)
+			if result.Error != nil {
+				return nil, result.Error
+			}
+			uids = make([]uint64, 0)
+			for _, v := range results {
+				uids = append(uids, v["uid"].(uint64))
+			}
+		}
+		// ======================================================
+		result = repo.data.db.WithContext(ctx).Find(&us, uids)
+		if result.Error != nil {
+			return nil, result.Error
+		}
+	}
+	bu := make([]*biz.User, 0)
+	for _, u := range us {
+		bu = append(bu, &biz.User{
+			Id:      uint64(u.ID),
+			Uid:     u.Uid,
+			Power:   u.Power,
+			AreaIds: areaIds,
+		})
+	}
+	return bu, nil
 }
-
-// func (repo *userRepo) GetUserByUsername(ctx context.Context, username string) (*biz.User, error) {
-// 	u := User{}
-// 	result := repo.data.db.WithContext(ctx).Where("username = ? AND is_deleted = false", username).First(&u)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	return &biz.User{
-// 		Id:        uint64(u.ID),
-// 		Username:  u.Username,
-// 		CreatedAt: u.CreatedAt,
-// 	}, result.Error
-// }
-
-// func (repo *userRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, error) {
-// 	if match, str := util.CheckNameFormat(b.Username); !match {
-// 		repo.log.Error(str)
-// 		return nil, pb.ErrorRegisterFailed(str)
-// 	}
-// 	hashPassword, err := util.HashPassword(b.Password)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	u := User{
-// 		Username:   b.Username,
-// 		Password:   hashPassword,
-// 		UpdataSign: util.CreateMD5Random(b.Username),
-// 		IsDeleted:  false,
-// 	}
-// 	result := repo.data.db.WithContext(ctx).Create(&u)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	return &biz.User{
-// 		Id:         uint64(u.ID),
-// 		Username:   u.Username,
-// 		CreatedAt:  u.CreatedAt,
-// 		UpdataSign: util.CreateMD5Random(b.Username),
-// 	}, result.Error
-// }
-
-// func (repo *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error) {
-// 	u := User{}
-// 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, id)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	return &biz.User{
-// 		Id:         uint64(u.ID),
-// 		Username:   u.Username,
-// 		CreatedAt:  u.CreatedAt,
-// 		UpdataSign: u.UpdataSign,
-// 	}, result.Error
-// }
-
-// func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*biz.User, error) {
-// 	var us []User
-// 	result := repo.data.db.WithContext(ctx).
-// 		Limit(int(pageSize)).
-// 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
-// 		Where("is_deleted = false").
-// 		Find(&us)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	bus := make([]*biz.User, 0)
-// 	for _, u := range us {
-// 		bus = append(bus, &biz.User{
-// 			Id:         uint64(u.ID),
-// 			Username:   u.Username,
-// 			CreatedAt:  u.CreatedAt,
-// 			UpdataSign: u.UpdataSign,
-// 		})
-// 	}
-// 	return bus, nil
-// }
-
-// func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, error) {
-// 	u := User{}
-// 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, b.Id)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	hp, err := util.HashPassword(b.Password)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
-// 		Password:   hp,
-// 		UpdataSign: util.CreateMD5Random(u.Username),
-// 	})
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	return &biz.User{
-// 		Id:         uint64(u.ID),
-// 		Username:   u.Username,
-// 		CreatedAt:  u.CreatedAt,
-// 		UpdataSign: util.CreateMD5Random(u.Username),
-// 	}, nil
-// }
-
-// func (repo *userRepo) DeleteUser(ctx context.Context, b *biz.User) (*biz.User, error) {
-// 	u := User{}
-// 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, b.Id)
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
-// 		IsDeleted: true,
-// 		DeletedAt: time.Now(),
-// 	})
-// 	if result.Error != nil {
-// 		return nil, result.Error
-// 	}
-// 	return &biz.User{
-// 		Id:        uint64(u.ID),
-// 		Username:  u.Username,
-// 		CreatedAt: u.CreatedAt,
-// 		IsDeleted: u.IsDeleted,
-// 		DeletedAt: u.DeletedAt,
-// 	}, nil
-// }
-
-// func (repo *userRepo) VerifyPassword(ctx context.Context, b *biz.User) (bool, error) {
-// 	uu, err := repo.GetUserByUsername(ctx, b.Username)
-// 	if err != nil {
-// 		return false, err
-// 	}
-// 	result := util.CheckPasswordHash(b.Password, uu.Password)
-// 	return result, nil
-// }

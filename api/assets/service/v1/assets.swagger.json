@@ -110,23 +110,12 @@
           "type": "integer",
           "format": "int32"
         },
-        "areas": {
+        "areaIds": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/ListUserReplyUserAreas"
+            "type": "integer",
+            "format": "int64"
           }
-        }
-      }
-    },
-    "ListUserReplyUserAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "areaInfo": {
-          "type": "string"
         }
       }
     },
@@ -218,9 +207,8 @@
           "type": "integer",
           "format": "int32"
         },
-        "pClz": {
-          "type": "integer",
-          "format": "int32"
+        "pcode": {
+          "type": "string"
         }
       }
     },
@@ -237,9 +225,8 @@
           "type": "integer",
           "format": "int32"
         },
-        "pClz": {
-          "type": "integer",
-          "format": "int32"
+        "pcode": {
+          "type": "string"
         }
       }
     },
@@ -254,32 +241,12 @@
           "type": "integer",
           "format": "int32"
         },
-        "areas": {
+        "areaIds": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1CreateUserReplyAreas"
+            "type": "integer",
+            "format": "int64"
           }
-        }
-      }
-    },
-    "v1CreateUserReplyAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "areaInfo": {
-          "type": "string"
-        }
-      }
-    },
-    "v1CreateUserReqAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     },
@@ -309,6 +276,29 @@
           "format": "int32"
         },
         "state": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetAreaByIdsReply": {
+      "type": "object",
+      "properties": {
+        "areas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1GetAreaByIdsReplyAreas"
+          }
+        }
+      }
+    },
+    "v1GetAreaByIdsReplyAreas": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "areaInfo": {
           "type": "string"
         }
       }
@@ -409,9 +399,8 @@
           "type": "integer",
           "format": "int32"
         },
-        "pClz": {
-          "type": "integer",
-          "format": "int32"
+        "pcode": {
+          "type": "string"
         }
       }
     },
@@ -426,23 +415,12 @@
           "type": "integer",
           "format": "int32"
         },
-        "areas": {
+        "areaIds": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1GetUserReplyAreas"
+            "type": "integer",
+            "format": "int64"
           }
-        }
-      }
-    },
-    "v1GetUserReplyAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "areaInfo": {
-          "type": "string"
         }
       }
     },
@@ -536,32 +514,12 @@
           "type": "integer",
           "format": "int32"
         },
-        "areas": {
+        "areaIds": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/v1UpdateUserAreaReplyAreas"
+            "type": "integer",
+            "format": "int64"
           }
-        }
-      }
-    },
-    "v1UpdateUserAreaReplyAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "areaInfo": {
-          "type": "string"
-        }
-      }
-    },
-    "v1UpdateUserAreaReqAreas": {
-      "type": "object",
-      "properties": {
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
         }
       }
     }

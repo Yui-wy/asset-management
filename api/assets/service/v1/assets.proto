@@ -22,6 +22,8 @@ service Assets {
     // 区域信息
     rpc GetArea(GetAreaReq) returns (GetAreaReply) {}
     // 区域信息
+    rpc GetAreaByIds(GetAreaByIdsReq) returns (GetAreaByIdsReply) {}
+    // 区域信息
     rpc ListAreas(ListAreasReq) returns (ListAreasReply) {}
     // 添加区域(超级管理员)
     rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {}
@@ -180,6 +182,18 @@ message GetAreaReply {
     string areaInfo = 2;
 }
 
+message GetAreaByIdsReq {
+    repeated uint32 ids = 1;
+}
+
+message GetAreaByIdsReply {
+    message Areas {
+        uint32 id       = 1;
+        string areaInfo = 2;
+    }
+    repeated Areas areas = 3;
+}
+
 message ListAreasReq {}
 
 message ListAreasReply {
@@ -224,65 +238,44 @@ message GetUserReq {
 }
 
 message GetUserReply {
-    message Areas {
-        uint32 areaId   = 1;
-        string areaInfo = 2;
-    }
-    uint64 uid           = 1;
-    int32 power          = 2;
-    repeated Areas areas = 3;
+    uint64 uid              = 1;
+    int32 power             = 2;
+    repeated uint32 areaIds = 3;
 }
 
 message CreateUserReq {
-    message Areas {
-        uint32 areaId = 1;
-    }
-    uint64 uid           = 1;
-    int32 power          = 2;
-    repeated Areas areas = 3;
+    uint64 uid              = 1;
+    int32 power             = 2;
+    repeated uint32 areaIds = 3;
 }
 
 message CreateUserReply {
-    message Areas {
-        uint32 areaId   = 1;
-        string areaInfo = 2;
-    }
-    uint64 uid           = 1;
-    int32 power          = 2;
-    repeated Areas areas = 3;
+    uint64 uid              = 1;
+    int32 power             = 2;
+    repeated uint32 areaIds = 3;
 }
 
 message UpdateUserAreaReq {
-    message Areas {
-        uint32 areaId = 1;
-    }
-    uint64 uid           = 1;
-    repeated Areas areas = 2;
+    uint64 uid              = 1;
+    repeated uint32 areaIds = 2;
 }
 
 message UpdateUserAreaReply {
-    message Areas {
-        uint32 areaId   = 1;
-        string areaInfo = 2;
-    }
-    uint64 uid           = 1;
-    int32 power          = 2;
-    repeated Areas areas = 3;
+    uint64 uid              = 1;
+    int32 power             = 2;
+    repeated uint32 areaIds = 3;
 }
 
 message ListUserReq {
     repeated uint32 areaIds = 1;
+    int32 nextPower         = 2;
 }
 
 message ListUserReply {
     message User {
-        message Areas {
-            uint32 areaId   = 1;
-            string areaInfo = 2;
-        }
-        uint64 uid           = 1;
-        int32 power          = 2;
-        repeated Areas areas = 3;
+        uint64 uid              = 1;
+        int32 power             = 2;
+        repeated uint32 areaIds = 3;
     }
     repeated User results = 1;
 }
@@ -293,7 +286,7 @@ message CreateClassesReq {
         string code    = 1;
         string clzInfo = 2;
         int32 power    = 3;
-        int32 pClz     = 4;
+        string pcode    = 4;
     }
     repeated Classes clz = 1;
 }
@@ -303,7 +296,7 @@ message CreateClassesReply {
         string code    = 1;
         string clzInfo = 2;
         int32 power    = 3;
-        int32 pClz     = 4;
+        string pcode    = 4;
     }
     repeated Classes clz = 1;
 }
@@ -315,7 +308,7 @@ message GetClassesReply {
         string code    = 1;
         string clzInfo = 2;
         int32 power    = 3;
-        int32 pClz     = 4;
+        string pcode    = 4;
     }
     repeated Classes clz = 1;
 }

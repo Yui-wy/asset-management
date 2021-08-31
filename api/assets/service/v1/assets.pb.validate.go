@@ -955,6 +955,153 @@ var _ interface {
 	ErrorName() string
 } = GetAreaReplyValidationError{}
 
+// Validate checks the field values on GetAreaByIdsReq with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *GetAreaByIdsReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// GetAreaByIdsReqValidationError is the validation error returned by
+// GetAreaByIdsReq.Validate if the designated constraints aren't met.
+type GetAreaByIdsReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAreaByIdsReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAreaByIdsReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAreaByIdsReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAreaByIdsReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAreaByIdsReqValidationError) ErrorName() string { return "GetAreaByIdsReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetAreaByIdsReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAreaByIdsReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAreaByIdsReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAreaByIdsReqValidationError{}
+
+// Validate checks the field values on GetAreaByIdsReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *GetAreaByIdsReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	for idx, item := range m.GetAreas() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetAreaByIdsReplyValidationError{
+					field:  fmt.Sprintf("Areas[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// GetAreaByIdsReplyValidationError is the validation error returned by
+// GetAreaByIdsReply.Validate if the designated constraints aren't met.
+type GetAreaByIdsReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAreaByIdsReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAreaByIdsReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAreaByIdsReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAreaByIdsReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAreaByIdsReplyValidationError) ErrorName() string {
+	return "GetAreaByIdsReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAreaByIdsReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAreaByIdsReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAreaByIdsReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAreaByIdsReplyValidationError{}
+
 // Validate checks the field values on ListAreasReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -1586,21 +1733,6 @@ func (m *GetUserReply) Validate() error {
 
 	// no validation rules for Power
 
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return GetUserReplyValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -1669,21 +1801,6 @@ func (m *CreateUserReq) Validate() error {
 	// no validation rules for Uid
 
 	// no validation rules for Power
-
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CreateUserReqValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
 
 	return nil
 }
@@ -1754,21 +1871,6 @@ func (m *CreateUserReply) Validate() error {
 
 	// no validation rules for Power
 
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return CreateUserReplyValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -1835,21 +1937,6 @@ func (m *UpdateUserAreaReq) Validate() error {
 	}
 
 	// no validation rules for Uid
-
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UpdateUserAreaReqValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
 
 	return nil
 }
@@ -1922,21 +2009,6 @@ func (m *UpdateUserAreaReply) Validate() error {
 
 	// no validation rules for Power
 
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return UpdateUserAreaReplyValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -2003,6 +2075,8 @@ func (m *ListUserReq) Validate() error {
 	if m == nil {
 		return nil
 	}
+
+	// no validation rules for NextPower
 
 	return nil
 }
@@ -2624,6 +2698,77 @@ var _ interface {
 	ErrorName() string
 } = ListAssetsReply_AssetsValidationError{}
 
+// Validate checks the field values on GetAreaByIdsReply_Areas with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetAreaByIdsReply_Areas) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for AreaInfo
+
+	return nil
+}
+
+// GetAreaByIdsReply_AreasValidationError is the validation error returned by
+// GetAreaByIdsReply_Areas.Validate if the designated constraints aren't met.
+type GetAreaByIdsReply_AreasValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetAreaByIdsReply_AreasValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetAreaByIdsReply_AreasValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetAreaByIdsReply_AreasValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetAreaByIdsReply_AreasValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetAreaByIdsReply_AreasValidationError) ErrorName() string {
+	return "GetAreaByIdsReply_AreasValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetAreaByIdsReply_AreasValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetAreaByIdsReply_Areas.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetAreaByIdsReply_AreasValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetAreaByIdsReply_AreasValidationError{}
+
 // Validate checks the field values on ListAreasReply_Areas with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -2695,357 +2840,6 @@ var _ interface {
 	ErrorName() string
 } = ListAreasReply_AreasValidationError{}
 
-// Validate checks the field values on GetUserReply_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *GetUserReply_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	// no validation rules for AreaInfo
-
-	return nil
-}
-
-// GetUserReply_AreasValidationError is the validation error returned by
-// GetUserReply_Areas.Validate if the designated constraints aren't met.
-type GetUserReply_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e GetUserReply_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e GetUserReply_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e GetUserReply_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e GetUserReply_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e GetUserReply_AreasValidationError) ErrorName() string {
-	return "GetUserReply_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e GetUserReply_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sGetUserReply_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = GetUserReply_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = GetUserReply_AreasValidationError{}
-
-// Validate checks the field values on CreateUserReq_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *CreateUserReq_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	return nil
-}
-
-// CreateUserReq_AreasValidationError is the validation error returned by
-// CreateUserReq_Areas.Validate if the designated constraints aren't met.
-type CreateUserReq_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CreateUserReq_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CreateUserReq_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CreateUserReq_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CreateUserReq_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CreateUserReq_AreasValidationError) ErrorName() string {
-	return "CreateUserReq_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e CreateUserReq_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCreateUserReq_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CreateUserReq_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CreateUserReq_AreasValidationError{}
-
-// Validate checks the field values on CreateUserReply_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *CreateUserReply_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	// no validation rules for AreaInfo
-
-	return nil
-}
-
-// CreateUserReply_AreasValidationError is the validation error returned by
-// CreateUserReply_Areas.Validate if the designated constraints aren't met.
-type CreateUserReply_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CreateUserReply_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CreateUserReply_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CreateUserReply_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CreateUserReply_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CreateUserReply_AreasValidationError) ErrorName() string {
-	return "CreateUserReply_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e CreateUserReply_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCreateUserReply_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CreateUserReply_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CreateUserReply_AreasValidationError{}
-
-// Validate checks the field values on UpdateUserAreaReq_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *UpdateUserAreaReq_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	return nil
-}
-
-// UpdateUserAreaReq_AreasValidationError is the validation error returned by
-// UpdateUserAreaReq_Areas.Validate if the designated constraints aren't met.
-type UpdateUserAreaReq_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UpdateUserAreaReq_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UpdateUserAreaReq_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UpdateUserAreaReq_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UpdateUserAreaReq_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UpdateUserAreaReq_AreasValidationError) ErrorName() string {
-	return "UpdateUserAreaReq_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e UpdateUserAreaReq_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUpdateUserAreaReq_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UpdateUserAreaReq_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UpdateUserAreaReq_AreasValidationError{}
-
-// Validate checks the field values on UpdateUserAreaReply_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *UpdateUserAreaReply_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	// no validation rules for AreaInfo
-
-	return nil
-}
-
-// UpdateUserAreaReply_AreasValidationError is the validation error returned by
-// UpdateUserAreaReply_Areas.Validate if the designated constraints aren't met.
-type UpdateUserAreaReply_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e UpdateUserAreaReply_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e UpdateUserAreaReply_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e UpdateUserAreaReply_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e UpdateUserAreaReply_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e UpdateUserAreaReply_AreasValidationError) ErrorName() string {
-	return "UpdateUserAreaReply_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e UpdateUserAreaReply_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sUpdateUserAreaReply_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = UpdateUserAreaReply_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = UpdateUserAreaReply_AreasValidationError{}
-
 // Validate checks the field values on ListUserReply_User with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -3057,21 +2851,6 @@ func (m *ListUserReply_User) Validate() error {
 	// no validation rules for Uid
 
 	// no validation rules for Power
-
-	for idx, item := range m.GetAreas() {
-		_, _ = idx, item
-
-		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListUserReply_UserValidationError{
-					field:  fmt.Sprintf("Areas[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
 
 	return nil
 }
@@ -3132,77 +2911,6 @@ var _ interface {
 	ErrorName() string
 } = ListUserReply_UserValidationError{}
 
-// Validate checks the field values on ListUserReply_User_Areas with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, an error is returned.
-func (m *ListUserReply_User_Areas) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for AreaId
-
-	// no validation rules for AreaInfo
-
-	return nil
-}
-
-// ListUserReply_User_AreasValidationError is the validation error returned by
-// ListUserReply_User_Areas.Validate if the designated constraints aren't met.
-type ListUserReply_User_AreasValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListUserReply_User_AreasValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListUserReply_User_AreasValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListUserReply_User_AreasValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListUserReply_User_AreasValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListUserReply_User_AreasValidationError) ErrorName() string {
-	return "ListUserReply_User_AreasValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListUserReply_User_AreasValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListUserReply_User_Areas.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListUserReply_User_AreasValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListUserReply_User_AreasValidationError{}
-
 // Validate checks the field values on CreateClassesReq_Classes with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -3217,7 +2925,7 @@ func (m *CreateClassesReq_Classes) Validate() error {
 
 	// no validation rules for Power
 
-	// no validation rules for PClz
+	// no validation rules for Pcode
 
 	return nil
 }
@@ -3292,7 +3000,7 @@ func (m *CreateClassesReply_Classes) Validate() error {
 
 	// no validation rules for Power
 
-	// no validation rules for PClz
+	// no validation rules for Pcode
 
 	return nil
 }
@@ -3367,7 +3075,7 @@ func (m *GetClassesReply_Classes) Validate() error {
 
 	// no validation rules for Power
 
-	// no validation rules for PClz
+	// no validation rules for Pcode
 
 	return nil
 }

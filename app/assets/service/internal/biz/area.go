@@ -18,6 +18,7 @@ type AreaRepo interface {
 	CreateArea(ctx context.Context, a *Area) (*Area, error)
 	UpdateArea(ctx context.Context, a *Area) (*Area, error)
 	DeleteArea(ctx context.Context, id uint32) (bool, error)
+	GetAreasByIds(ctx context.Context, ids []uint32) ([]*Area, error)
 }
 
 type AreaUseCase struct {
@@ -34,6 +35,10 @@ func NewAreaUseCase(repo AreaRepo, logger log.Logger) *AreaUseCase {
 
 func (uc *AreaUseCase) Get(ctx context.Context, id uint32) (*Area, error) {
 	return uc.repo.GetArea(ctx, id)
+}
+
+func (uc *AreaUseCase) GetByIds(ctx context.Context, ids []uint32) ([]*Area, error) {
+	return uc.repo.GetAreasByIds(ctx, ids)
 }
 
 func (uc *AreaUseCase) List(ctx context.Context) ([]*Area, error) {

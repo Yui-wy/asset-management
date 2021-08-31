@@ -19,3 +19,12 @@ func IsUnknownError(err error) bool {
 func ErrorUnknownError(format string, args ...interface{}) *errors.Error {
 	return errors.New(500, ErrorReason_UNKNOWN_ERROR.String(), fmt.Sprintf(format, args...))
 }
+
+func IsNoAreaError(err error) bool {
+	e := errors.FromError(err)
+	return e.Reason == ErrorReason_NO_AREA_ERROR.String() && e.Code == 500
+}
+
+func ErrorNoAreaError(format string, args ...interface{}) *errors.Error {
+	return errors.New(500, ErrorReason_NO_AREA_ERROR.String(), fmt.Sprintf(format, args...))
+}

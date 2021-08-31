@@ -2,6 +2,8 @@ package data
 
 import (
 	"context"
+	"fmt"
+	"math/rand"
 	"time"
 
 	pb "github.com/Yui-wy/asset-management/api/user/service/v1"
@@ -20,7 +22,7 @@ type userRepo struct {
 
 type User struct {
 	ID         uint   `gorm:"primarykey"`
-	Username   string `gorm:"not null;uniqueIndex:username"`
+	Username   string `gorm:"not null;uniqueIndex:user_name"`
 	Password   string
 	UpdataSign string `gorm:"not null"`
 	IsDeleted  bool   `gorm:"not null"`
@@ -152,7 +154,7 @@ func (repo *userRepo) DeleteUser(ctx context.Context, b *biz.User) (*biz.User, e
 	}
 	return &biz.User{
 		Id:        uint64(u.ID),
-		Username:  u.Username,
+		Username:  u.Username + "+^)-" + fmt.Sprintf("%d%d", rand.Intn(100), u.ID),
 		CreatedAt: u.CreatedAt,
 		IsDeleted: u.IsDeleted,
 		DeletedAt: u.DeletedAt,

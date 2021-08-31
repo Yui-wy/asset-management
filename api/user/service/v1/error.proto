@@ -11,12 +11,4 @@ enum ErrorReason {
 
     // 为止错误
     UNKNOWN_ERROR = 0;
-    // 登陆错误
-    LOGIN_FAILED = 1;
-    // 注册错误
-    REGISTER_FAILED = 2;
-    // 修改错误
-    MOTIFY_FAILED = 3;
-    // 鉴权错误
-    AUTH_FAILED = 4;
 }
