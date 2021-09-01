@@ -9,6 +9,7 @@ import (
 type Class struct {
 	Id      uint64
 	Code    string
+	Level   uint32
 	Pcode   string
 	ClzInfo string
 	power   uint32

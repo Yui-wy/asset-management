@@ -197,15 +197,19 @@
     "v1CreateClassesReplyClasses": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
         "code": {
           "type": "string"
         },
         "clzInfo": {
           "type": "string"
         },
-        "power": {
+        "level": {
           "type": "integer",
-          "format": "int32"
+          "format": "int64"
         },
         "pcode": {
           "type": "string"
@@ -221,9 +225,9 @@
         "clzInfo": {
           "type": "string"
         },
-        "power": {
+        "level": {
           "type": "integer",
-          "format": "int32"
+          "format": "int64"
         },
         "pcode": {
           "type": "string"
@@ -389,15 +393,19 @@
     "v1GetClassesReplyClasses": {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
         "code": {
           "type": "string"
         },
         "clzInfo": {
           "type": "string"
         },
-        "power": {
+        "level": {
           "type": "integer",
-          "format": "int32"
+          "format": "int64"
         },
         "pcode": {
           "type": "string"

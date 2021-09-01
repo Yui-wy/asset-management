@@ -2923,7 +2923,7 @@ func (m *CreateClassesReq_Classes) Validate() error {
 
 	// no validation rules for ClzInfo
 
-	// no validation rules for Power
+	// no validation rules for Level
 
 	// no validation rules for Pcode
 
@@ -2994,11 +2994,13 @@ func (m *CreateClassesReply_Classes) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Id
+
 	// no validation rules for Code
 
 	// no validation rules for ClzInfo
 
-	// no validation rules for Power
+	// no validation rules for Level
 
 	// no validation rules for Pcode
 
@@ -3069,11 +3071,13 @@ func (m *GetClassesReply_Classes) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Id
+
 	// no validation rules for Code
 
 	// no validation rules for ClzInfo
 
-	// no validation rules for Power
+	// no validation rules for Level
 
 	// no validation rules for Pcode
 

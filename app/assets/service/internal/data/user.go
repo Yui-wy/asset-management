@@ -93,6 +93,7 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 	if result.Error != nil {
 		return nil, result.Error
 	}
+	// 权限认证
 	if u.Power == SUPER_ADMIN_USER {
 		return &biz.User{
 			Id:      uint64(uc.ID),
@@ -100,6 +101,10 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 			Power:   uc.Power,
 			AreaIds: nil,
 		}, nil
+	} else if u.Power == AREA_USER {
+		if len(u.AreaIds) > 1 {
+			u.AreaIds = u.AreaIds[0:1]
+		}
 	}
 	var umap = []map[string]interface{}{}
 	for _, aid := range u.AreaIds {
@@ -170,7 +175,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 		通过areaId, 得到user组
 		若没有areaIds,返回全部user
 	*/
-	var us []*User
+	var us []User
 	if len(areaIds) == 0 {
 		// 搜索全部
 		result := repo.data.db.WithContext(ctx).Find(&us)
