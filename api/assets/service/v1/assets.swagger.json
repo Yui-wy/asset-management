@@ -24,14 +24,15 @@
           "type": "string",
           "format": "uint64"
         },
-        "assetCode": {
+        "code": {
           "type": "string"
         },
-        "class": {
+        "codeInfo": {
           "type": "string"
         },
-        "area": {
-          "type": "string"
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
         },
         "address": {
           "type": "string"
@@ -82,7 +83,7 @@
         "assetCode": {
           "type": "string"
         },
-        "area": {
+        "address": {
           "type": "string"
         },
         "stateNum": {
@@ -168,10 +169,55 @@
           "type": "string",
           "format": "uint64"
         },
-        "assetCode": {
+        "code": {
+          "type": "string"
+        },
+        "codeInfo": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
           "type": "string"
         },
         "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedNum": {
+          "type": "string"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageNum": {
+          "type": "string"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedNum": {
           "type": "string"
         },
         "stateNum": {
@@ -265,22 +311,8 @@
     "v1DeleteAssetsReply": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "assetCode": {
-          "type": "string"
-        },
-        "assetInfo": {
-          "type": "string"
-        },
-        "stateNum": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "state": {
-          "type": "string"
+        "ok": {
+          "type": "boolean"
         }
       }
     },
@@ -326,14 +358,15 @@
           "type": "string",
           "format": "uint64"
         },
-        "assetCode": {
+        "code": {
           "type": "string"
         },
-        "class": {
+        "codeInfo": {
           "type": "string"
         },
-        "area": {
-          "type": "string"
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
         },
         "address": {
           "type": "string"
@@ -496,10 +529,55 @@
           "type": "string",
           "format": "uint64"
         },
-        "assetCode": {
+        "code": {
+          "type": "string"
+        },
+        "codeInfo": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
           "type": "string"
         },
         "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedNum": {
+          "type": "string"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageNum": {
+          "type": "string"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedNum": {
           "type": "string"
         },
         "stateNum": {

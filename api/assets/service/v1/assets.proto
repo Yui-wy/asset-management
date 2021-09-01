@@ -68,9 +68,9 @@ o. 资产状态标识(0:入库;1:入库申请中;2:采购中;3:采购申请中;4
 */
 message GetAssetsReply {
     uint64 id          = 1;
-    string assetCode   = 2;
-    string class       = 3;
-    string area        = 4;
+    string code        = 2;
+    string codeInfo    = 3;
+    uint32 areaId      = 4;
     string address     = 5;
     string assetInfo   = 6;
     string picUrl      = 7;
@@ -88,7 +88,7 @@ message GetAssetsReply {
 message ListAssetsReq {
     message Condition {
         string assetCode   = 1;
-        string area        = 2;
+        string address     = 2;
         int32 stateNum     = 3;
         int64 lowStorageAt = 4;
         int64 upStorageAt  = 5;
@@ -101,9 +101,9 @@ message ListAssetsReq {
 message ListAssetsReply {
     message Assets {
         uint64 id          = 1;
-        string assetCode   = 2;
-        string class       = 3;
-        string area        = 4;
+        string code        = 2;
+        string codeInfo    = 3;
+        uint32 areaId      = 4;
         string address     = 5;
         string assetInfo   = 6;
         string picUrl      = 7;
@@ -121,24 +121,45 @@ message ListAssetsReply {
 }
 
 message CreateAssetsReq {
-    string assetCode = 1;
-    string class     = 2;
-    string area      = 3;
-    string address   = 4;
-    string assetInfo = 5;
-    string picUrl    = 6;
-    float price      = 7;
-    int64 orderAt    = 8;
-    string orderNum  = 9;
-    int32 stateNum   = 10;
+    uint64 id          = 1;
+    string code        = 2;
+    string codeInfo    = 3;
+    uint32 areaId      = 4;
+    string address     = 5;
+    string assetInfo   = 6;
+    string picUrl      = 7;
+    float price        = 8;
+    int64 orderAt      = 9;
+    string orderNum    = 10;
+    int64 appliedAt    = 11;
+    string appliedNum  = 12;
+    int64 storageAt    = 13;
+    string storageNum  = 14;
+    int64 scrappedAt   = 15;
+    string scrappedNum = 16;
+    int32 stateNum     = 17;
+    string state       = 18;
 }
 
 message CreateAssetsReply {
-    uint64 id        = 1;
-    string assetCode = 2;
-    string assetInfo = 3;
-    int32 stateNum   = 4;
-    string state     = 5;
+    uint64 id          = 1;
+    string code        = 2;
+    string codeInfo    = 3;
+    uint32 areaId      = 4;
+    string address     = 5;
+    string assetInfo   = 6;
+    string picUrl      = 7;
+    float price        = 8;
+    int64 orderAt      = 9;
+    string orderNum    = 10;
+    int64 appliedAt    = 11;
+    string appliedNum  = 12;
+    int64 storageAt    = 13;
+    string storageNum  = 14;
+    int64 scrappedAt   = 15;
+    string scrappedNum = 16;
+    int32 stateNum     = 17;
+    string state       = 18;
 }
 
 message DeleteAssetsReq {
@@ -146,30 +167,46 @@ message DeleteAssetsReq {
 }
 
 message DeleteAssetsReply {
-    uint64 id        = 1;
-    string assetCode = 2;
-    string assetInfo = 3;
-    int32 stateNum   = 4;
-    string state     = 5;
+    bool ok = 1;
 }
 
 message UpdateAssetsdReq {
-    uint64 id        = 1;
-    string class     = 2;
-    string address   = 3;
-    string assetInfo = 4;
-    string picUrl    = 5;
-    float price      = 6;
-    int64 orderAt    = 7;
-    string orderNum  = 8;
+    uint64 id          = 1;
+    string address     = 5;
+    string assetInfo   = 6;
+    string picUrl      = 7;
+    float price        = 8;
+    int64 orderAt      = 9;
+    string orderNum    = 10;
+    int64 appliedAt    = 11;
+    string appliedNum  = 12;
+    int64 storageAt    = 13;
+    string storageNum  = 14;
+    int64 scrappedAt   = 15;
+    string scrappedNum = 16;
+    int32 stateNum     = 17;
+    string state       = 18;
 }
 
 message UpdateAssetsReply {
-    uint64 id        = 1;
-    string assetCode = 2;
-    string assetInfo = 3;
-    int32 stateNum   = 4;
-    string state     = 5;
+    uint64 id          = 1;
+    string code        = 2;
+    string codeInfo    = 3;
+    uint32 areaId      = 4;
+    string address     = 5;
+    string assetInfo   = 6;
+    string picUrl      = 7;
+    float price        = 8;
+    int64 orderAt      = 9;
+    string orderNum    = 10;
+    int64 appliedAt    = 11;
+    string appliedNum  = 12;
+    int64 storageAt    = 13;
+    string storageNum  = 14;
+    int64 scrappedAt   = 15;
+    string scrappedNum = 16;
+    int32 stateNum     = 17;
+    string state       = 18;
 }
 // ===========================================
 // 区域

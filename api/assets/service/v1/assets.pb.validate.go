@@ -110,11 +110,11 @@ func (m *GetAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for AssetCode
+	// no validation rules for Code
 
-	// no validation rules for Class
+	// no validation rules for CodeInfo
 
-	// no validation rules for Area
+	// no validation rules for AreaId
 
 	// no validation rules for Address
 
@@ -364,11 +364,13 @@ func (m *CreateAssetsReq) Validate() error {
 		return nil
 	}
 
-	// no validation rules for AssetCode
+	// no validation rules for Id
 
-	// no validation rules for Class
+	// no validation rules for Code
 
-	// no validation rules for Area
+	// no validation rules for CodeInfo
+
+	// no validation rules for AreaId
 
 	// no validation rules for Address
 
@@ -382,7 +384,21 @@ func (m *CreateAssetsReq) Validate() error {
 
 	// no validation rules for OrderNum
 
+	// no validation rules for AppliedAt
+
+	// no validation rules for AppliedNum
+
+	// no validation rules for StorageAt
+
+	// no validation rules for StorageNum
+
+	// no validation rules for ScrappedAt
+
+	// no validation rules for ScrappedNum
+
 	// no validation rules for StateNum
+
+	// no validation rules for State
 
 	return nil
 }
@@ -451,9 +467,35 @@ func (m *CreateAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for AssetCode
+	// no validation rules for Code
+
+	// no validation rules for CodeInfo
+
+	// no validation rules for AreaId
+
+	// no validation rules for Address
 
 	// no validation rules for AssetInfo
+
+	// no validation rules for PicUrl
+
+	// no validation rules for Price
+
+	// no validation rules for OrderAt
+
+	// no validation rules for OrderNum
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for AppliedNum
+
+	// no validation rules for StorageAt
+
+	// no validation rules for StorageNum
+
+	// no validation rules for ScrappedAt
+
+	// no validation rules for ScrappedNum
 
 	// no validation rules for StateNum
 
@@ -593,15 +635,7 @@ func (m *DeleteAssetsReply) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Id
-
-	// no validation rules for AssetCode
-
-	// no validation rules for AssetInfo
-
-	// no validation rules for StateNum
-
-	// no validation rules for State
+	// no validation rules for Ok
 
 	return nil
 }
@@ -672,8 +706,6 @@ func (m *UpdateAssetsdReq) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Class
-
 	// no validation rules for Address
 
 	// no validation rules for AssetInfo
@@ -685,6 +717,22 @@ func (m *UpdateAssetsdReq) Validate() error {
 	// no validation rules for OrderAt
 
 	// no validation rules for OrderNum
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for AppliedNum
+
+	// no validation rules for StorageAt
+
+	// no validation rules for StorageNum
+
+	// no validation rules for ScrappedAt
+
+	// no validation rules for ScrappedNum
+
+	// no validation rules for StateNum
+
+	// no validation rules for State
 
 	return nil
 }
@@ -753,9 +801,35 @@ func (m *UpdateAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for AssetCode
+	// no validation rules for Code
+
+	// no validation rules for CodeInfo
+
+	// no validation rules for AreaId
+
+	// no validation rules for Address
 
 	// no validation rules for AssetInfo
+
+	// no validation rules for PicUrl
+
+	// no validation rules for Price
+
+	// no validation rules for OrderAt
+
+	// no validation rules for OrderNum
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for AppliedNum
+
+	// no validation rules for StorageAt
+
+	// no validation rules for StorageNum
+
+	// no validation rules for ScrappedAt
+
+	// no validation rules for ScrappedNum
 
 	// no validation rules for StateNum
 
@@ -2532,7 +2606,7 @@ func (m *ListAssetsReq_Condition) Validate() error {
 
 	// no validation rules for AssetCode
 
-	// no validation rules for Area
+	// no validation rules for Address
 
 	// no validation rules for StateNum
 
@@ -2609,11 +2683,11 @@ func (m *ListAssetsReply_Assets) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for AssetCode
+	// no validation rules for Code
 
-	// no validation rules for Class
+	// no validation rules for CodeInfo
 
-	// no validation rules for Area
+	// no validation rules for AreaId
 
 	// no validation rules for Address
 

@@ -1,6 +1,8 @@
 package biz
 
 import (
+	"context"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -22,19 +24,23 @@ import (
 
 type Asset struct {
 	Id          uint64
-	AreaId      uint
+	AreaId      uint32
 	Code        string
+	CodeInfo    string
 	Address     string
 	AssetInfo   string
-	Price       float64
-	orderAt     int64
-	orderNum    string
+	PicUrl      string
+	Price       float32
+	OrderAt     int64
+	OrderNum    string
+	AppliedAt   int64
+	AppliedNum  string
 	StorageAt   int64
 	StorageNum  string
 	ScrappedAt  int64
 	ScrappedNum string
-	stateNum    int32
-	state       string
+	StateNum    int32
+	State       string
 }
 
 type AssetRepo interface {
@@ -52,3 +58,32 @@ func NewAssetUseCase(repo AssetRepo, logger log.Logger) *AssetUseCase {
 	}
 }
 
+func (ac *AssetUseCase) Get(ctx context.Context, id uint64) (*Asset, error) {
+	return nil, nil
+}
+
+func (ac *AssetUseCase) List(
+	ctx context.Context,
+	pageNum int64,
+	pageSize int64,
+	AssetCode string,
+	Area string,
+	StateNum int32,
+	LowStorageAt int64,
+	UpStorageAt int64,
+) ([]*Asset, error) {
+	return nil, nil
+}
+
+func (ac *AssetUseCase) Create(ctx context.Context, a *Asset) (*Asset, error) {
+
+	return nil, nil
+}
+
+func (ac *AssetUseCase) Delete(ctx context.Context, id uint64) (bool, error) {
+	return false, nil
+}
+
+func (s *AssetUseCase) Update(ctx context.Context, a *Asset) (*Asset, error) {
+	return nil, nil
+}
