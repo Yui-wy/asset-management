@@ -49,49 +49,33 @@ message GetAssetsReq {
     uint64 id = 1;
 }
 
-/*
-a. ID
-b. 资产编号（再定）(自动生成)
-c. 类别ID
-d. 区域ID
-e. 详细位置
-f. 资产描述
-g. 资产图片(地址)
-h. 资产报价
-i. 购入日期
-j. 订单号
-k. 入库日期
-l. 入库申请流水号（申请单号）
-m. 报废日期
-n. 报废申请流水号（报废单号）
-o. 资产状态标识(0:入库;1:入库申请中;2:采购中;3:采购申请中;4.报废;5:报废申请中)
-*/
 message GetAssetsReply {
-    uint64 id          = 1;
-    string code        = 2;
-    string codeInfo    = 3;
-    uint32 areaId      = 4;
-    string address     = 5;
-    string assetInfo   = 6;
-    string picUrl      = 7;
-    float price        = 8;
-    int64 orderAt      = 9;
-    string orderNum    = 10;
-    int64 storageAt    = 11;
-    string storageNum  = 12;
-    int64 scrappedAt   = 13;
-    string scrappedNum = 14;
-    int32 stateNum     = 15;
-    string state       = 16;
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
 }
 
 message ListAssetsReq {
     message Condition {
-        string assetCode   = 1;
+        string classes     = 1;
         string address     = 2;
         int32 stateNum     = 3;
         int64 lowStorageAt = 4;
         int64 upStorageAt  = 5;
+        string orderBy     = 6;
+        uint32 areaId      = 7;
     }
     Condition con  = 1;
     int64 pageNum  = 2;
@@ -100,66 +84,57 @@ message ListAssetsReq {
 
 message ListAssetsReply {
     message Assets {
-        uint64 id          = 1;
-        string code        = 2;
-        string codeInfo    = 3;
-        uint32 areaId      = 4;
-        string address     = 5;
-        string assetInfo   = 6;
-        string picUrl      = 7;
-        float price        = 8;
-        int64 orderAt      = 9;
-        string orderNum    = 10;
-        int64 storageAt    = 11;
-        string storageNum  = 12;
-        int64 scrappedAt   = 13;
-        string scrappedNum = 14;
-        int32 stateNum     = 15;
-        string state       = 16;
+        uint64 id        = 1;
+        string classes   = 2;
+        string code      = 3;
+        uint32 areaId    = 4;
+        string address   = 5;
+        string assetInfo = 6;
+        string picUrl    = 7;
+        float price      = 8;
+        int64 orderAt    = 9;
+        string orderNum  = 10;
+        int32 stateNum   = 11;
+        string state     = 12;
+        int64 appliedAt  = 13;
+        int64 storageAt  = 14;
+        int64 scrappedAt = 15;
     }
     repeated Assets results = 1;
 }
 
 message CreateAssetsReq {
-    uint64 id          = 1;
-    string code        = 2;
-    string codeInfo    = 3;
-    uint32 areaId      = 4;
-    string address     = 5;
-    string assetInfo   = 6;
-    string picUrl      = 7;
-    float price        = 8;
-    int64 orderAt      = 9;
-    string orderNum    = 10;
-    int64 appliedAt    = 11;
-    string appliedNum  = 12;
-    int64 storageAt    = 13;
-    string storageNum  = 14;
-    int64 scrappedAt   = 15;
-    string scrappedNum = 16;
-    int32 stateNum     = 17;
-    string state       = 18;
+    string classes   = 1;
+    uint32 areaId    = 2;
+    string address   = 3;
+    string assetInfo = 4;
+    string picUrl    = 5;
+    float price      = 6;
+    int64 orderAt    = 7;
+    string orderNum  = 8;
+    int32 stateNum   = 9;
+    string state     = 10;
+    int64 appliedAt  = 11;
+    int64 storageAt  = 12;
+    int64 scrappedAt = 13;
 }
 
 message CreateAssetsReply {
-    uint64 id          = 1;
-    string code        = 2;
-    string codeInfo    = 3;
-    uint32 areaId      = 4;
-    string address     = 5;
-    string assetInfo   = 6;
-    string picUrl      = 7;
-    float price        = 8;
-    int64 orderAt      = 9;
-    string orderNum    = 10;
-    int64 appliedAt    = 11;
-    string appliedNum  = 12;
-    int64 storageAt    = 13;
-    string storageNum  = 14;
-    int64 scrappedAt   = 15;
-    string scrappedNum = 16;
-    int32 stateNum     = 17;
-    string state       = 18;
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
 }
 
 message DeleteAssetsReq {
@@ -171,42 +146,36 @@ message DeleteAssetsReply {
 }
 
 message UpdateAssetsdReq {
-    uint64 id          = 1;
-    string address     = 5;
-    string assetInfo   = 6;
-    string picUrl      = 7;
-    float price        = 8;
-    int64 orderAt      = 9;
-    string orderNum    = 10;
-    int64 appliedAt    = 11;
-    string appliedNum  = 12;
-    int64 storageAt    = 13;
-    string storageNum  = 14;
-    int64 scrappedAt   = 15;
-    string scrappedNum = 16;
-    int32 stateNum     = 17;
-    string state       = 18;
+    uint64 id        = 1;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
 }
 
 message UpdateAssetsReply {
-    uint64 id          = 1;
-    string code        = 2;
-    string codeInfo    = 3;
-    uint32 areaId      = 4;
-    string address     = 5;
-    string assetInfo   = 6;
-    string picUrl      = 7;
-    float price        = 8;
-    int64 orderAt      = 9;
-    string orderNum    = 10;
-    int64 appliedAt    = 11;
-    string appliedNum  = 12;
-    int64 storageAt    = 13;
-    string storageNum  = 14;
-    int64 scrappedAt   = 15;
-    string scrappedNum = 16;
-    int32 stateNum     = 17;
-    string state       = 18;
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
 }
 // ===========================================
 // 区域

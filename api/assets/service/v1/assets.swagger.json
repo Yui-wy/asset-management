@@ -24,10 +24,10 @@
           "type": "string",
           "format": "uint64"
         },
-        "code": {
+        "classes": {
           "type": "string"
         },
-        "codeInfo": {
+        "code": {
           "type": "string"
         },
         "areaId": {
@@ -54,33 +54,31 @@
         "orderNum": {
           "type": "string"
         },
-        "storageAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "storageNum": {
-          "type": "string"
-        },
-        "scrappedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "scrappedNum": {
-          "type": "string"
-        },
         "stateNum": {
           "type": "integer",
           "format": "int32"
         },
         "state": {
           "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
     "ListAssetsReqCondition": {
       "type": "object",
       "properties": {
-        "assetCode": {
+        "classes": {
           "type": "string"
         },
         "address": {
@@ -96,6 +94,13 @@
         },
         "upStorageAt": {
           "type": "string",
+          "format": "int64"
+        },
+        "orderBy": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
           "format": "int64"
         }
       }
@@ -169,10 +174,10 @@
           "type": "string",
           "format": "uint64"
         },
-        "code": {
+        "classes": {
           "type": "string"
         },
-        "codeInfo": {
+        "code": {
           "type": "string"
         },
         "areaId": {
@@ -199,33 +204,24 @@
         "orderNum": {
           "type": "string"
         },
-        "appliedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "appliedNum": {
-          "type": "string"
-        },
-        "storageAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "storageNum": {
-          "type": "string"
-        },
-        "scrappedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "scrappedNum": {
-          "type": "string"
-        },
         "stateNum": {
           "type": "integer",
           "format": "int32"
         },
         "state": {
           "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -358,10 +354,10 @@
           "type": "string",
           "format": "uint64"
         },
-        "code": {
+        "classes": {
           "type": "string"
         },
-        "codeInfo": {
+        "code": {
           "type": "string"
         },
         "areaId": {
@@ -388,29 +384,26 @@
         "orderNum": {
           "type": "string"
         },
-        "storageAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "storageNum": {
-          "type": "string"
-        },
-        "scrappedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "scrappedNum": {
-          "type": "string"
-        },
         "stateNum": {
           "type": "integer",
           "format": "int32"
         },
         "state": {
           "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
         }
-      },
-      "title": "a. ID\nb. 资产编号（再定）(自动生成)\nc. 类别ID\nd. 区域ID\ne. 详细位置\nf. 资产描述\ng. 资产图片(地址)\nh. 资产报价\ni. 购入日期\nj. 订单号\nk. 入库日期\nl. 入库申请流水号（申请单号）\nm. 报废日期\nn. 报废申请流水号（报废单号）\no. 资产状态标识(0:入库;1:入库申请中;2:采购中;3:采购申请中;4.报废;5:报废申请中)"
+      }
     },
     "v1GetClassesReply": {
       "type": "object",
@@ -529,10 +522,10 @@
           "type": "string",
           "format": "uint64"
         },
-        "code": {
+        "classes": {
           "type": "string"
         },
-        "codeInfo": {
+        "code": {
           "type": "string"
         },
         "areaId": {
@@ -559,33 +552,24 @@
         "orderNum": {
           "type": "string"
         },
-        "appliedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "appliedNum": {
-          "type": "string"
-        },
-        "storageAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "storageNum": {
-          "type": "string"
-        },
-        "scrappedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "scrappedNum": {
-          "type": "string"
-        },
         "stateNum": {
           "type": "integer",
           "format": "int32"
         },
         "state": {
           "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

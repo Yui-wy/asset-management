@@ -1,14 +1,14 @@
 package test
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestArrary(t *testing.T) {
-	var us []int32 = nil
-	println(len(us))
-	for _, u := range us {
-		println(u)
+	_, err := fmt.Printf("%03d-%s-%04d", 1, "030201", 5)
+	if err != nil {
+		fmt.Print(err)
 	}
-	println("123")
+
 }

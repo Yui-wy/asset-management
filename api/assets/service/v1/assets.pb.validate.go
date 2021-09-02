@@ -110,9 +110,9 @@ func (m *GetAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Code
+	// no validation rules for Classes
 
-	// no validation rules for CodeInfo
+	// no validation rules for Code
 
 	// no validation rules for AreaId
 
@@ -128,17 +128,15 @@ func (m *GetAssetsReply) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }
@@ -364,11 +362,7 @@ func (m *CreateAssetsReq) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Id
-
-	// no validation rules for Code
-
-	// no validation rules for CodeInfo
+	// no validation rules for Classes
 
 	// no validation rules for AreaId
 
@@ -384,21 +378,15 @@ func (m *CreateAssetsReq) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for AppliedAt
-
-	// no validation rules for AppliedNum
-
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }
@@ -467,9 +455,9 @@ func (m *CreateAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Code
+	// no validation rules for Classes
 
-	// no validation rules for CodeInfo
+	// no validation rules for Code
 
 	// no validation rules for AreaId
 
@@ -485,21 +473,15 @@ func (m *CreateAssetsReply) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for AppliedAt
-
-	// no validation rules for AppliedNum
-
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }
@@ -718,21 +700,15 @@ func (m *UpdateAssetsdReq) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for AppliedAt
-
-	// no validation rules for AppliedNum
-
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }
@@ -801,9 +777,9 @@ func (m *UpdateAssetsReply) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Code
+	// no validation rules for Classes
 
-	// no validation rules for CodeInfo
+	// no validation rules for Code
 
 	// no validation rules for AreaId
 
@@ -819,21 +795,15 @@ func (m *UpdateAssetsReply) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for AppliedAt
-
-	// no validation rules for AppliedNum
-
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }
@@ -2604,7 +2574,7 @@ func (m *ListAssetsReq_Condition) Validate() error {
 		return nil
 	}
 
-	// no validation rules for AssetCode
+	// no validation rules for Classes
 
 	// no validation rules for Address
 
@@ -2613,6 +2583,10 @@ func (m *ListAssetsReq_Condition) Validate() error {
 	// no validation rules for LowStorageAt
 
 	// no validation rules for UpStorageAt
+
+	// no validation rules for OrderBy
+
+	// no validation rules for AreaId
 
 	return nil
 }
@@ -2683,9 +2657,9 @@ func (m *ListAssetsReply_Assets) Validate() error {
 
 	// no validation rules for Id
 
-	// no validation rules for Code
+	// no validation rules for Classes
 
-	// no validation rules for CodeInfo
+	// no validation rules for Code
 
 	// no validation rules for AreaId
 
@@ -2701,17 +2675,15 @@ func (m *ListAssetsReply_Assets) Validate() error {
 
 	// no validation rules for OrderNum
 
-	// no validation rules for StorageAt
-
-	// no validation rules for StorageNum
-
-	// no validation rules for ScrappedAt
-
-	// no validation rules for ScrappedNum
-
 	// no validation rules for StateNum
 
 	// no validation rules for State
+
+	// no validation rules for AppliedAt
+
+	// no validation rules for StorageAt
+
+	// no validation rules for ScrappedAt
 
 	return nil
 }

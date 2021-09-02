@@ -16,9 +16,9 @@ type classRepo struct {
 }
 
 type Class struct {
-	ID        uint   `gorm:"primarykey"`
+	ID        uint64 `gorm:"primarykey"`
 	Code      string `gorm:"not null;uniqueIndex"`
-	Level     int    `gorm:"not null"`
+	Level     uint32 `gorm:"not null;autoIncrement:false"`
 	Pcode     string
 	ClzInfo   string `gorm:"not null"`
 	CreatedAt time.Time
@@ -36,14 +36,15 @@ func (repo *classRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
 	var clz []Class
 	result := repo.data.db.WithContext(ctx).Find(&clz)
 	if result.Error != nil {
+		repo.log.Errorf("GetClasses error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	bc := make([]*biz.Class, 0)
 	for _, c := range clz {
 		bc = append(bc, &biz.Class{
-			Id:      uint64(c.ID),
+			Id:      c.ID,
 			Code:    c.Code,
-			Level:   uint32(c.Level),
+			Level:   c.Level,
 			Pcode:   c.Pcode,
 			ClzInfo: c.ClzInfo,
 		})
@@ -51,26 +52,33 @@ func (repo *classRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
 	return bc, nil
 }
 func (repo *classRepo) CreateClasses(ctx context.Context, clz []*biz.Class) ([]*biz.Class, error) {
+	// 删除全部的类型重新导入
+	result := repo.data.db.WithContext(ctx).Where("1 = 1").Delete(&Asset{})
+	if result.Error != nil {
+		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
+		return nil, result.Error
+	}
 	cs := make([]*Class, 0)
 	for _, c := range clz {
 		cs = append(cs, &Class{
 			Code:    c.Code,
-			Level:   int(c.Level),
+			Level:   c.Level,
 			Pcode:   c.Pcode,
 			ClzInfo: c.ClzInfo,
 		})
 	}
-	result := repo.data.db.WithContext(ctx).Create(cs)
+	result = repo.data.db.WithContext(ctx).Create(cs)
 	if result.Error != nil {
+		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	bcs := make([]*biz.Class, 0)
 	for _, c := range cs {
 		bcs = append(bcs, &biz.Class{
-			Id:      uint64(c.ID),
+			Id:      c.ID,
 			Code:    c.Code,
 			Pcode:   c.Pcode,
-			Level:   uint32(c.Level),
+			Level:   c.Level,
 			ClzInfo: c.ClzInfo,
 		})
 	}

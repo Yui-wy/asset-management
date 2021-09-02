@@ -28,8 +28,8 @@ var TABLE_MAP = map[int32]string{
 }
 
 type User struct {
-	ID            uint   `gorm:"primarykey"`
-	Uid           uint64 `gorm:"not null,uniqueIndex"`
+	ID            uint64 `gorm:"primarykey"`
+	Uid           uint64 `gorm:"not null;uniqueIndex;autoIncrement:false"`
 	Power         int32  `gorm:"not null"`
 	AreaTableName string `gorm:"not null"`
 	CreatedAt     time.Time
@@ -37,17 +37,17 @@ type User struct {
 }
 
 type AdminArea struct {
-	ID        uint   `gorm:"primarykey"`
-	Uid       uint64 `gorm:"not null,index"`
-	Aid       uint32 `gorm:"not null,index"`
+	ID        uint64 `gorm:"primarykey"`
+	Uid       uint64 `gorm:"not null;index;autoIncrement:false"`
+	Aid       uint32 `gorm:"not null;index;autoIncrement:false"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
 
 type UserArea struct {
-	ID        uint   `gorm:"primarykey"`
-	Uid       uint64 `gorm:"not null,uniqueIndex"`
-	Aid       uint32 `gorm:"not null,index"`
+	ID        uint64 `gorm:"primarykey"`
+	Uid       uint64 `gorm:"not null;uniqueIndex;autoIncrement:false"`
+	Aid       uint32 `gorm:"not null;index;autoIncrement:false"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -64,11 +64,13 @@ func (repo *userRepo) GetUser(ctx context.Context, uid uint64) (*biz.User, error
 	u := User{}
 	result := repo.data.db.WithContext(ctx).First(&u, uid)
 	if result != nil {
+		repo.log.Errorf("GetUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	var areaIdMaps []map[string]interface{}
 	result = repo.data.db.WithContext(ctx).Table(TABLE_MAP[u.Power]).Find(&areaIdMaps)
 	if result != nil {
+		repo.log.Errorf("GetUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	areaIds := make([]uint32, 0)
@@ -91,17 +93,20 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 	}
 	result := repo.data.db.WithContext(ctx).Create(&uc)
 	if result.Error != nil {
+		repo.log.Errorf("CreateUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	// 权限认证
 	if u.Power == SUPER_ADMIN_USER {
+		repo.log.Debug("CreateUser info. create super admin")
 		return &biz.User{
-			Id:      uint64(uc.ID),
+			Id:      uc.ID,
 			Uid:     uc.Uid,
 			Power:   uc.Power,
 			AreaIds: nil,
 		}, nil
 	} else if u.Power == AREA_USER {
+		repo.log.Debug("CreateUser info. create user")
 		if len(u.AreaIds) > 1 {
 			u.AreaIds = u.AreaIds[0:1]
 		}
@@ -117,10 +122,11 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		Table(TABLE_MAP[u.Power]).
 		Create(umap)
 	if result.Error != nil {
+		repo.log.Errorf("CreateUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:      uint64(uc.ID),
+		Id:      uc.ID,
 		Uid:     uc.Uid,
 		Power:   uc.Power,
 		AreaIds: u.AreaIds,
@@ -134,16 +140,18 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 	uu := User{}
 	result := repo.data.db.WithContext(ctx).First(&uu, u.Uid)
 	if result != nil {
+		repo.log.Errorf("UpdateUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	result = repo.data.db.WithContext(ctx).
 		Exec("DELETE FROM `?` WHERE uid=?", TABLE_MAP[u.Power], uu.Uid)
 	if result != nil {
+		repo.log.Errorf("UpdateUser error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	if len(u.AreaIds) == 0 {
 		return &biz.User{
-			Id:      uint64(uu.ID),
+			Id:      uu.ID,
 			Uid:     uu.Uid,
 			Power:   uu.Power,
 			AreaIds: u.AreaIds,
@@ -163,7 +171,7 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:      uint64(uu.ID),
+		Id:      uu.ID,
 		Uid:     uu.Uid,
 		Power:   uu.Power,
 		AreaIds: u.AreaIds,
@@ -180,6 +188,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 		// 搜索全部
 		result := repo.data.db.WithContext(ctx).Find(&us)
 		if result.Error != nil {
+			repo.log.Errorf("ListUser error. Error:%d", result.Error)
 			return nil, result.Error
 		}
 	} else {
@@ -189,6 +198,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 			Table(TABLE_MAP[power]).
 			Where("aid = ?", areaIds[0]).Find(&results)
 		if result.Error != nil {
+			repo.log.Errorf("ListUser error. Error:%d", result.Error)
 			return nil, result.Error
 		}
 		uids := make([]uint64, 0)
@@ -201,6 +211,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 				Table(TABLE_MAP[power]).
 				Where("aid = ?", areaIds[i]).Where("uid IN ?", uids).Find(&results)
 			if result.Error != nil {
+				repo.log.Errorf("ListUser error. Error:%d", result.Error)
 				return nil, result.Error
 			}
 			uids = make([]uint64, 0)
@@ -211,13 +222,14 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 		// ======================================================
 		result = repo.data.db.WithContext(ctx).Find(&us, uids)
 		if result.Error != nil {
+			repo.log.Errorf("ListUser error. Error:%d", result.Error)
 			return nil, result.Error
 		}
 	}
 	bu := make([]*biz.User, 0)
 	for _, u := range us {
 		bu = append(bu, &biz.User{
-			Id:      uint64(u.ID),
+			Id:      u.ID,
 			Uid:     u.Uid,
 			Power:   u.Power,
 			AreaIds: areaIds,
