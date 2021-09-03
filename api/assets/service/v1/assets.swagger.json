@@ -100,8 +100,14 @@
           "type": "string"
         },
         "areaId": {
-          "type": "integer",
-          "format": "int64"
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "sortDesc": {
+          "type": "boolean"
         }
       }
     },

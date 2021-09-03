@@ -74,12 +74,8 @@
     "v1DeleteUserReply": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "username": {
-          "type": "string"
+        "ok": {
+          "type": "boolean"
         }
       }
     },

@@ -21,7 +21,7 @@ type User struct {
 type UserRepo interface {
 	CreateUser(ctx context.Context, u *User) (*User, error)
 	GetUser(ctx context.Context, id uint64) (*User, error)
-	DeleteUser(ctx context.Context, u *User) (*User, error)
+	DeleteUser(ctx context.Context, id uint64) (bool, error)
 	UpdateUser(ctx context.Context, u *User) (*User, error)
 	ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*User, error)
 	VerifyPassword(ctx context.Context, u *User) (bool, error)
@@ -55,8 +55,8 @@ func (uc *UserUseCase) Update(ctx context.Context, user *User) (*User, error) {
 	return uc.repo.UpdateUser(ctx, user)
 }
 
-func (uc *UserUseCase) Deleted(ctx context.Context, user *User) (*User, error) {
-	return uc.repo.DeleteUser(ctx, user)
+func (uc *UserUseCase) Deleted(ctx context.Context, id uint64) (bool, error) {
+	return uc.repo.DeleteUser(ctx, id)
 }
 
 func (uc *UserUseCase) VerifyPassword(ctx context.Context, user *User) (bool, error) {

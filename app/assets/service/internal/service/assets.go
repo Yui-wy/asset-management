@@ -31,18 +31,17 @@ func (s *AssetsService) GetAssets(ctx context.Context, req *pb.GetAssetsReq) (*p
 	}, nil
 }
 func (s *AssetsService) ListAssets(ctx context.Context, req *pb.ListAssetsReq) (*pb.ListAssetsReply, error) {
-	as, err := s.ac.List(
-		ctx,
-		req.PageNum,
-		req.PageSize,
-		req.Con.Classes,
-		req.Con.Address,
-		req.Con.StateNum,
-		req.Con.LowStorageAt,
-		req.Con.UpStorageAt,
-		req.Con.OrderBy,
-		req.Con.AreaId,
-	)
+	conf := &biz.SearchConf{
+		Classes:      req.Con.Classes,
+		Address:      req.Con.Address,
+		StateNum:     req.Con.StateNum,
+		LowStorageAt: req.Con.LowStorageAt,
+		UpStorageAt:  req.Con.UpStorageAt,
+		OrderBy:      req.Con.OrderBy,
+		SortDesc:       req.Con.SortDesc,
+		AreaId:       req.Con.AreaId,
+	}
+	as, err := s.ac.List(ctx, conf, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}

@@ -27,7 +27,6 @@ type Asset struct {
 	Classes    string
 	Code       string
 	AreaId     uint32
-	CodeInfo   string
 	Address    string
 	AssetInfo  string
 	PicUrl     string
@@ -41,19 +40,20 @@ type Asset struct {
 	ScrappedAt int64
 }
 
+type SearchConf struct {
+	Classes      string
+	Address      string
+	StateNum     int32
+	LowStorageAt int64
+	UpStorageAt  int64
+	OrderBy      string
+	SortDesc     bool
+	AreaId       []uint32
+}
+
 type AssetRepo interface {
 	GetAsset(ctx context.Context, id uint64) (*Asset, error)
-	ListAssets(ctx context.Context,
-		pageNum int64,
-		pageSize int64,
-		code string,
-		address string,
-		stateNum int32,
-		lowStorageAt int64,
-		upStorageAt int64,
-		orderBy string,
-		areaId uint32,
-	) ([]*Asset, error)
+	ListAssets(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, error)
 	CreatAsset(ctx context.Context, a *Asset) (*Asset, error)
 	DeleteAsset(ctx context.Context, id uint64) (bool, error)
 	UpdateAsset(ctx context.Context, a *Asset) (*Asset, error)
@@ -75,19 +75,8 @@ func (ac *AssetUseCase) Get(ctx context.Context, id uint64) (*Asset, error) {
 	return ac.repo.GetAsset(ctx, id)
 }
 
-func (ac *AssetUseCase) List(
-	ctx context.Context,
-	pageNum int64,
-	pageSize int64,
-	code string,
-	area string,
-	stateNum int32,
-	lowStorageAt int64,
-	upStorageAt int64,
-	orderBy string,
-	areaId uint32,
-) ([]*Asset, error) {
-	return ac.repo.ListAssets(ctx, pageNum, pageSize, code, area, stateNum, lowStorageAt, upStorageAt, orderBy, areaId)
+func (ac *AssetUseCase) List(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, error) {
+	return ac.repo.ListAssets(ctx, conf, pageNum, pageSize)
 }
 
 func (ac *AssetUseCase) Create(ctx context.Context, a *Asset) (*Asset, error) {

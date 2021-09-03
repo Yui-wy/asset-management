@@ -16,8 +16,8 @@ type areaRepo struct {
 }
 
 type Area struct {
-	ID        uint32   `gorm:"primarykey;autoIncrement:true"`
-	AreaInfo  string `gorm:"not null;uniqueIndex"`
+	ID        uint32 `gorm:"primarykey;autoIncrement:true"`
+	AreaInfo  string `gorm:"not null;"`
 	IsDeleted bool   `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -34,7 +34,7 @@ func NewAreaRepo(data *Data, logger log.Logger) biz.AreaRepo {
 func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error) {
 	a := Area{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&a, id)
-	// repo.log.Debugf("Get Area. ID:", id)
+	repo.log.Debugf(result.Statement.SQL.String())
 	if result.Error != nil {
 		repo.log.Errorf("GetArea error. Error:%d", result.Error)
 		return nil, result.Error
@@ -104,13 +104,13 @@ func (repo *areaRepo) UpdateArea(ctx context.Context, a *biz.Area) (*biz.Area, e
 	au := Area{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&au, a.Id)
 	if result.Error != nil {
-		repo.log.Errorf("UpdateArea error. Error:%d", result.Error)
+		repo.log.Errorf("UpdateArea1 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	au.AreaInfo = a.AreaInfo
 	result = repo.data.db.WithContext(ctx).Save(&au)
 	if result.Error != nil {
-		repo.log.Errorf("UpdateArea error. Error:%d", result.Error)
+		repo.log.Errorf("UpdateArea2 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.Area{

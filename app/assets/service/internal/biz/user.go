@@ -7,7 +7,6 @@ import (
 )
 
 type User struct {
-	Id      uint64
 	Uid     uint64
 	Power   int32
 	AreaIds []uint32

@@ -9,6 +9,7 @@ import (
 	pb "github.com/Yui-wy/asset-management/api/user/service/v1"
 	"github.com/Yui-wy/asset-management/app/user/service/internal/biz"
 	"github.com/Yui-wy/asset-management/app/user/service/internal/pkg/util"
+	"github.com/Yui-wy/asset-management/pkg/util/inspection"
 	"github.com/Yui-wy/asset-management/pkg/util/pagination"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -21,7 +22,7 @@ type userRepo struct {
 }
 
 type User struct {
-	ID         uint   `gorm:"primarykey"`
+	ID         uint64 `gorm:"primarykey"`
 	Username   string `gorm:"not null;uniqueIndex:user_name"`
 	Password   string
 	UpdataSign string `gorm:"not null"`
@@ -52,12 +53,13 @@ func (repo *userRepo) GetUserByUsername(ctx context.Context, username string) (*
 }
 
 func (repo *userRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, error) {
-	if match, str := util.CheckNameFormat(b.Username); !match {
+	if match, str := inspection.CheckNameFormat(b.Username); !match {
 		repo.log.Error(str)
 		return nil, pb.ErrorRegisterFailed(str)
 	}
 	hashPassword, err := util.HashPassword(b.Password)
 	if err != nil {
+		repo.log.Errorf("CreateUser1 error. Error:%d", err)
 		return nil, err
 	}
 	u := User{
@@ -68,13 +70,20 @@ func (repo *userRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, e
 	}
 	result := repo.data.db.WithContext(ctx).Create(&u)
 	if result.Error != nil {
+		repo.log.Errorf("CreateUser2 error. Error:%d", result.Error)
+		return nil, result.Error
+	}
+	uu := User{}
+	result = repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&uu, u.ID)
+	if result.Error != nil {
+		repo.log.Errorf("CreateUser3 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:         uint64(u.ID),
-		Username:   u.Username,
-		CreatedAt:  u.CreatedAt,
-		UpdataSign: util.CreateMD5Random(b.Username),
+		Id:         uu.ID,
+		Username:   uu.Username,
+		CreatedAt:  uu.CreatedAt,
+		UpdataSign: uu.UpdataSign,
 	}, result.Error
 }
 
@@ -85,7 +94,7 @@ func (repo *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error)
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:         uint64(u.ID),
+		Id:         u.ID,
 		Username:   u.Username,
 		CreatedAt:  u.CreatedAt,
 		UpdataSign: u.UpdataSign,
@@ -105,7 +114,7 @@ func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageS
 	bus := make([]*biz.User, 0)
 	for _, u := range us {
 		bus = append(bus, &biz.User{
-			Id:         uint64(u.ID),
+			Id:         u.ID,
 			Username:   u.Username,
 			CreatedAt:  u.CreatedAt,
 			UpdataSign: u.UpdataSign,
@@ -118,10 +127,12 @@ func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, e
 	u := User{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, b.Id)
 	if result.Error != nil {
+		repo.log.Errorf("UpdateUser1 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	hp, err := util.HashPassword(b.Password)
 	if err != nil {
+		repo.log.Errorf("UpdateUser2 error. Error:%d", err)
 		return nil, err
 	}
 	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
@@ -129,36 +140,40 @@ func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, e
 		UpdataSign: util.CreateMD5Random(u.Username),
 	})
 	if result.Error != nil {
+		repo.log.Errorf("UpdateUser3 error. Error:%d", result.Error)
+		return nil, result.Error
+	}
+	uu := User{}
+	result = repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&uu, u.ID)
+	if result.Error != nil {
+		repo.log.Errorf("UpdateUser4 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:         uint64(u.ID),
-		Username:   u.Username,
-		CreatedAt:  u.CreatedAt,
-		UpdataSign: util.CreateMD5Random(u.Username),
+		Id:         uu.ID,
+		Username:   uu.Username,
+		CreatedAt:  uu.CreatedAt,
+		UpdataSign: uu.UpdataSign,
 	}, nil
 }
 
-func (repo *userRepo) DeleteUser(ctx context.Context, b *biz.User) (*biz.User, error) {
+func (repo *userRepo) DeleteUser(ctx context.Context, id uint64) (bool, error) {
 	u := User{}
-	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, b.Id)
+	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, id)
 	if result.Error != nil {
-		return nil, result.Error
+		repo.log.Errorf("DeleteUser1 error. Error:%d", result.Error)
+		return false, result.Error
 	}
 	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
+		Username:  u.Username + "+^)-" + fmt.Sprintf("%d%d", rand.Intn(100), u.ID),
 		IsDeleted: true,
 		DeletedAt: time.Now(),
 	})
 	if result.Error != nil {
-		return nil, result.Error
+		repo.log.Errorf("DeleteUser2 error. Error:%d", result.Error)
+		return false, result.Error
 	}
-	return &biz.User{
-		Id:        uint64(u.ID),
-		Username:  u.Username + "+^)-" + fmt.Sprintf("%d%d", rand.Intn(100), u.ID),
-		CreatedAt: u.CreatedAt,
-		IsDeleted: u.IsDeleted,
-		DeletedAt: u.DeletedAt,
-	}, nil
+	return true, nil
 }
 
 func (repo *userRepo) VerifyPassword(ctx context.Context, b *biz.User) (bool, error) {

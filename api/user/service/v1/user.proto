@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user.service.v1;
 
-import "google/api/annotations.proto";
+// import "google/api/annotations.proto";
 // import "google/protobuf/timestamp.proto";
 
 option go_package          = "api/user/service/v1;v1";
@@ -62,8 +62,7 @@ message DeleteUserReq {
 }
 
 message DeleteUserReply {
-    uint64 id       = 1;
-    string username = 2;
+    bool ok = 1;
 }
 
 message VerifyPasswordReq {

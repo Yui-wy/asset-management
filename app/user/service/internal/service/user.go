@@ -60,12 +60,9 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
-	user, err := s.uc.Deleted(ctx, &biz.User{
-		Id: req.Id,
-	})
+	ok, err := s.uc.Deleted(ctx, req.Id)
 	return &pb.DeleteUserReply{
-		Id:       user.Id,
-		Username: user.Username,
+		Ok: ok,
 	}, err
 }
 

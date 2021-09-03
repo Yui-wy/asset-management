@@ -17,7 +17,7 @@ type classRepo struct {
 
 type Class struct {
 	ID        uint64 `gorm:"primarykey"`
-	Code      string `gorm:"not null;uniqueIndex"`
+	Code      string `gorm:"not null;"`
 	Level     uint32 `gorm:"not null;autoIncrement:false"`
 	Pcode     string
 	ClzInfo   string `gorm:"not null"`
@@ -53,7 +53,7 @@ func (repo *classRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
 }
 func (repo *classRepo) CreateClasses(ctx context.Context, clz []*biz.Class) ([]*biz.Class, error) {
 	// 删除全部的类型重新导入
-	result := repo.data.db.WithContext(ctx).Where("1 = 1").Delete(&Asset{})
+	result := repo.data.db.WithContext(ctx).Where("1 = 1").Delete(&Class{})
 	if result.Error != nil {
 		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
 		return nil, result.Error
@@ -72,8 +72,10 @@ func (repo *classRepo) CreateClasses(ctx context.Context, clz []*biz.Class) ([]*
 		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
 		return nil, result.Error
 	}
+	var clzz []Class
+	result = repo.data.db.WithContext(ctx).Find(&clzz)
 	bcs := make([]*biz.Class, 0)
-	for _, c := range cs {
+	for _, c := range clzz {
 		bcs = append(bcs, &biz.Class{
 			Id:      c.ID,
 			Code:    c.Code,

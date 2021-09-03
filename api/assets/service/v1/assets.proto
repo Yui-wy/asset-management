@@ -69,13 +69,14 @@ message GetAssetsReply {
 
 message ListAssetsReq {
     message Condition {
-        string classes     = 1;
-        string address     = 2;
-        int32 stateNum     = 3;
-        int64 lowStorageAt = 4;
-        int64 upStorageAt  = 5;
-        string orderBy     = 6;
-        uint32 areaId      = 7;
+        string classes         = 1;
+        string address         = 2;
+        int32 stateNum         = 3;
+        int64 lowStorageAt     = 4;
+        int64 upStorageAt      = 5;
+        string orderBy         = 6;
+        repeated uint32 areaId = 7;
+        bool sortDesc            = 8;
     }
     Condition con  = 1;
     int64 pageNum  = 2;

@@ -530,9 +530,7 @@ func (m *DeleteUserReply) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Id
-
-	// no validation rules for Username
+	// no validation rules for Ok
 
 	return nil
 }

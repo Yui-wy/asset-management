@@ -2586,7 +2586,7 @@ func (m *ListAssetsReq_Condition) Validate() error {
 
 	// no validation rules for OrderBy
 
-	// no validation rules for AreaId
+	// no validation rules for SortDesc
 
 	return nil
 }
