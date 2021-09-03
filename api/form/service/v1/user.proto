@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package user.service.v1;
+
+// import "google/api/annotations.proto";
+// import "google/protobuf/timestamp.proto";
+
+option go_package          = "api/user/service/v1;v1";
+option java_multiple_files = true;
+
+// 接口
+service Form {
+    // 申请表
+    // 得到入库申请表
+    rpc GetStorageForm(GetStorageFormReq) returns (GetStorageFormReply) {}
+    // 列出申请表(条件)
+    rpc ListStorageForm(ListStorageFormReq) returns (ListStorageFormReply) {}
+    // 创建申请表()
+    rpc CreateStorageForm(CreateStorageFormReq)
+        returns (CreateStorageFormReply) {}
+    // 更新申请表
+    rpc UpdateStorageForm(UpdateStorageFormReq)
+        returns (UpdateStorageFormReply) {}
+    // 报废表
+    // 得到报废表
+    rpc GetScrappedForm(GetScrappedFormReq) returns (GetScrappedFormReply) {}
+    // 列出报废表(条件)
+    rpc ListScrappedForm(ListScrappedFormReq) returns (ListScrappedFormReply) {}
+    // 创建报废表()
+    rpc CreateScrappedForm(CreateScrappedFormReq)
+        returns (CreateScrappedFormReply) {}
+    // 更新报废表
+    rpc UpdateScrappedForm(UpdateScrappedFormReq)
+        returns (UpdateScrappedFormReply) {}
+}
+
+message GetUserReq {
+    uint64 id = 1;
+}
+
+message GetUserReply {
+    uint64 id       = 1;
+    string username = 2;
+}
+
+message CreateUserReq {
+    string username = 1;
+    string password = 2;
+}
+
+message CreateUserReply {
+    uint64 id       = 1;
+    string username = 2;
+}
+
+message ListUserReq {
+    repeated uint64 ids = 1;
+    int64 pageNum       = 2;
+    int64 pageSize      = 3;
+}
+
+message ListUserReply {
+    message User {
+        uint64 id       = 1;
+        string username = 2;
+    }
+    repeated User results = 1;
+}
+
+message DeleteUserReq {
+    uint64 id = 1;
+}
+
+message DeleteUserReply {
+    bool ok = 1;
+}
+
+message VerifyPasswordReq {
+    string username = 1;
+    string password = 2;
+}
+
+message VerifyPasswordReply {
+    bool ok = 1;
+}
+
+message UpdatePasswordReq {
+    uint64 id       = 1;
+    string password = 2;
+}
+
+message UpdatePasswordReply {
+    uint64 id       = 1;
+    string username = 2;
+}
