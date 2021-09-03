@@ -2,9 +2,11 @@ package data
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -105,8 +107,10 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		Power:         u.Power,
 		AreaTableName: TABLE_MAP[u.Power],
 	}
-	result := repo.data.db.WithContext(ctx).Create(&uc)
+	tx := repo.data.db.Begin()
+	result := tx.WithContext(ctx).Create(&uc)
 	if result.Error != nil {
+		tx.Rollback()
 		repo.log.Errorf("CreateUser1 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
@@ -132,13 +136,15 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 			"created_at": time.Now().Local(),
 		})
 	}
-	result = repo.data.db.WithContext(ctx).
+	result = tx.WithContext(ctx).
 		Table(TABLE_MAP[u.Power]).
 		Create(umap)
 	if result.Error != nil {
+		tx.Rollback()
 		repo.log.Errorf("CreateUser4 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
+	tx.Commit()
 	return &biz.User{
 		Uid:     uc.Uid,
 		Power:   uc.Power,
@@ -151,14 +157,20 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		如果传入areaIds为空, 则删除全部区域。
 	*/
 	uu := User{}
-	result := repo.data.db.WithContext(ctx).First(&uu, u.Uid)
-	if result != nil {
+	tx := repo.data.db.Begin()
+	result := tx.WithContext(ctx).First(&uu, u.Uid)
+	if result.Error != nil {
+		tx.Rollback()
 		repo.log.Errorf("UpdateUser1 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
-	result = repo.data.db.WithContext(ctx).
-		Exec("DELETE FROM `?` WHERE uid=?", TABLE_MAP[u.Power], uu.Uid)
-	if result != nil {
+	if uu.Power == SUPER_ADMIN_USER {
+		return nil, errors.New(500, "Super admin", "super admin can not be updated.")
+	}
+	result = tx.WithContext(ctx).
+		Exec(fmt.Sprintf("DELETE FROM %s WHERE uid=?", TABLE_MAP[uu.Power]), uu.Uid)
+	if result.Error != nil {
+		tx.Rollback()
 		repo.log.Errorf("UpdateUser2 error. Error:%d", result.Error)
 		return nil, result.Error
 	}
@@ -177,12 +189,14 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 			"created_at": time.Now().Local(),
 		})
 	}
-	result = repo.data.db.WithContext(ctx).
-		Table(TABLE_MAP[u.Power]).
+	result = tx.WithContext(ctx).
+		Table(TABLE_MAP[uu.Power]).
 		Create(umap)
 	if result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
+	tx.Commit()
 	return &biz.User{
 		Uid:     uu.Uid,
 		Power:   uu.Power,
@@ -192,6 +206,7 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 
 func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint32) ([]*biz.User, error) {
 	/*
+		TODO: 有点傻, 要改
 		通过areaId, 得到user组
 		若没有areaIds,返回全部user
 	*/
@@ -221,7 +236,9 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 			results = []map[string]interface{}{}
 			result = repo.data.db.WithContext(ctx).
 				Table(TABLE_MAP[power]).
-				Where("aid = ?", areaIds[i]).Where("uid IN ?", uids).Find(&results)
+				Where("aid = ?", areaIds[i]).
+				Where("uid IN ?", uids).
+				Find(&results)
 			if result.Error != nil {
 				repo.log.Errorf("ListUser3 error. Error:%d", result.Error)
 				return nil, result.Error
@@ -229,6 +246,9 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 			uids = make([]uint64, 0)
 			for _, v := range results {
 				uids = append(uids, v["uid"].(uint64))
+			}
+			if len(uids) == 0 {
+				return []*biz.User{}, nil
 			}
 		}
 		// ======================================================
@@ -240,6 +260,19 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 	}
 	bu := make([]*biz.User, 0)
 	for _, u := range us {
+		var areaIdMaps []map[string]interface{}
+		result := repo.data.db.WithContext(ctx).
+			Table(TABLE_MAP[u.Power]).
+			Where("uid = ?", u.Uid).
+			Find(&areaIdMaps)
+		if result.Error != nil {
+			repo.log.Errorf("GetUser2 error. Error:%d", result.Error)
+			return nil, result.Error
+		}
+		areaIds := make([]uint32, 0)
+		for _, areaIdMap := range areaIdMaps {
+			areaIds = append(areaIds, areaIdMap["aid"].(uint32))
+		}
 		bu = append(bu, &biz.User{
 			Uid:     u.Uid,
 			Power:   u.Power,

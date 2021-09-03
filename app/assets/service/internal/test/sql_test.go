@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/data"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/driver/mysql"
@@ -107,12 +108,11 @@ func TestSql(t *testing.T) {
 	// 	Power: data.SUPER_ADMIN_USER,
 	// })
 	// fmt.Printf("%+v\n", b)
-	// b, err = ur.CreateUser(ctx, &biz.User{
-	// 	Uid:     2,
+	// b, err := ur.CreateUser(ctx, &biz.User{
+	// 	Uid:     4,
 	// 	Power:   data.AREA_ADMIN_USER,
 	// 	AreaIds: []uint32{1, 2},
 	// })
-	// fmt.Printf("%+v\n", b)
 	// b, err = ur.CreateUser(ctx, &biz.User{
 	// 	Uid:     3,
 	// 	Power:   data.AREA_USER,
@@ -120,7 +120,12 @@ func TestSql(t *testing.T) {
 	// })
 	// b, err := ur.GetUser(ctx, 3)
 	// fmt.Printf("%+v\n", b)
-	b, err := ur.ListUser(ctx, data.AREA_USER, []uint32{1, 2})
-	fmt.Printf("%+v\n", b[0])
+	// b, err := ur.ListUser(ctx, data.AREA_ADMIN_USER, []uint32{1, 2})
+	// fmt.Printf("%+v\n", b[0])
+	b, err := ur.UpdateUser(ctx, &biz.User{
+		Uid:     4,
+		AreaIds: []uint32{1},
+	})
+	fmt.Printf("%+v\n", b)
 	// ====================================================
 }
