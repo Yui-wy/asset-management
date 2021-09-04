@@ -16,7 +16,7 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string = "asset-management.user.service"
+	Name string = "asset-management.form.service"
 	// Version is the version of the compiled software.
 	Version string
 	// flagconf is the config flag.
@@ -51,8 +51,6 @@ func main() {
 		"service.id", id,
 		"service.name", Name,
 		"service.version", Version,
-		"trace_id", log.TraceID(),
-		"span_id", log.SpanID(),
 	)
 	c := config.New(
 		config.WithSource(

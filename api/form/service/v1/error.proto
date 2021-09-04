@@ -9,6 +9,6 @@ option java_multiple_files = true;
 enum ErrorReason {
     option (errors.default_code) = 500;
 
-    // 为止错误
+    // 未知错误
     UNKNOWN_ERROR = 0;
 }

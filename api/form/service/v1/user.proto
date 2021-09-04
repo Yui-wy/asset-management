@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package user.service.v1;
+package form.service.v1;
 
 // import "google/api/annotations.proto";
 // import "google/protobuf/timestamp.proto";
 
-option go_package          = "api/user/service/v1;v1";
+option go_package          = "api/form/service/v1;v1";
 option java_multiple_files = true;
 
 // 接口
@@ -34,62 +34,196 @@ service Form {
         returns (UpdateScrappedFormReply) {}
 }
 
-message GetUserReq {
-    uint64 id = 1;
+message GetStorageFormReq {
+    string formNum = 1;
 }
 
-message GetUserReply {
-    uint64 id       = 1;
-    string username = 2;
+message GetStorageFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
 }
 
-message CreateUserReq {
-    string username = 1;
-    string password = 2;
-}
-
-message CreateUserReply {
-    uint64 id       = 1;
-    string username = 2;
-}
-
-message ListUserReq {
-    repeated uint64 ids = 1;
-    int64 pageNum       = 2;
-    int64 pageSize      = 3;
-}
-
-message ListUserReply {
-    message User {
-        uint64 id       = 1;
-        string username = 2;
+message ListStorageFormReq {
+    message Conf {
+        uint64 applicantId = 1;
+        uint64 operatorId  = 2;
+        int64 stateNum     = 3;
+        uint64 assetId     = 4;
+        string assetCode   = 5;
+        uint32 areaId      = 6;
     }
-    repeated User results = 1;
+    Conf conf      = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
 }
 
-message DeleteUserReq {
-    uint64 id = 1;
+message ListStorageFormReply {
+    message Form {
+        string formNum     = 1;
+        int64 appliedAt    = 2;
+        uint64 applicantId = 3;
+        string applicant   = 5;
+        int64 optAt        = 6;
+        uint64 operatorId  = 7;
+        string Operator    = 8;
+        int64 stateNum     = 9;
+        string state       = 10;
+        uint64 assetId     = 11;
+        string assetCode   = 12;
+        uint32 areaId      = 13;
+    }
+    repeated Form forms = 1;
 }
 
-message DeleteUserReply {
-    bool ok = 1;
+message CreateStorageFormReq {
+    uint64 applicantId = 1;
+    string applicant   = 2;
+    uint64 assetId     = 3;
+    string assetCode   = 4;
+    uint32 areaId      = 5;
 }
 
-message VerifyPasswordReq {
-    string username = 1;
-    string password = 2;
+message CreateStorageFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
 }
 
-message VerifyPasswordReply {
-    bool ok = 1;
+message UpdateStorageFormReq {
+    string formNum    = 1;
+    int64 optAt       = 2;
+    uint64 operatorId = 3;
+    string Operator   = 4;
+    int64 stateNum    = 5;
 }
 
-message UpdatePasswordReq {
-    uint64 id       = 1;
-    string password = 2;
+message UpdateStorageFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+// =================================
+message GetScrappedFormReq {
+    string formNum = 1;
 }
 
-message UpdatePasswordReply {
-    uint64 id       = 1;
-    string username = 2;
+message GetScrappedFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message ListScrappedFormReq {
+    message Conf {
+        uint64 applicantId = 1;
+        uint64 operatorId  = 2;
+        int64 stateNum     = 3;
+        uint64 assetId     = 4;
+        string assetCode   = 5;
+        uint32 areaId      = 6;
+    }
+    Conf conf      = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
+}
+
+message ListScrappedFormReply {
+    message Form {
+        string formNum     = 1;
+        int64 appliedAt    = 2;
+        uint64 applicantId = 3;
+        string applicant   = 5;
+        int64 optAt        = 6;
+        uint64 operatorId  = 7;
+        string Operator    = 8;
+        int64 stateNum     = 9;
+        string state       = 10;
+        uint64 assetId     = 11;
+        string assetCode   = 12;
+        uint32 areaId      = 13;
+    }
+    repeated Form forms = 1;
+}
+
+message CreateScrappedFormReq {
+    uint64 applicantId = 1;
+    string applicant   = 2;
+    uint64 assetId     = 3;
+    string assetCode   = 4;
+    uint32 areaId      = 5;
+}
+
+message CreateScrappedFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message UpdateScrappedFormReq {
+    string formNum    = 1;
+    int64 optAt       = 2;
+    uint64 operatorId = 3;
+    string Operator   = 4;
+    int64 stateNum    = 5;
+}
+
+message UpdateScrappedFormReply {
+    string formNum     = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 optAt        = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int64 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
 }
