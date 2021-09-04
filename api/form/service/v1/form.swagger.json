@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/form/service/v1/user.proto",
+    "title": "api/form/service/v1/form.proto",
     "version": "version not set"
   },
   "tags": [
@@ -50,8 +50,9 @@
     "v1CreateScrappedFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -64,7 +65,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -76,8 +77,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -98,8 +99,9 @@
     "v1CreateStorageFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -112,7 +114,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -124,8 +126,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -146,8 +148,9 @@
     "v1GetScrappedFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -160,7 +163,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -172,8 +175,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -194,8 +197,9 @@
     "v1GetStorageFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -208,7 +212,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -220,8 +224,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -253,8 +257,9 @@
     "v1ListScrappedFormReplyForm": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -267,7 +272,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -279,8 +284,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -310,8 +315,8 @@
           "format": "uint64"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "assetId": {
           "type": "string",
@@ -340,8 +345,9 @@
     "v1ListStorageFormReplyForm": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -354,7 +360,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -366,8 +372,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -397,8 +403,8 @@
           "format": "uint64"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "assetId": {
           "type": "string",
@@ -416,8 +422,9 @@
     "v1UpdateScrappedFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -430,7 +437,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -442,8 +449,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"
@@ -464,8 +471,9 @@
     "v1UpdateStorageFormReply": {
       "type": "object",
       "properties": {
-        "formNum": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "format": "int64"
         },
         "appliedAt": {
           "type": "string",
@@ -478,7 +486,7 @@
         "applicant": {
           "type": "string"
         },
-        "optAt": {
+        "operatedAt": {
           "type": "string",
           "format": "int64"
         },
@@ -490,8 +498,8 @@
           "type": "string"
         },
         "stateNum": {
-          "type": "string",
-          "format": "int64"
+          "type": "integer",
+          "format": "int32"
         },
         "state": {
           "type": "string"

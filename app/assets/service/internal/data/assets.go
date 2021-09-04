@@ -6,25 +6,13 @@ import (
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
+	"github.com/Yui-wy/asset-management/pkg/setting"
 	"github.com/Yui-wy/asset-management/pkg/util/inspection"
 	"github.com/Yui-wy/asset-management/pkg/util/pagination"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
 var _ biz.AssetRepo = (*assetRepo)(nil)
-
-var STATE_MAP = map[int32]string{
-	0: "未知状态, 请确认",
-	1: "库内",
-	2: "入库申请中",
-	3: "采购中",
-	4: "采购申请中",
-	5: "报废",
-	6: "报废申请中",
-	7: "检修中",
-	8: "修理中",
-	9: "未知状态, 请确认",
-}
 
 type assetRepo struct {
 	data *Data
@@ -63,7 +51,7 @@ func (repo *assetRepo) GetAsset(ctx context.Context, id uint64) (*biz.Asset, err
 	a := Asset{}
 	result := repo.data.db.WithContext(ctx).First(&a, id)
 	if result.Error != nil {
-		repo.log.Errorf("GetAsset error. Error:%d", result.Error)
+		repo.log.Errorf(" GetAsset. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return repo.setbizAsset(&a), nil
@@ -102,9 +90,8 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 		result.Order("suff_code asc")
 	}
 	result = result.Find(&as)
-	repo.log.Debugf("debug sql: %s", result.Statement.SQL.String())
 	if result.Error != nil {
-		repo.log.Errorf("ListAssets error. Error:%d", result.Error)
+		repo.log.Errorf(" ListAssets. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	bas := make([]*biz.Asset, 0)
@@ -125,8 +112,7 @@ func (repo *assetRepo) CreatAsset(ctx context.Context, ba *biz.Asset) (*biz.Asse
 		Where("classes = ? AND area_id = ?", ba.Classes, ba.AreaId).
 		Take(&su)
 	if result.Error != nil {
-		repo.log.Errorf("CreatAsset1 error. Error:%d", result.Error)
-
+		repo.log.Errorf(" CreatAsset1. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	var suffCode int64
@@ -154,13 +140,13 @@ func (repo *assetRepo) CreatAsset(ctx context.Context, ba *biz.Asset) (*biz.Asse
 	}
 	result = repo.data.db.WithContext(ctx).Create(&a)
 	if result.Error != nil {
-		repo.log.Errorf("CreatAsset2 error. Error:%d", result.Error)
+		repo.log.Errorf(" CreatAsset2. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	aa := Asset{}
 	result = repo.data.db.WithContext(ctx).First(&aa, a.ID)
 	if result.Error != nil {
-		repo.log.Errorf("CreatAsset3 error. Error:%d", result.Error)
+		repo.log.Errorf(" CreatAsset3. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return repo.setbizAsset(&aa), nil
@@ -169,8 +155,7 @@ func (repo *assetRepo) CreatAsset(ctx context.Context, ba *biz.Asset) (*biz.Asse
 func (repo *assetRepo) DeleteAsset(ctx context.Context, id uint64) (bool, error) {
 	result := repo.data.db.WithContext(ctx).Delete(&Asset{}, id)
 	if result.Error != nil {
-		repo.log.Errorf("DeleteAsset error. Error:%d", result.Error)
-
+		repo.log.Errorf(" DeleteAsset. Error:%d", result.Error)
 		return false, result.Error
 	}
 	return true, nil
@@ -180,11 +165,6 @@ func (repo *assetRepo) UpdateAsset(ctx context.Context, ba *biz.Asset) (*biz.Ass
 	a := Asset{
 		ID: ba.Id,
 	}
-	// result := repo.data.db.WithContext(ctx).First(&a, ba.Id)
-	// if result.Error != nil {
-	// 	repo.log.Errorf("UpdateAsset error. Error:%d", result.Error)
-	// 	return nil, result.Error
-	// }
 	result := repo.data.db.WithContext(ctx).Model(&a).Updates(Asset{
 		Address:    ba.Address,
 		AssetInfo:  ba.AssetInfo,
@@ -198,19 +178,19 @@ func (repo *assetRepo) UpdateAsset(ctx context.Context, ba *biz.Asset) (*biz.Ass
 		ScrappedAt: ba.ScrappedAt,
 	})
 	if result.Error != nil {
-		repo.log.Errorf("UpdateAsset1 error. Error:%d", result.Error)
+		repo.log.Errorf(" UpdateAsset1. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	result = repo.data.db.WithContext(ctx).First(&a)
 	if result.Error != nil {
-		repo.log.Errorf("UpdateAsset2 error. Error:%d", result.Error)
+		repo.log.Errorf(" UpdateAsset2. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return repo.setbizAsset(&a), nil
 }
 
 func (repo *assetRepo) setbizAsset(a *Asset) *biz.Asset {
-	state, ok := STATE_MAP[a.StateNum]
+	state, ok := setting.ASSETS_STATE_MAP[a.StateNum]
 	if !ok {
 		state = "未知问题"
 	}

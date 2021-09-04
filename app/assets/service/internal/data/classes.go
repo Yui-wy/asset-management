@@ -36,7 +36,7 @@ func (repo *classRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
 	var clz []Class
 	result := repo.data.db.WithContext(ctx).Find(&clz)
 	if result.Error != nil {
-		repo.log.Errorf("GetClasses error. Error:%d", result.Error)
+		repo.log.Errorf(" GetClasses. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	bc := make([]*biz.Class, 0)
@@ -55,7 +55,7 @@ func (repo *classRepo) CreateClasses(ctx context.Context, clz []*biz.Class) ([]*
 	// 删除全部的类型重新导入
 	result := repo.data.db.WithContext(ctx).Where("1 = 1").Delete(&Class{})
 	if result.Error != nil {
-		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
+		repo.log.Errorf(" CreateClasses. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	cs := make([]*Class, 0)
@@ -69,7 +69,7 @@ func (repo *classRepo) CreateClasses(ctx context.Context, clz []*biz.Class) ([]*
 	}
 	result = repo.data.db.WithContext(ctx).Create(cs)
 	if result.Error != nil {
-		repo.log.Errorf("CreateClasses error. Error:%d", result.Error)
+		repo.log.Errorf(" CreateClasses. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	var clzz []Class

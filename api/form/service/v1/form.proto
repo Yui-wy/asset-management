@@ -35,18 +35,18 @@ service Form {
 }
 
 message GetStorageFormReq {
-    string formNum = 1;
+    int64 id = 1;
 }
 
 message GetStorageFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;
@@ -57,7 +57,7 @@ message ListStorageFormReq {
     message Conf {
         uint64 applicantId = 1;
         uint64 operatorId  = 2;
-        int64 stateNum     = 3;
+        int32 stateNum     = 3;
         uint64 assetId     = 4;
         string assetCode   = 5;
         uint32 areaId      = 6;
@@ -69,14 +69,14 @@ message ListStorageFormReq {
 
 message ListStorageFormReply {
     message Form {
-        string formNum     = 1;
+        int64 id           = 1;
         int64 appliedAt    = 2;
         uint64 applicantId = 3;
         string applicant   = 5;
-        int64 optAt        = 6;
+        int64 operatedAt   = 6;
         uint64 operatorId  = 7;
         string Operator    = 8;
-        int64 stateNum     = 9;
+        int32 stateNum     = 9;
         string state       = 10;
         uint64 assetId     = 11;
         string assetCode   = 12;
@@ -94,14 +94,14 @@ message CreateStorageFormReq {
 }
 
 message CreateStorageFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;
@@ -109,22 +109,22 @@ message CreateStorageFormReply {
 }
 
 message UpdateStorageFormReq {
-    string formNum    = 1;
-    int64 optAt       = 2;
+    int64 id          = 1;
+    int64 operatedAt  = 2;
     uint64 operatorId = 3;
     string Operator   = 4;
-    int64 stateNum    = 5;
+    int32 stateNum    = 5;
 }
 
 message UpdateStorageFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;
@@ -132,18 +132,18 @@ message UpdateStorageFormReply {
 }
 // =================================
 message GetScrappedFormReq {
-    string formNum = 1;
+    int64 id = 1;
 }
 
 message GetScrappedFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;
@@ -154,7 +154,7 @@ message ListScrappedFormReq {
     message Conf {
         uint64 applicantId = 1;
         uint64 operatorId  = 2;
-        int64 stateNum     = 3;
+        int32 stateNum     = 3;
         uint64 assetId     = 4;
         string assetCode   = 5;
         uint32 areaId      = 6;
@@ -166,14 +166,14 @@ message ListScrappedFormReq {
 
 message ListScrappedFormReply {
     message Form {
-        string formNum     = 1;
+        int64 id           = 1;
         int64 appliedAt    = 2;
         uint64 applicantId = 3;
         string applicant   = 5;
-        int64 optAt        = 6;
+        int64 operatedAt   = 6;
         uint64 operatorId  = 7;
         string Operator    = 8;
-        int64 stateNum     = 9;
+        int32 stateNum     = 9;
         string state       = 10;
         uint64 assetId     = 11;
         string assetCode   = 12;
@@ -191,14 +191,14 @@ message CreateScrappedFormReq {
 }
 
 message CreateScrappedFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;
@@ -206,22 +206,22 @@ message CreateScrappedFormReply {
 }
 
 message UpdateScrappedFormReq {
-    string formNum    = 1;
-    int64 optAt       = 2;
+    int64 id          = 1;
+    int64 operatedAt  = 2;
     uint64 operatorId = 3;
     string Operator   = 4;
-    int64 stateNum    = 5;
+    int32 stateNum    = 5;
 }
 
 message UpdateScrappedFormReply {
-    string formNum     = 1;
+    int64 id           = 1;
     int64 appliedAt    = 2;
     uint64 applicantId = 3;
     string applicant   = 5;
-    int64 optAt        = 6;
+    int64 operatedAt   = 6;
     uint64 operatorId  = 7;
     string Operator    = 8;
-    int64 stateNum     = 9;
+    int32 stateNum     = 9;
     string state       = 10;
     uint64 assetId     = 11;
     string assetCode   = 12;

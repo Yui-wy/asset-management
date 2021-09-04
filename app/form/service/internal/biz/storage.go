@@ -7,32 +7,16 @@ import (
 )
 
 type StorageForm struct {
-	FormNum     string
-	AppliedAt   int64
-	ApplicantId uint64
-	Applicant   string
-	OptAt       int64
-	OperatorId  uint64
-	Operator    string
-	StateNum    int64
-	State       string
-	AssetId     uint64
-	AssetCode   string
-	AreaId      uint32
+	*BaseForm
 }
 
 type StConfig struct {
-	ApplicantId uint64
-	OperatorId  uint64
-	StateNum    int64
-	AssetId     uint64
-	AssetCode   string
-	AreaId      uint32
+	*BaseConfig
 }
 
 type StorageRepo interface {
-	GetForm(ctx context.Context, formNum string) (*StorageForm, error)
-	ListForm(ctx context.Context, conf *StConfig) ([]*StorageForm, error)
+	GetForm(ctx context.Context, id int64) (*StorageForm, error)
+	ListForm(ctx context.Context, conf *StConfig,pageNum, pageSize int64) ([]*StorageForm, error)
 	CreateForm(ctx context.Context, sf *StorageForm) (*StorageForm, error)
 	UpdateForm(ctx context.Context, sf *StorageForm) (*StorageForm, error)
 }
@@ -49,11 +33,11 @@ func NewStorageUseCase(repo StorageRepo, logger log.Logger) *StorageUseCase {
 	}
 }
 
-func (s *StorageUseCase) Get(ctx context.Context, formNum string) (*StorageForm, error) {
-	return s.repo.GetForm(ctx, formNum)
+func (s *StorageUseCase) Get(ctx context.Context, id int64) (*StorageForm, error) {
+	return s.repo.GetForm(ctx, id)
 }
-func (s *StorageUseCase) List(ctx context.Context, conf *StConfig) ([]*StorageForm, error) {
-	return s.repo.ListForm(ctx, conf)
+func (s *StorageUseCase) List(ctx context.Context, conf *StConfig, pageNum, pageSize int64) ([]*StorageForm, error) {
+	return s.repo.ListForm(ctx, conf,pageNum, pageSize)
 }
 func (s *StorageUseCase) Create(ctx context.Context, sf *StorageForm) (*StorageForm, error) {
 	return s.repo.CreateForm(ctx, sf)

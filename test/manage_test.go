@@ -2,30 +2,23 @@ package test
 
 import (
 	"fmt"
-	"reflect"
 	"testing"
+	"time"
+
+	"github.com/Yui-wy/asset-management/pkg/util/snowflake"
 )
 
-type c struct {
-	aa int
-}
-
-func (cc *c) aaa(b int64) {
-	fmt.Println(b)
-}
-
 func TestArrary(t *testing.T) {
-	// _, err := fmt.Printf("%03d-%s-%04d", 1, "030201", 5)
-	// if err != nil {
-	// 	fmt.Print(err)
-	// }
-
-	var a c = c{
-		aa: 1,
+	a, err := snowflake.NewSnowflake(1, 1)
+	if err != nil {
+		fmt.Println(err)
 	}
-	fmt.Println(a)
-	value := reflect.ValueOf(a)
-	fmt.Println(value.IsZero())
-	fmt.Println(value.IsValid())
-	// fmt.Println(value.IsNil())
+	for i := 0; i < 100; i++ {
+		time.Sleep(2)
+		id, err := a.NextVal()
+		fmt.Println(id)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 }

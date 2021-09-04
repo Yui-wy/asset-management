@@ -7,32 +7,16 @@ import (
 )
 
 type ScrappedForm struct {
-	FormNum     string
-	AppliedAt   int64
-	ApplicantId uint64
-	Applicant   string
-	OptAt       int64
-	OperatorId  uint64
-	Operator    string
-	StateNum    int64
-	State       string
-	AssetId     uint64
-	AssetCode   string
-	AreaId      uint32
+	*BaseForm
 }
 
 type ScConfig struct {
-	ApplicantId uint64
-	OperatorId  uint64
-	StateNum    int64
-	AssetId     uint64
-	AssetCode   string
-	AreaId      uint32
+	*BaseConfig
 }
 
 type ScrappedRepo interface {
-	GetForm(ctx context.Context, formNum string) (*ScrappedForm, error)
-	ListForm(ctx context.Context, conf *ScConfig) ([]*ScrappedForm, error)
+	GetForm(ctx context.Context, id int64) (*ScrappedForm, error)
+	ListForm(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, error)
 	CreateForm(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error)
 	UpdateForm(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error)
 }
@@ -49,11 +33,11 @@ func NewScrappedUseCase(repo ScrappedRepo, logger log.Logger) *ScrappedUseCase {
 	}
 }
 
-func (s *ScrappedUseCase) Get(ctx context.Context, formNum string) (*ScrappedForm, error) {
-	return s.repo.GetForm(ctx, formNum)
+func (s *ScrappedUseCase) Get(ctx context.Context, id int64) (*ScrappedForm, error) {
+	return s.repo.GetForm(ctx, id)
 }
-func (s *ScrappedUseCase) List(ctx context.Context, conf *ScConfig) ([]*ScrappedForm, error) {
-	return s.repo.ListForm(ctx, conf)
+func (s *ScrappedUseCase) List(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, error) {
+	return s.repo.ListForm(ctx, conf,pageNum, pageSize)
 }
 func (s *ScrappedUseCase) Create(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error) {
 	return s.repo.CreateForm(ctx, sf)

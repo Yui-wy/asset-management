@@ -6,8 +6,9 @@ option go_package = "app/user/service/internal/conf;conf";
 import "google/protobuf/duration.proto";
 
 message Bootstrap {
-    Server server = 1;
-    Data data     = 2;
+    Server server   = 1;
+    Data data       = 2;
+    Machine machine = 3;
 }
 
 message Server {
@@ -38,6 +39,14 @@ message Data {
     }
     Database database = 1;
     Redis redis       = 2;
+}
+
+message Machine {
+    message Code {
+        int64 datacenterid = 1;
+        int64 workerid     = 2;
+    }
+    Code code = 1;
 }
 
 message Registry {

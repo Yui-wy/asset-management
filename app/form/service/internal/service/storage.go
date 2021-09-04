@@ -8,13 +8,13 @@ import (
 )
 
 func (s *FormService) GetStorageForm(ctx context.Context, req *pb.GetStorageFormReq) (*pb.GetStorageFormReply, error) {
-	form, err := s.stu.Get(ctx, req.FormNum)
+	form, err := s.stu.Get(ctx, req.Id)
 	return &pb.GetStorageFormReply{
-		FormNum:     form.FormNum,
+		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
 		ApplicantId: form.ApplicantId,
 		Applicant:   form.Applicant,
-		OptAt:       form.OptAt,
+		OperatedAt:  form.OperatedAt,
 		OperatorId:  form.OperatorId,
 		Operator:    form.Operator,
 		StateNum:    form.StateNum,
@@ -25,22 +25,25 @@ func (s *FormService) GetStorageForm(ctx context.Context, req *pb.GetStorageForm
 	}, err
 }
 func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
-	forms, err := s.stu.List(ctx, &biz.StConfig{
-		ApplicantId: req.Conf.ApplicantId,
-		OperatorId:  req.Conf.OperatorId,
-		StateNum:    req.Conf.StateNum,
-		AssetId:     req.Conf.AssetId,
-		AssetCode:   req.Conf.AssetCode,
-		AreaId:      req.Conf.AreaId,
-	})
+	forms, err := s.stu.List(ctx,
+		&biz.StConfig{
+			BaseConfig: &biz.BaseConfig{
+				AreaId:      req.Conf.AreaId,
+				ApplicantId: req.Conf.ApplicantId,
+				OperatorId:  req.Conf.OperatorId,
+				StateNum:    req.Conf.StateNum,
+				AssetId:     req.Conf.AssetId,
+				AssetCode:   req.Conf.AssetCode,
+			},
+		}, req.PageNum, req.PageSize)
 	reply := make([]*pb.ListStorageFormReply_Form, 0)
 	for _, form := range forms {
 		reply = append(reply, &pb.ListStorageFormReply_Form{
-			FormNum:     form.FormNum,
+			Id:          form.Id,
 			AppliedAt:   form.AppliedAt,
 			ApplicantId: form.ApplicantId,
 			Applicant:   form.Applicant,
-			OptAt:       form.OptAt,
+			OperatedAt:  form.OperatedAt,
 			OperatorId:  form.OperatorId,
 			Operator:    form.Operator,
 			StateNum:    form.StateNum,
@@ -55,19 +58,22 @@ func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFo
 	}, err
 }
 func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStorageFormReq) (*pb.CreateStorageFormReply, error) {
+
 	form, err := s.stu.Create(ctx, &biz.StorageForm{
-		ApplicantId: req.ApplicantId,
-		Applicant:   req.Applicant,
-		AssetId:     req.AssetId,
-		AssetCode:   req.AssetCode,
-		AreaId:      req.AreaId,
+		BaseForm: &biz.BaseForm{
+			ApplicantId: req.ApplicantId,
+			Applicant:   req.Applicant,
+			AssetId:     req.AssetId,
+			AssetCode:   req.AssetCode,
+			AreaId:      req.AreaId,
+		},
 	})
 	return &pb.CreateStorageFormReply{
-		FormNum:     form.FormNum,
+		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
 		ApplicantId: form.ApplicantId,
 		Applicant:   form.Applicant,
-		OptAt:       form.OptAt,
+		OperatedAt:  form.OperatedAt,
 		OperatorId:  form.OperatorId,
 		Operator:    form.Operator,
 		StateNum:    form.StateNum,
@@ -79,18 +85,20 @@ func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStora
 }
 func (s *FormService) UpdateStorageForm(ctx context.Context, req *pb.UpdateStorageFormReq) (*pb.UpdateStorageFormReply, error) {
 	form, err := s.stu.Update(ctx, &biz.StorageForm{
-		FormNum:   req.FormNum,
-		OptAt:     req.OptAt,
-		AssetId:   req.OperatorId,
-		AssetCode: req.Operator,
-		StateNum:  req.StateNum,
+		BaseForm: &biz.BaseForm{
+			Id:         req.Id,
+			OperatedAt: req.OperatedAt,
+			OperatorId: req.OperatorId,
+			Operator:   req.Operator,
+			StateNum:   req.StateNum,
+		},
 	})
 	return &pb.UpdateStorageFormReply{
-		FormNum:     form.FormNum,
+		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
 		ApplicantId: form.ApplicantId,
 		Applicant:   form.Applicant,
-		OptAt:       form.OptAt,
+		OperatedAt:  form.OperatedAt,
 		OperatorId:  form.OperatorId,
 		Operator:    form.Operator,
 		StateNum:    form.StateNum,

@@ -36,7 +36,7 @@ func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error)
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&a, id)
 	repo.log.Debugf(result.Statement.SQL.String())
 	if result.Error != nil {
-		repo.log.Errorf("GetArea error. Error:%d", result.Error)
+		repo.log.Errorf(" GetArea. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.Area{
@@ -52,7 +52,7 @@ func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32) ([]*biz.A
 		Where("id IN ?", ids).
 		Find(&as)
 	if result.Error != nil {
-		repo.log.Errorf("GetAreasByIds error. Error:%d", result.Error)
+		repo.log.Errorf(" GetAreasByIds. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	bas := make([]*biz.Area, 0)
@@ -71,7 +71,7 @@ func (repo *areaRepo) ListArea(ctx context.Context) ([]*biz.Area, error) {
 		Where("is_deleted = false").
 		Find(&as)
 	if result.Error != nil {
-		repo.log.Errorf("ListArea error. %d", result.Error)
+		repo.log.Errorf(" ListArea. %d", result.Error)
 		return nil, result.Error
 	}
 	bas := make([]*biz.Area, 0)
@@ -91,7 +91,7 @@ func (repo *areaRepo) CreateArea(ctx context.Context, a *biz.Area) (*biz.Area, e
 	}
 	result := repo.data.db.WithContext(ctx).Create(&ac)
 	if result.Error != nil {
-		repo.log.Errorf("CreateArea error. %d", result.Error)
+		repo.log.Errorf(" CreateArea. %d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.Area{
@@ -104,13 +104,13 @@ func (repo *areaRepo) UpdateArea(ctx context.Context, a *biz.Area) (*biz.Area, e
 	au := Area{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&au, a.Id)
 	if result.Error != nil {
-		repo.log.Errorf("UpdateArea1 error. Error:%d", result.Error)
+		repo.log.Errorf(" UpdateArea1. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	au.AreaInfo = a.AreaInfo
 	result = repo.data.db.WithContext(ctx).Save(&au)
 	if result.Error != nil {
-		repo.log.Errorf("UpdateArea2 error. Error:%d", result.Error)
+		repo.log.Errorf(" UpdateArea2. Error:%d", result.Error)
 		return nil, result.Error
 	}
 	return &biz.Area{
@@ -123,14 +123,14 @@ func (repo *areaRepo) DeleteArea(ctx context.Context, id uint32) (bool, error) {
 	au := Area{}
 	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&au, id)
 	if result.Error != nil {
-		repo.log.Errorf("DeleteArea error. Error:%d", result.Error)
+		repo.log.Errorf(" DeleteArea1. Error:%d", result.Error)
 		return false, result.Error
 	}
 	au.IsDeleted = true
 	au.DeletedAt = time.Now()
 	result = repo.data.db.WithContext(ctx).Save(&au)
 	if result.Error != nil {
-		repo.log.Errorf("DeleteArea error. Error:%d", result.Error)
+		repo.log.Errorf(" DeleteArea2. Error:%d", result.Error)
 		return false, result.Error
 	}
 	return true, nil
