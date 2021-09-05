@@ -62,7 +62,7 @@ func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, page
 		repo.log.Errorf(" ListForm1. Error:%d", err)
 		return nil, err
 	}
-	result = result.Where("area_id = ?", conf.AreaId)
+	result = result.Where("area_id IN ?", conf.AreaId)
 	if !inspection.IsZeros(conf.ApplicantId) {
 		result = result.Where("applicant_id = ?", conf.ApplicantId)
 	}
@@ -122,8 +122,8 @@ func (repo *scrappedRepo) UpdateForm(ctx context.Context, sf *biz.ScrappedForm) 
 	}
 	result := repo.data.db.WithContext(ctx).Model(&s).Updates(ScrappedForm{
 		OperatedAt: sf.OperatedAt,
-		AssetId:    sf.AssetId,
-		AssetCode:  sf.AssetCode,
+		OperatorId: sf.OperatorId,
+		Operator:   sf.Operator,
 		StateNum:   sf.StateNum,
 	})
 	if result.Error != nil {

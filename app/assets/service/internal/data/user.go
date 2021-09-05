@@ -213,7 +213,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 	var us []User
 	if len(areaIds) == 0 {
 		// 搜索全部
-		result := repo.data.db.WithContext(ctx).Find(&us)
+		result := repo.data.db.WithContext(ctx).Where("power = ?", AREA_ADMIN_USER).Find(&us)
 		if result.Error != nil {
 			repo.log.Errorf(" ListUser1. Error:%d", result.Error)
 			return nil, result.Error

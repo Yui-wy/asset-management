@@ -1,0 +1,210 @@
+syntax = "proto3";
+
+package management.interface.v1;
+
+import "google/api/annotations.proto";
+
+option go_package          = "api/management/interface/v1;v1";
+option java_multiple_files = true;
+
+// 接口
+service ManagementInterface {
+    // 用户系统 =================================
+    // 用户登陆
+    rpc Login(LoginReq) returns (LoginReply) {
+        option (google.api.http) = {
+            post: "/user/logout"
+            body: "*"
+        };
+    }
+    // 用户登出
+    rpc Logout(LogoutReq) returns (LogoutReply) {
+        option (google.api.http) = {
+            post: "/user/login"
+            body: "*"
+        };
+    }
+    // 用户注册
+    rpc Register(RegisterReq) returns (RegisterReply) {
+        option (google.api.http) = {
+            post: "/user/register"
+            body: "*"
+        };
+    }
+    // 列出用户
+    rpc ListUser(ListUserReq) returns (ListUserReply) {
+        option (google.api.http) = {
+            post: "/user/list"
+            body: "*"
+        };
+    }
+    // 得到RSA密钥
+    rpc GetKey(GetKeyReq) returns (GetKeyReply) {
+        option (google.api.http) = {
+            get: "/user/key"
+        };
+    }
+    // 资产系统 =================================
+    // 列出资产(按条件)
+    rpc ListAsset(ListAssetReq) returns (ListAssetReply) {
+        option (google.api.http) = {
+            post: "/asset/list"
+            body: "*"
+        };
+    }
+    // 创建资产
+    rpc CreateAsset(CreateAssetReq) returns (CreateAssetReply) {
+        option (google.api.http) = {
+            post: "/asset/create"
+            body: "*"
+        };
+    }
+    // 得到资产信息
+    rpc GetAsset(GetAssetReq) returns (GetAssetReply) {
+        option (google.api.http) = {
+            get: "/asset/detail/{id}"
+        };
+    }
+    // 更新资产信息
+    rpc UpdateAsset(UpdateAssetReq) returns (UpdateAssetReply) {
+        option (google.api.http) = {
+            post: "/asset/update"
+            body: "*"
+        };
+    }
+    // 区域系统 =================================
+    // 列出所有区域
+    rpc ListArea(ListAreaReq) returns (ListAreaReply) {
+        option (google.api.http) = {
+            post: "/area/list"
+            body: "*"
+        };
+    }
+    // 通过ID列出区域
+    rpc ListAreaIds(ListAreaIdsReq) returns (ListAreaIdsReply) {
+        option (google.api.http) = {
+            post: "/area/list/ids"
+            body: "*"
+        };
+    }
+    // 通过ID得到区域
+    rpc GetArea(GetAreaReq) returns (GetAreaReply) {
+        option (google.api.http) = {
+            get: "/area/detail/{id}"
+        };
+    }
+    // 创建区域 (super)
+    rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {
+        option (google.api.http) = {
+            post: "/area/create"
+            body: "*"
+        };
+    }
+    // 修改区域信息(super)
+    rpc UpdateArea(UpdateAreaReq) returns (UpdateAreaReply) {
+        option (google.api.http) = {
+            post: "/area/update"
+            body: "*"
+        };
+    }
+    // 删除区域(super)
+    rpc DeleteArea(DeleteAreaReq) returns (DeleteAreaRpely) {
+        option (google.api.http) = {
+            delete: "/area/delete/{id}"
+        };
+    }
+    // 类目系统 =================================
+    // 列出列表
+    rpc ListClass(ListClassReq) returns (ListClassReply) {
+        option (google.api.http) = {
+            get: "/classes"
+        };
+    }
+    // 导入列表(super)
+    rpc CreateClass(CreateClassReq) returns (CreateClassReply) {
+        option (google.api.http) = {
+            post: "/classes"
+            body: "*"
+        };
+    }
+    // 单表系统 =================================
+    // 列出表单
+    rpc ListForm(ListFormReq) returns (ListFormReply) {
+        option (google.api.http) = {
+            post: "/form/list"
+            body: "*"
+        };
+    }
+    // 查找表单
+    rpc GetForm(GetFormReq) returns (GetFormReply) {
+        option (google.api.http) = {
+            get: "/form/{formName}/{id}"
+        };
+    }
+    // 创建申请表
+    rpc CreateForm(CreateFormReq) returns (CreateFormReply) {
+        option (google.api.http) = {
+            post: "/form/create"
+            body: "*"
+        };
+    }
+    // 更新申请表
+    rpc UpdateForm(UpdateFormReq) returns (UpdateFormReply) {
+        option (google.api.http) = {
+            post: "/form/update"
+            body: "*"
+        };
+    }
+}
+
+message LoginReq {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginReply {
+    string token = 1;
+}
+
+message LogoutReq {}
+
+message LogoutReply {}
+
+message RegisterReq {
+    string username        = 1;
+    string password        = 2;
+    repeated uint32 areaId = 3;
+}
+
+message RegisterReply {
+    bool ok = 1;
+}
+
+message ListUserReq {
+    int64 pageNum  = 1;
+    int64 pageSize = 2;
+}
+
+message ListUserReply {
+    message Users {
+        message Area {
+            uint32 id       = 1;
+            string areaInfo = 2;
+        }
+        uint64 id               = 1;
+        string username         = 2;
+        int32 assetPower        = 3;
+        repeated uint32 areaIds = 4;
+        repeated Area areas     = 5;
+    }
+    repeated User users = 1;
+}
+
+message GetKeyReq {
+    float r = 1;
+}
+
+message GetKeyReply {
+    string key = 1;
+}
+//==========================================

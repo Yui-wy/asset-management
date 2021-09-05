@@ -9,6 +9,7 @@ import (
 	"github.com/Yui-wy/asset-management/pkg/setting"
 	"github.com/Yui-wy/asset-management/pkg/util/inspection"
 	"github.com/Yui-wy/asset-management/pkg/util/pagination"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -62,6 +63,12 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 	result := repo.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
+	if !inspection.IsZeros(conf.AreaId) {
+		err := errors.New(500, "AreaId is nil", "please set areaId")
+		repo.log.Errorf(" ListForm1. Error:%d", err)
+		return nil, err
+	}
+	result = result.Where("area_id IN ?", conf.AreaId)
 	if !inspection.IsZeros(conf.Classes) {
 		result = result.Where("INSTR(classes, ?) > 0", conf.Classes)
 	}
@@ -76,9 +83,6 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 	}
 	if !inspection.IsZeros(conf.UpStorageAt) {
 		result = result.Where("storage_at =< ?", conf.UpStorageAt)
-	}
-	if !inspection.IsZeros(conf.AreaId) {
-		result = result.Where("area_id IN ?", conf.AreaId)
 	}
 	if !inspection.IsZeros(conf.OrderBy) {
 		if conf.SortDesc {

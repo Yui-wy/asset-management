@@ -56,12 +56,12 @@ func (repo *storageRepo) ListForm(ctx context.Context, conf *biz.StConfig, pageN
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
 
-	if !inspection.IsZeros(conf.AreaId) {
+	if inspection.IsZeros(conf.AreaId) {
 		err := errors.New(500, "AreaId is nil", "please set areaId")
 		repo.log.Errorf(" ListForm1. Error:%d", err)
 		return nil, err
 	}
-	result = result.Where("area_id = ?", conf.AreaId)
+	result = result.Where("area_id IN ?", conf.AreaId)
 	if !inspection.IsZeros(conf.ApplicantId) {
 		result = result.Where("applicant_id = ?", conf.ApplicantId)
 	}
@@ -97,6 +97,7 @@ func (repo *storageRepo) CreateForm(ctx context.Context, sf *biz.StorageForm) (*
 	form := &StorageForm{
 		ID:          id,
 		AreaId:      sf.AreaId,
+		AppliedAt:   time.Now().Unix(),
 		ApplicantId: sf.ApplicantId,
 		Applicant:   sf.Applicant,
 		StateNum:    setting.FORM_SUBMITTED,
@@ -122,8 +123,8 @@ func (repo *storageRepo) UpdateForm(ctx context.Context, sf *biz.StorageForm) (*
 	}
 	result := repo.data.db.WithContext(ctx).Model(&s).Updates(StorageForm{
 		OperatedAt: sf.OperatedAt,
-		AssetId:    sf.AssetId,
-		AssetCode:  sf.AssetCode,
+		OperatorId: sf.OperatorId,
+		Operator:   sf.Operator,
 		StateNum:   sf.StateNum,
 	})
 	if result.Error != nil {

@@ -16,7 +16,7 @@ type BaseForm struct {
 }
 
 type BaseConfig struct {
-	AreaId      uint32
+	AreaId      []uint32
 	ApplicantId uint64
 	OperatorId  uint64
 	StateNum    int32

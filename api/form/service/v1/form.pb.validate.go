@@ -1369,8 +1369,6 @@ func (m *ListStorageFormReq_Conf) Validate() error {
 
 	// no validation rules for AssetCode
 
-	// no validation rules for AreaId
-
 	return nil
 }
 
@@ -1538,8 +1536,6 @@ func (m *ListScrappedFormReq_Conf) Validate() error {
 	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
-
-	// no validation rules for AreaId
 
 	return nil
 }
