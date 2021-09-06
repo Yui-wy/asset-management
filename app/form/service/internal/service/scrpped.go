@@ -61,6 +61,7 @@ func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScra
 		BaseForm: &biz.BaseForm{
 			AreaId:      req.AreaId,
 			ApplicantId: req.ApplicantId,
+			AppliedAt:   req.AppliedAt,
 			Applicant:   req.Applicant,
 			AssetId:     req.AssetId,
 			AssetCode:   req.AssetCode,

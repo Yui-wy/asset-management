@@ -97,7 +97,7 @@ func (repo *storageRepo) CreateForm(ctx context.Context, sf *biz.StorageForm) (*
 	form := &StorageForm{
 		ID:          id,
 		AreaId:      sf.AreaId,
-		AppliedAt:   time.Now().Unix(),
+		AppliedAt:   sf.AppliedAt,
 		ApplicantId: sf.ApplicantId,
 		Applicant:   sf.Applicant,
 		StateNum:    setting.FORM_SUBMITTED,

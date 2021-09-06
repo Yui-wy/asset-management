@@ -1,10 +1,8 @@
 package data
 
 import (
-	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
 	// init mysql driver
@@ -12,28 +10,11 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewDB, NewUserRepo)
+var ProviderSet = wire.NewSet(NewData)
 
 // Data .
 type Data struct {
-	// TODO wrapped database client
-	db  *gorm.DB
 	log *log.Helper
-}
-
-// new DB
-func NewDB(conf *conf.Data, logger log.Logger) *gorm.DB {
-	log := log.NewHelper(log.With(logger, "module", "user-service/data/gorm"))
-
-	db, err := gorm.Open(mysql.Open(conf.Database.Source), &gorm.Config{})
-	if err != nil {
-		log.Fatalf("failed opening connection to mysql: %v", err)
-	}
-
-	if err := db.AutoMigrate(&User{}); err != nil {
-		log.Fatal(err)
-	}
-	return db
 }
 
 // NewData .
@@ -41,7 +22,6 @@ func NewData(db *gorm.DB, logger log.Logger) (*Data, func(), error) {
 	log := log.NewHelper(log.With(logger, "module", "user-service/data"))
 
 	d := &Data{
-		db:  db,
 		log: log,
 	}
 	cleanup := func() {

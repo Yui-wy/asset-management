@@ -1,10 +1,10 @@
 package server
 
 import (
-	v1 "github.com/Yui-wy/asset-management/api/user/service/v1"
+	v1 "github.com/Yui-wy/asset-management/api/management/interface/v1"
 
-	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
-	"github.com/Yui-wy/asset-management/app/user/service/internal/service"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/conf"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/service"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/middleware/logging"
 	"github.com/go-kratos/kratos/v2/middleware/recovery"
@@ -12,7 +12,7 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger) *grpc.Server {
+func NewGRPCServer(c *conf.Server, s *service.ManageMentInterface, logger log.Logger) *grpc.Server {
 	var opts = []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
@@ -29,6 +29,6 @@ func NewGRPCServer(c *conf.Server, user *service.UserService, logger log.Logger)
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterUserServer(srv, user)
+	v1.RegisterManagementInterfaceServer(srv, s)
 	return srv
 }

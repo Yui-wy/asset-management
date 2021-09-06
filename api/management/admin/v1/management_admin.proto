@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package management.admin.v1;
+
+import "google/api/annotations.proto";
+
+option go_package          = "api/management/admin/v1;v1";
+option java_multiple_files = true;
+
+service ManagementAdmin {
+    // 创建区域 (super)
+    rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {
+        option (google.api.http) = {
+            post: "admin/area/create"
+            body: "*"
+        };
+    }
+    // 修改区域信息(super)
+    rpc UpdateArea(UpdateAreaReq) returns (UpdateAreaReply) {
+        option (google.api.http) = {
+            post: "admin/area/update"
+            body: "*"
+        };
+    }
+    // 删除区域(super)
+    rpc DeleteArea(DeleteAreaReq) returns (DeleteAreaRpely) {
+        option (google.api.http) = {
+            delete: "admin/area/delete/{id}"
+        };
+    }
+
+    rpc ListClass(ListClassReq) returns (ListClassReply) {
+        option (google.api.http) = {
+            get: "admin/classes"
+        };
+    }
+    // 导入列表(super)
+    rpc CreateClass(CreateClassReq) returns (CreateClassReply) {
+        option (google.api.http) = {
+            post: "admin/classes"
+            body: "*"
+        };
+    }
+}
+
+message CreateAreaReq {
+    string areaInfo = 1;
+}
+
+message CreateAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message UpdateAreaReq {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message UpdateAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message DeleteAreaReq {
+    uint32 id = 1;
+}
+
+message DeleteAreaRpely {
+    bool ok = 1;
+}
+// == == == == == == == == == == == == == == == == == == == == ==
+message CreateClassReq {
+    message Classes {
+        string code    = 1;
+        string clzInfo = 2;
+        uint32 level   = 3;
+        string pcode   = 4;
+    }
+    repeated Classes clz = 1;
+}
+
+message CreateClassReply {
+    message Classes {
+        uint64 id      = 1;
+        string code    = 2;
+        string clzInfo = 3;
+        uint32 level   = 4;
+        string pcode   = 5;
+    }
+    repeated Classes clz = 1;
+}
+
+message ListClassReq {}
+
+message ListClassReply {
+    message Classes {
+        uint64 id      = 1;
+        string code    = 2;
+        string clzInfo = 3;
+        uint32 level   = 4;
+        string pcode   = 5;
+    }
+    repeated Classes clz = 1;
+}
+
+// == == == == == == == == == == == == == == == == == == == == ==

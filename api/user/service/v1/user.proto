@@ -29,8 +29,9 @@ message GetUserReq {
 }
 
 message GetUserReply {
-    uint64 id       = 1;
-    string username = 2;
+    uint64 id         = 1;
+    string username   = 2;
+    string updataSign = 3;
 }
 
 message CreateUserReq {
@@ -71,7 +72,9 @@ message VerifyPasswordReq {
 }
 
 message VerifyPasswordReply {
-    bool ok = 1;
+    uint64 id         = 1;
+    string username   = 2;
+    string updataSign = 3;
 }
 
 message UpdatePasswordReq {

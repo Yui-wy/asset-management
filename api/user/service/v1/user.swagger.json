@@ -88,6 +88,9 @@
         },
         "username": {
           "type": "string"
+        },
+        "updataSign": {
+          "type": "string"
         }
       }
     },
@@ -117,8 +120,15 @@
     "v1VerifyPasswordReply": {
       "type": "object",
       "properties": {
-        "ok": {
-          "type": "boolean"
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "updataSign": {
+          "type": "string"
         }
       }
     }

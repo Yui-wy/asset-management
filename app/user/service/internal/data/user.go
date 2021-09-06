@@ -11,6 +11,7 @@ import (
 	"github.com/Yui-wy/asset-management/app/user/service/internal/pkg/util"
 	"github.com/Yui-wy/asset-management/pkg/util/inspection"
 	"github.com/Yui-wy/asset-management/pkg/util/pagination"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -46,9 +47,10 @@ func (repo *userRepo) GetUserByUsername(ctx context.Context, username string) (*
 		return nil, result.Error
 	}
 	return &biz.User{
-		Id:        uint64(u.ID),
-		Username:  u.Username,
-		CreatedAt: u.CreatedAt,
+		Id:         u.ID,
+		Username:   u.Username,
+		UpdataSign: u.UpdataSign,
+		CreatedAt:  u.CreatedAt,
 	}, result.Error
 }
 
@@ -176,11 +178,19 @@ func (repo *userRepo) DeleteUser(ctx context.Context, id uint64) (bool, error) {
 	return true, nil
 }
 
-func (repo *userRepo) VerifyPassword(ctx context.Context, b *biz.User) (bool, error) {
-	uu, err := repo.GetUserByUsername(ctx, b.Username)
-	if err != nil {
-		return false, err
+func (repo *userRepo) VerifyPassword(ctx context.Context, b *biz.User) (*biz.User, error) {
+	uu := User{}
+	result := repo.data.db.WithContext(ctx).Where("username = ? AND is_deleted = false", b.Username).First(&uu)
+	if result.Error != nil {
+		return nil, result.Error
 	}
-	result := util.CheckPasswordHash(b.Password, uu.Password)
-	return result, nil
+	if err := util.CheckPasswordHash(b.Password, uu.Password); err != nil {
+		return nil, errors.New(401, "password error", "密码错误")
+	}
+	return &biz.User{
+		Id:         uu.ID,
+		Username:   uu.Username,
+		CreatedAt:  uu.CreatedAt,
+		UpdataSign: uu.UpdataSign,
+	}, nil
 }

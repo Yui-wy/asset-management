@@ -88,9 +88,10 @@ message ListStorageFormReply {
 message CreateStorageFormReq {
     uint64 applicantId = 1;
     string applicant   = 2;
-    uint64 assetId     = 3;
-    string assetCode   = 4;
-    uint32 areaId      = 5;
+    int64 appliedAt    = 3;
+    uint64 assetId     = 4;
+    string assetCode   = 5;
+    uint32 areaId      = 6;
 }
 
 message CreateStorageFormReply {
@@ -185,9 +186,10 @@ message ListScrappedFormReply {
 message CreateScrappedFormReq {
     uint64 applicantId = 1;
     string applicant   = 2;
-    uint64 assetId     = 3;
-    string assetCode   = 4;
-    uint32 areaId      = 5;
+    int64 appliedAt    = 3;
+    uint64 assetId     = 4;
+    string assetCode   = 5;
+    uint32 areaId      = 6;
 }
 
 message CreateScrappedFormReply {

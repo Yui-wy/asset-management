@@ -17,6 +17,12 @@ service ManagementInterface {
             body: "*"
         };
     }
+    // 得到RSA密钥
+    rpc GetKey(GetKeyReq) returns (GetKeyReply) {
+        option (google.api.http) = {
+            get: "/user/key"
+        };
+    }
     // 用户登出
     rpc Logout(LogoutReq) returns (LogoutReply) {
         option (google.api.http) = {
@@ -24,24 +30,53 @@ service ManagementInterface {
             body: "*"
         };
     }
-    // 用户注册
+
+    // 用户注册 admin
     rpc Register(RegisterReq) returns (RegisterReply) {
         option (google.api.http) = {
             post: "/user/register"
             body: "*"
         };
     }
-    // 列出用户
+    // 得到用户 admin
+    rpc GetUser(GetUserReq) returns (GetUserReply) {
+        option (google.api.http) = {
+            get: "/user/{id}"
+        };
+    }
+    // 列出用户 admin
     rpc ListUser(ListUserReq) returns (ListUserReply) {
         option (google.api.http) = {
             post: "/user/list"
             body: "*"
         };
     }
-    // 得到RSA密钥
-    rpc GetKey(GetKeyReq) returns (GetKeyReply) {
+    // 修改密码 admin
+    rpc ModifyUserPd(ModifyUserPdReq) returns (ModifyUserPdReply) {
         option (google.api.http) = {
-            get: "/user/key"
+            post: "/user/pd"
+            body: "*"
+        };
+    }
+    // 删除用户 admin
+    rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {
+        option (google.api.http) = {
+            delete: "/user"
+        };
+    }
+    // 区域系统 =================================
+    // 列出所有区域详细信息
+    rpc ListArea(ListAreaReq) returns (ListAreaReply) {
+        option (google.api.http) = {
+            post: "/area/list"
+            body: "*"
+        };
+    }
+
+    // 通过ID得到区域
+    rpc GetArea(GetAreaReq) returns (GetAreaReply) {
+        option (google.api.http) = {
+            get: "/area/detail/{id}"
         };
     }
     // 资产系统 =================================
@@ -72,86 +107,63 @@ service ManagementInterface {
             body: "*"
         };
     }
-    // 区域系统 =================================
-    // 列出所有区域
-    rpc ListArea(ListAreaReq) returns (ListAreaReply) {
-        option (google.api.http) = {
-            post: "/area/list"
-            body: "*"
-        };
-    }
-    // 通过ID列出区域
-    rpc ListAreaIds(ListAreaIdsReq) returns (ListAreaIdsReply) {
-        option (google.api.http) = {
-            post: "/area/list/ids"
-            body: "*"
-        };
-    }
-    // 通过ID得到区域
-    rpc GetArea(GetAreaReq) returns (GetAreaReply) {
-        option (google.api.http) = {
-            get: "/area/detail/{id}"
-        };
-    }
-    // 创建区域 (super)
-    rpc CreateArea(CreateAreaReq) returns (CreateAreaReply) {
-        option (google.api.http) = {
-            post: "/area/create"
-            body: "*"
-        };
-    }
-    // 修改区域信息(super)
-    rpc UpdateArea(UpdateAreaReq) returns (UpdateAreaReply) {
-        option (google.api.http) = {
-            post: "/area/update"
-            body: "*"
-        };
-    }
-    // 删除区域(super)
-    rpc DeleteArea(DeleteAreaReq) returns (DeleteAreaRpely) {
-        option (google.api.http) = {
-            delete: "/area/delete/{id}"
-        };
-    }
-    // 类目系统 =================================
-    // 列出列表
-    rpc ListClass(ListClassReq) returns (ListClassReply) {
-        option (google.api.http) = {
-            get: "/classes"
-        };
-    }
-    // 导入列表(super)
-    rpc CreateClass(CreateClassReq) returns (CreateClassReply) {
-        option (google.api.http) = {
-            post: "/classes"
-            body: "*"
-        };
-    }
     // 单表系统 =================================
     // 列出表单
-    rpc ListForm(ListFormReq) returns (ListFormReply) {
+    rpc ListStorageForm(ListStorageFormReq) returns (ListStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/list"
+            post: "/form/storage/list"
             body: "*"
         };
     }
     // 查找表单
-    rpc GetForm(GetFormReq) returns (GetFormReply) {
+    rpc GetStorageForm(GetStorageFormReq) returns (GetStorageFormReply) {
         option (google.api.http) = {
-            get: "/form/{formName}/{id}"
+            get: "/form/storage/{id}"
         };
     }
     // 创建申请表
-    rpc CreateForm(CreateFormReq) returns (CreateFormReply) {
+    rpc CreateStorageForm(CreateStorageFormReq)
+        returns (CreateStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/create"
+            post: "/form/scrapped/create"
             body: "*"
         };
     }
     // 更新申请表
-    rpc UpdateForm(UpdateFormReq) returns (UpdateFormReply) {
+    rpc UpdateStorageForm(UpdateScrappedFormReq)
+        returns (UpdateScrappedFormReply) {
         option (google.api.http) = {
-            post: "/form/update"
+            post: "/form/scrapped/update"
+            body: "*"
+        };
+    }
+
+    // 列出表单
+    rpc ListScrappedForm(ListScrappedFormReq) returns (ListScrappedFormReply) {
+        option (google.api.http) = {
+            post: "/form/scrapped/list"
+            body: "*"
+        };
+    }
+    // 查找表单
+    rpc GetScrappedForm(GetScrappedFormReq) returns (GetScrappedFormReply) {
+        option (google.api.http) = {
+            get: "/form/scrapped/{id}"
+        };
+    }
+    // 创建申请表
+    rpc CreateScrappedForm(CreateScrappedFormReq)
+        returns (CreateScrappedFormReply) {
+        option (google.api.http) = {
+            post: "/form/scrapped/create"
+            body: "*"
+        };
+    }
+    // 更新申请表
+    rpc UpdateScrappedForm(UpdateStorageFormReq)
+        returns (UpdateStorageFormReply) {
+        option (google.api.http) = {
+            post: "/form/storage/update"
             body: "*"
         };
     }
@@ -166,9 +178,13 @@ message LoginReply {
     string token = 1;
 }
 
-message LogoutReq {}
+message LogoutReq {
+    uint64 id = 1;
+}
 
-message LogoutReply {}
+message LogoutReply {
+    bool ok = 1;
+}
 
 message RegisterReq {
     string username        = 1;
@@ -180,6 +196,17 @@ message RegisterReply {
     bool ok = 1;
 }
 
+message GetUserReq {
+    uint64 id = 1;
+}
+
+message GetUserReply {
+    uint64 id               = 1;
+    string username         = 2;
+    int32 assetPower        = 3;
+    repeated uint32 areaIds = 4;
+}
+
 message ListUserReq {
     int64 pageNum  = 1;
     int64 pageSize = 2;
@@ -187,24 +214,338 @@ message ListUserReq {
 
 message ListUserReply {
     message Users {
-        message Area {
-            uint32 id       = 1;
-            string areaInfo = 2;
-        }
         uint64 id               = 1;
         string username         = 2;
         int32 assetPower        = 3;
         repeated uint32 areaIds = 4;
-        repeated Area areas     = 5;
     }
-    repeated User users = 1;
+    repeated Users users = 1;
 }
 
-message GetKeyReq {
-    float r = 1;
-}
+message GetKeyReq {}
 
 message GetKeyReply {
     string key = 1;
 }
+
+message ModifyUserPdReq {
+    uint64 id       = 1;
+    string password = 2;
+}
+message ModifyUserPdReply {
+    bool ok = 1;
+}
+
+message DeleteUserReq {
+    uint64 id = 1;
+}
+message DeleteUserReply {
+    bool ok = 1;
+}
 //==========================================
+message ListAssetReq {
+    message Condition {
+        string classes     = 1;
+        string address     = 2;
+        int32 stateNum     = 3;
+        int64 lowStorageAt = 4;
+        int64 upStorageAt  = 5;
+        string orderBy     = 6;
+        bool sortDesc      = 7;
+    }
+    Condition con  = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
+}
+message ListAssetReply {
+    message Assets {
+        uint64 id        = 1;
+        string classes   = 2;
+        string code      = 3;
+        uint32 areaId    = 4;
+        string address   = 5;
+        string assetInfo = 6;
+        string picUrl    = 7;
+        float price      = 8;
+        int64 orderAt    = 9;
+        string orderNum  = 10;
+        int32 stateNum   = 11;
+        string state     = 12;
+        int64 appliedAt  = 13;
+        int64 storageAt  = 14;
+        int64 scrappedAt = 15;
+    }
+    repeated Assets results = 1;
+}
+
+message GetAssetReq {
+    uint64 id = 1;
+}
+
+message GetAssetReply {
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
+}
+
+message CreateAssetReq {
+    string classes   = 1;
+    string address   = 3;
+    string assetInfo = 4;
+    string picUrl    = 5;
+    float price      = 6;
+    int64 orderAt    = 7;
+    string orderNum  = 8;
+}
+message CreateAssetReply {
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
+}
+
+message UpdateAssetReq {
+    uint64 id        = 1;
+    string address   = 2;
+    string assetInfo = 3;
+    string picUrl    = 4;
+    float price      = 5;
+    int64 orderAt    = 6;
+    string orderNum  = 7;
+    int32 stateNum   = 8;
+}
+
+message UpdateAssetReply {
+    uint64 id        = 1;
+    string classes   = 2;
+    string code      = 3;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
+    int32 stateNum   = 11;
+    string state     = 12;
+    int64 appliedAt  = 13;
+    int64 storageAt  = 14;
+    int64 scrappedAt = 15;
+}
+// ===================================
+message ListAreaReq {
+    repeated uint32 ids = 1;
+}
+message ListAreaReply {
+    message Areas {
+        uint32 id       = 1;
+        string areaInfo = 2;
+    }
+    repeated Areas areas = 3;
+}
+
+message GetAreaReq {
+    uint32 id = 1;
+}
+
+message GetAreaReply {
+    uint32 id       = 1;
+    string areaInfo = 2;
+}
+
+message ListStorageFormReq {
+    message Conf {
+        uint64 applicantId = 1;
+        uint64 operatorId  = 2;
+        int32 stateNum     = 3;
+        uint64 assetId     = 4;
+        string assetCode   = 5;
+    }
+    Conf conf      = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
+}
+message ListStorageFormReply {
+    message Form {
+        int64 id           = 1;
+        int64 appliedAt    = 2;
+        uint64 applicantId = 3;
+        string applicant   = 5;
+        int64 operatedAt   = 6;
+        uint64 operatorId  = 7;
+        string Operator    = 8;
+        int32 stateNum     = 9;
+        string state       = 10;
+        uint64 assetId     = 11;
+        string assetCode   = 12;
+        uint32 areaId      = 13;
+    }
+    repeated Form forms = 1;
+}
+
+message GetStorageFormReq {
+    int64 id = 1;
+}
+message GetStorageFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message CreateStorageFormReq {
+    uint64 assetId   = 1;
+    string assetCode = 2;
+    uint32 areaId    = 3;
+}
+message CreateStorageFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message UpdateStorageFormReq {
+    int64 id       = 1;
+    int32 stateNum = 2;
+}
+message UpdateStorageFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message ListScrappedFormReq {
+    message Conf {
+        uint64 applicantId = 1;
+        uint64 operatorId  = 2;
+        int32 stateNum     = 3;
+        uint64 assetId     = 4;
+        string assetCode   = 5;
+    }
+    Conf conf      = 1;
+    int64 pageNum  = 2;
+    int64 pageSize = 3;
+}
+message ListScrappedFormReply {
+    message Form {
+        int64 id           = 1;
+        int64 appliedAt    = 2;
+        uint64 applicantId = 3;
+        string applicant   = 5;
+        int64 operatedAt   = 6;
+        uint64 operatorId  = 7;
+        string Operator    = 8;
+        int32 stateNum     = 9;
+        string state       = 10;
+        uint64 assetId     = 11;
+        string assetCode   = 12;
+        uint32 areaId      = 13;
+    }
+    repeated Form forms = 1;
+}
+
+message GetScrappedFormReq {
+    int64 id = 1;
+}
+message GetScrappedFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message CreateScrappedFormReq {
+    uint64 assetId   = 1;
+    string assetCode = 2;
+    uint32 areaId    = 3;
+}
+message CreateScrappedFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}
+
+message UpdateScrappedFormReq {
+    int64 id       = 1;
+    int32 stateNum = 2;
+}
+message UpdateScrappedFormReply {
+    int64 id           = 1;
+    int64 appliedAt    = 2;
+    uint64 applicantId = 3;
+    string applicant   = 5;
+    int64 operatedAt   = 6;
+    uint64 operatorId  = 7;
+    string Operator    = 8;
+    int32 stateNum     = 9;
+    string state       = 10;
+    uint64 assetId     = 11;
+    string assetCode   = 12;
+    uint32 areaId      = 13;
+}

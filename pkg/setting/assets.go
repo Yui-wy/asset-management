@@ -12,3 +12,14 @@ var ASSETS_STATE_MAP = map[int32]string{
 	8: "修理中",
 	9: "未知状态, 请确认",
 }
+
+const (
+	SUPER_ADMIN_USER = 0
+	AREA_ADMIN_USER  = 1
+	AREA_USER        = 2
+)
+
+var TABLE_MAP = map[int32]string{
+	AREA_ADMIN_USER: "admin_areas",
+	AREA_USER:       "user_areas",
+}

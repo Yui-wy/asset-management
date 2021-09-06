@@ -1,0 +1,1847 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/management/interface/v1/management_interface.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ManagementInterface"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/area/detail/{id}": {
+      "get": {
+        "summary": "通过ID得到区域",
+        "operationId": "ManagementInterface_GetArea",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAreaReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/area/list": {
+      "post": {
+        "summary": "区域系统 =================================\n列出所有区域详细信息",
+        "operationId": "ManagementInterface_ListArea",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListAreaReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListAreaReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/asset/create": {
+      "post": {
+        "summary": "创建资产",
+        "operationId": "ManagementInterface_CreateAsset",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAssetReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAssetReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/asset/detail/{id}": {
+      "get": {
+        "summary": "得到资产信息",
+        "operationId": "ManagementInterface_GetAsset",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetAssetReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/asset/list": {
+      "post": {
+        "summary": "资产系统 =================================\n列出资产(按条件)",
+        "operationId": "ManagementInterface_ListAsset",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListAssetReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListAssetReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/asset/update": {
+      "post": {
+        "summary": "更新资产信息",
+        "operationId": "ManagementInterface_UpdateAsset",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAssetReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateAssetReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/scrapped/create": {
+      "post": {
+        "summary": "创建申请表",
+        "operationId": "ManagementInterface_CreateScrappedForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateScrappedFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateScrappedFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/scrapped/list": {
+      "post": {
+        "summary": "列出表单",
+        "operationId": "ManagementInterface_ListScrappedForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListScrappedFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListScrappedFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/scrapped/update": {
+      "post": {
+        "summary": "更新申请表",
+        "operationId": "ManagementInterface_UpdateStorageForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateScrappedFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateScrappedFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/scrapped/{id}": {
+      "get": {
+        "summary": "查找表单",
+        "operationId": "ManagementInterface_GetScrappedForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetScrappedFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/storage/list": {
+      "post": {
+        "summary": "单表系统 =================================\n列出表单",
+        "operationId": "ManagementInterface_ListStorageForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListStorageFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListStorageFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/storage/update": {
+      "post": {
+        "summary": "更新申请表",
+        "operationId": "ManagementInterface_UpdateScrappedForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateStorageFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateStorageFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/storage/{id}": {
+      "get": {
+        "summary": "查找表单",
+        "operationId": "ManagementInterface_GetStorageForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetStorageFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user": {
+      "delete": {
+        "summary": "删除用户 admin",
+        "operationId": "ManagementInterface_DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1DeleteUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/key": {
+      "get": {
+        "summary": "得到RSA密钥",
+        "operationId": "ManagementInterface_GetKey",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetKeyReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/list": {
+      "post": {
+        "summary": "列出用户 admin",
+        "operationId": "ManagementInterface_ListUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ListUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ListUserReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "summary": "用户登出",
+        "operationId": "ManagementInterface_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LogoutReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LogoutReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "summary": "用户系统 =================================\n用户登陆",
+        "operationId": "ManagementInterface_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LoginReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LoginReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/pd": {
+      "post": {
+        "summary": "修改密码 admin",
+        "operationId": "ManagementInterface_ModifyUserPd",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ModifyUserPdReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ModifyUserPdReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "summary": "用户注册 admin",
+        "operationId": "ManagementInterface_Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RegisterReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RegisterReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "summary": "得到用户 admin",
+        "operationId": "ManagementInterface_GetUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ListAreaReplyAreas": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "areaInfo": {
+          "type": "string"
+        }
+      }
+    },
+    "ListAssetReplyAssets": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "classes": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "ListAssetReqCondition": {
+      "type": "object",
+      "properties": {
+        "classes": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "lowStorageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "upStorageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderBy": {
+          "type": "string"
+        },
+        "sortDesc": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ListUserReplyUsers": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "assetPower": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "areaIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CreateAssetReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "classes": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateAssetReq": {
+      "type": "object",
+      "properties": {
+        "classes": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateScrappedFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateScrappedFormReq": {
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateStorageFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateStorageFormReq": {
+      "type": "object",
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1DeleteUserReply": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1GetAreaReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "areaInfo": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetAssetReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "classes": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1GetKeyReply": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "v1GetScrappedFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1GetStorageFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1GetUserReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "assetPower": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "areaIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1ListAreaReply": {
+      "type": "object",
+      "properties": {
+        "areas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListAreaReplyAreas"
+          }
+        }
+      }
+    },
+    "v1ListAreaReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "title": "==================================="
+    },
+    "v1ListAssetReply": {
+      "type": "object",
+      "properties": {
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListAssetReplyAssets"
+          }
+        }
+      }
+    },
+    "v1ListAssetReq": {
+      "type": "object",
+      "properties": {
+        "con": {
+          "$ref": "#/definitions/ListAssetReqCondition"
+        },
+        "pageNum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "=========================================="
+    },
+    "v1ListScrappedFormReply": {
+      "type": "object",
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1ListScrappedFormReplyForm"
+          }
+        }
+      }
+    },
+    "v1ListScrappedFormReplyForm": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1ListScrappedFormReq": {
+      "type": "object",
+      "properties": {
+        "conf": {
+          "$ref": "#/definitions/v1ListScrappedFormReqConf"
+        },
+        "pageNum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1ListScrappedFormReqConf": {
+      "type": "object",
+      "properties": {
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListStorageFormReply": {
+      "type": "object",
+      "properties": {
+        "forms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1ListStorageFormReplyForm"
+          }
+        }
+      }
+    },
+    "v1ListStorageFormReplyForm": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1ListStorageFormReq": {
+      "type": "object",
+      "properties": {
+        "conf": {
+          "$ref": "#/definitions/v1ListStorageFormReqConf"
+        },
+        "pageNum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1ListStorageFormReqConf": {
+      "type": "object",
+      "properties": {
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ListUserReply": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ListUserReplyUsers"
+          }
+        }
+      }
+    },
+    "v1ListUserReq": {
+      "type": "object",
+      "properties": {
+        "pageNum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1LoginReply": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "v1LoginReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "v1LogoutReply": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1LogoutReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "v1ModifyUserPdReply": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1ModifyUserPdReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RegisterReply": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1RegisterReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1UpdateAssetReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "classes": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "storageAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrappedAt": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1UpdateAssetReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1UpdateScrappedFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1UpdateScrappedFormReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "v1UpdateStorageFormReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "appliedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "applicantId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "applicant": {
+          "type": "string"
+        },
+        "operatedAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "operatorId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "Operator": {
+          "type": "string"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "type": "string"
+        },
+        "assetId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "assetCode": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "v1UpdateStorageFormReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stateNum": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

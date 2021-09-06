@@ -76,7 +76,7 @@ message ListAssetsReq {
         int64 upStorageAt      = 5;
         string orderBy         = 6;
         repeated uint32 areaId = 7;
-        bool sortDesc            = 8;
+        bool sortDesc          = 8;
     }
     Condition con  = 1;
     int64 pageNum  = 2;
@@ -114,10 +114,9 @@ message CreateAssetsReq {
     int64 orderAt    = 7;
     string orderNum  = 8;
     int32 stateNum   = 9;
-    string state     = 10;
-    int64 appliedAt  = 11;
-    int64 storageAt  = 12;
-    int64 scrappedAt = 13;
+    int64 appliedAt  = 10;
+    int64 storageAt  = 11;
+    int64 scrappedAt = 12;
 }
 
 message CreateAssetsReply {
@@ -148,17 +147,16 @@ message DeleteAssetsReply {
 
 message UpdateAssetsdReq {
     uint64 id        = 1;
-    string address   = 5;
-    string assetInfo = 6;
-    string picUrl    = 7;
-    float price      = 8;
-    int64 orderAt    = 9;
-    string orderNum  = 10;
-    int32 stateNum   = 11;
-    string state     = 12;
-    int64 appliedAt  = 13;
-    int64 storageAt  = 14;
-    int64 scrappedAt = 15;
+    string address   = 2;
+    string assetInfo = 3;
+    string picUrl    = 4;
+    float price      = 5;
+    int64 orderAt    = 6;
+    string orderNum  = 7;
+    int32 stateNum   = 8;
+    int64 appliedAt  = 9;
+    int64 storageAt  = 10;
+    int64 scrappedAt = 11;
 }
 
 message UpdateAssetsReply {

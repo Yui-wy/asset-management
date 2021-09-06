@@ -111,6 +111,8 @@ func (m *GetUserReply) Validate() error {
 
 	// no validation rules for Username
 
+	// no validation rules for UpdataSign
+
 	return nil
 }
 
@@ -668,7 +670,11 @@ func (m *VerifyPasswordReply) Validate() error {
 		return nil
 	}
 
-	// no validation rules for Ok
+	// no validation rules for Id
+
+	// no validation rules for Username
+
+	// no validation rules for UpdataSign
 
 	return nil
 }

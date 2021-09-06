@@ -40,8 +40,9 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*p
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetUserReply, error) {
 	user, err := s.uc.Get(ctx, req.Id)
 	return &pb.GetUserReply{
-		Id:       user.Id,
-		Username: user.Username,
+		Id:         user.Id,
+		Username:   user.Username,
+		UpdataSign: user.UpdataSign,
 	}, err
 }
 
@@ -78,11 +79,13 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *pb.UpdatePassword
 }
 
 func (s *UserService) VerifyPassword(ctx context.Context, req *pb.VerifyPasswordReq) (*pb.VerifyPasswordReply, error) {
-	rv, err := s.uc.VerifyPassword(ctx, &biz.User{
+	u, err := s.uc.VerifyPassword(ctx, &biz.User{
 		Username: req.Username,
 		Password: req.Password,
 	})
 	return &pb.VerifyPasswordReply{
-		Ok: rv,
+		Id:         u.Id,
+		Username:   u.Username,
+		UpdataSign: u.UpdataSign,
 	}, err
 }

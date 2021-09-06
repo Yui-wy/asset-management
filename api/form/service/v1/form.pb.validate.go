@@ -368,6 +368,8 @@ func (m *CreateStorageFormReq) Validate() error {
 
 	// no validation rules for Applicant
 
+	// no validation rules for AppliedAt
+
 	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
@@ -1026,6 +1028,8 @@ func (m *CreateScrappedFormReq) Validate() error {
 	// no validation rules for ApplicantId
 
 	// no validation rules for Applicant
+
+	// no validation rules for AppliedAt
 
 	// no validation rules for AssetId
 

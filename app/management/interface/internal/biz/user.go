@@ -2,7 +2,6 @@ package biz
 
 import (
 	"context"
-	"time"
 
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -12,19 +11,27 @@ type User struct {
 	Username   string
 	Password   string
 	UpdataSign string
-	IsDeleted  bool
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
-	DeletedAt  time.Time
+	Power      int32
+	AreaIds    []uint32
+}
+
+type Area struct {
+	Id       uint32
+	AreaInfo string
 }
 
 type UserRepo interface {
-	CreateUser(ctx context.Context, u *User) (*User, error)
+	// user
+	Login(ctx context.Context, username, password string) (*User, error)
+	Logout(ctx context.Context, id uint64) (bool, error)
+	Create(ctx context.Context, user User) (*User, error)
 	GetUser(ctx context.Context, id uint64) (*User, error)
+	ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error)
+	ModifyPd(ctx context.Context, id uint64, pd string) (bool, error)
 	DeleteUser(ctx context.Context, id uint64) (bool, error)
-	UpdateUser(ctx context.Context, u *User) (*User, error)
-	ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*User, error)
-	VerifyPassword(ctx context.Context, u *User) (bool, error)
+	// area
+	ListArea(ctx context.Context, areaIds []uint32) ([]*Area, error)
+	GetArea(ctx context.Context, areaId uint32) (*Area, error)
 }
 
 type UserUseCase struct {
@@ -39,26 +46,45 @@ func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 	}
 }
 
-func (uc *UserUseCase) Create(ctx context.Context, user *User) (*User, error) {
-	return uc.repo.CreateUser(ctx, user)
+func (uc *UserUseCase) Login(ctx context.Context, username, password string) (*User, error) {
+	// TODO: 解密传入
+	return uc.repo.Login(ctx, username, password)
 }
 
-func (uc *UserUseCase) Get(ctx context.Context, id uint64) (*User, error) {
+func (uc *UserUseCase) Logout(ctx context.Context, id uint64) (bool, error) {
+	return uc.repo.Logout(ctx, id)
+}
+
+func (uc *UserUseCase) GetKey(ctx context.Context) (string, error) {
+	// TODO: 不作为接口RSA
+	return "", nil
+}
+
+func (uc *UserUseCase) Create(ctx context.Context, user User) (*User, error) {
+	return uc.repo.Create(ctx, user)
+}
+
+func (uc *UserUseCase) GetUser(ctx context.Context, id uint64) (*User, error) {
 	return uc.repo.GetUser(ctx, id)
 }
 
-func (uc *UserUseCase) List(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*User, error) {
-	return uc.repo.ListUser(ctx, ids, pageNum, pageSize)
+func (uc *UserUseCase) ListUser(ctx context.Context, pageNum, pageSize int64) ([]*User, error) {
+	return uc.repo.ListUser(ctx, pageNum, pageSize)
 }
 
-func (uc *UserUseCase) Update(ctx context.Context, user *User) (*User, error) {
-	return uc.repo.UpdateUser(ctx, user)
+func (uc *UserUseCase) ModifyPd(ctx context.Context, id uint64, pd string) (bool, error) {
+	// TODO: 解密传入
+	return uc.repo.ModifyPd(ctx, id, pd)
 }
 
-func (uc *UserUseCase) Deleted(ctx context.Context, id uint64) (bool, error) {
+func (uc *UserUseCase) DeleteUser(ctx context.Context, id uint64) (bool, error) {
 	return uc.repo.DeleteUser(ctx, id)
 }
 
-func (uc *UserUseCase) VerifyPassword(ctx context.Context, user *User) (bool, error) {
-	return uc.repo.VerifyPassword(ctx, user)
+func (uc *UserUseCase) ListArea(ctx context.Context, areaIds []uint32) ([]*Area, error) {
+	return uc.repo.ListArea(ctx, areaIds)
+}
+
+func (uc *UserUseCase) GetArea(ctx context.Context, areaId uint32) (*Area, error) {
+	return uc.repo.GetArea(ctx, areaId)
 }

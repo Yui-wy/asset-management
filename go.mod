@@ -21,6 +21,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/btree v1.0.1 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v0.16.2 // indirect
@@ -47,4 +48,18 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	gorm.io/driver/mysql v1.1.2
+)
+
+require (
+	github.com/felixge/httpsnoop v1.0.1 // indirect
+	github.com/go-kratos/swagger-api v1.0.1
+)
+
+require (
+	github.com/ghodss/yaml v1.0.0 // indirect
+	github.com/go-kratos/grpc-gateway/v2 v2.5.1-0.20210811062259-c92d36e434b1 // indirect
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang/glog v0.0.0-20210429001901-424d2337a529 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.5.0 // indirect
+	github.com/rakyll/statik v0.1.7 // indirect
 )

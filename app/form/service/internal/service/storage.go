@@ -63,6 +63,7 @@ func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStora
 		BaseForm: &biz.BaseForm{
 			ApplicantId: req.ApplicantId,
 			Applicant:   req.Applicant,
+			AppliedAt:   req.AppliedAt,
 			AssetId:     req.AssetId,
 			AssetCode:   req.AssetCode,
 			AreaId:      req.AreaId,

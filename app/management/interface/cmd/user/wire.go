@@ -6,11 +6,11 @@
 package main
 
 import (
-	"github.com/Yui-wy/asset-management/app/user/service/internal/biz"
-	"github.com/Yui-wy/asset-management/app/user/service/internal/conf"
-	"github.com/Yui-wy/asset-management/app/user/service/internal/data"
-	"github.com/Yui-wy/asset-management/app/user/service/internal/server"
-	"github.com/Yui-wy/asset-management/app/user/service/internal/service"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/biz"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/conf"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/data"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/server"
+	"github.com/Yui-wy/asset-management/app/management/interface/internal/service"
 	"github.com/go-kratos/kratos/v2"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/google/wire"
