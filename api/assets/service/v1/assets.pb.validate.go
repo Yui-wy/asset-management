@@ -380,8 +380,6 @@ func (m *CreateAssetsReq) Validate() error {
 
 	// no validation rules for StateNum
 
-	// no validation rules for State
-
 	// no validation rules for AppliedAt
 
 	// no validation rules for StorageAt
@@ -702,8 +700,6 @@ func (m *UpdateAssetsdReq) Validate() error {
 
 	// no validation rules for StateNum
 
-	// no validation rules for State
-
 	// no validation rules for AppliedAt
 
 	// no validation rules for StorageAt
@@ -1007,6 +1003,10 @@ func (m *GetAreaByIdsReq) Validate() error {
 		return nil
 	}
 
+	// no validation rules for PageNum
+
+	// no validation rules for PageSize
+
 	return nil
 }
 
@@ -1153,6 +1153,10 @@ func (m *ListAreasReq) Validate() error {
 	if m == nil {
 		return nil
 	}
+
+	// no validation rules for PageNum
+
+	// no validation rules for PageSize
 
 	return nil
 }

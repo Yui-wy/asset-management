@@ -7,6 +7,7 @@ import (
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
 	"github.com/Yui-wy/asset-management/pkg/setting"
+	"github.com/Yui-wy/asset-management/pkg/util/inspection"
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
@@ -19,11 +20,10 @@ type userRepo struct {
 }
 
 type User struct {
-	Uid           uint64 `gorm:"primarykey;;autoIncrement:false"`
-	Power         int32  `gorm:"not null"`
-	AreaTableName string `gorm:"not null"`
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
+	Uid       uint64 `gorm:"primarykey;;autoIncrement:false"`
+	Power     int32  `gorm:"not null"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type AdminArea struct {
@@ -93,9 +93,8 @@ func (repo *userRepo) GetUser(ctx context.Context, uid uint64) (*biz.User, error
 func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, error) {
 	/* 先创建user, 在关联areaId */
 	uc := User{
-		Uid:           u.Uid,
-		Power:         u.Power,
-		AreaTableName: setting.TABLE_MAP[u.Power],
+		Uid:   u.Uid,
+		Power: u.Power,
 	}
 	tx := repo.data.db.Begin()
 	result := tx.WithContext(ctx).Create(&uc)
@@ -164,7 +163,7 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		repo.log.Errorf(" UpdateUser2. Error:%d", result.Error)
 		return nil, result.Error
 	}
-	if len(u.AreaIds) == 0 {
+	if inspection.IsZeros(u.AreaIds) {
 		return &biz.User{
 			Uid:     uu.Uid,
 			Power:   uu.Power,

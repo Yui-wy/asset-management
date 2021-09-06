@@ -208,8 +208,9 @@ message GetUserReply {
 }
 
 message ListUserReq {
-    int64 pageNum  = 1;
-    int64 pageSize = 2;
+    int64 pageNum           = 1;
+    int64 pageSize          = 2;
+    repeated uint32 areaIds = 3;
 }
 
 message ListUserReply {
@@ -229,15 +230,17 @@ message GetKeyReply {
 }
 
 message ModifyUserPdReq {
-    uint64 id       = 1;
-    string password = 2;
+    uint64 id              = 1;
+    string password        = 2;
+    repeated uint32 areaId = 3;
 }
 message ModifyUserPdReply {
     bool ok = 1;
 }
 
 message DeleteUserReq {
-    uint64 id = 1;
+    uint64 id              = 1;
+    repeated uint32 areaId = 2;
 }
 message DeleteUserReply {
     bool ok = 1;
@@ -358,6 +361,8 @@ message UpdateAssetReply {
 // ===================================
 message ListAreaReq {
     repeated uint32 ids = 1;
+    int64 pageNum       = 2;
+    int64 pageSize      = 3;
 }
 message ListAreaReply {
     message Areas {

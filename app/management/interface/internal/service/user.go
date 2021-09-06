@@ -42,7 +42,11 @@ func (s *ManageMentInterface) Logout(ctx context.Context, req *pb.LogoutReq) (*p
 }
 
 func (s *ManageMentInterface) Register(ctx context.Context, req *pb.RegisterReq) (*pb.RegisterReply, error) {
-	_, err := s.uc.Create(ctx, biz.User{
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
+	if err != nil {
+		return nil, err
+	}
+	_, err = s.uc.Create(ctx, &biz.User{
 		Username: req.Username,
 		Password: req.Password,
 		Power:    setting.AREA_USER,
@@ -68,7 +72,11 @@ func (s *ManageMentInterface) GetUser(ctx context.Context, req *pb.GetUserReq) (
 	}, nil
 }
 func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
-	users, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize)
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaIds)
+	if err != nil {
+		return nil, err
+	}
+	users, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize, req.AreaIds, setting.AREA_USER)
 	if err != nil {
 		return nil, err
 	}
@@ -86,6 +94,10 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 	}, nil
 }
 func (s *ManageMentInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUserPdReq) (*pb.ModifyUserPdReply, error) {
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
+	if err != nil {
+		return nil, err
+	}
 	ok, err := s.uc.ModifyPd(ctx, req.Id, req.Password)
 	if err != nil {
 		return nil, err
@@ -93,6 +105,10 @@ func (s *ManageMentInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUs
 	return &pb.ModifyUserPdReply{Ok: ok}, nil
 }
 func (s *ManageMentInterface) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
+	if err != nil {
+		return nil, err
+	}
 	ok, err := s.uc.DeleteUser(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -101,7 +117,11 @@ func (s *ManageMentInterface) DeleteUser(ctx context.Context, req *pb.DeleteUser
 }
 
 func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq) (*pb.ListAreaReply, error) {
-	areas, err := s.uc.ListArea(ctx, req.Ids)
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.Ids)
+	if err != nil {
+		return nil, err
+	}
+	areas, err := s.uc.ListArea(ctx, req.Ids, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -114,6 +134,7 @@ func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq)
 	}
 	return &pb.ListAreaReply{Areas: r}, nil
 }
+
 func (s *ManageMentInterface) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.GetAreaReply, error) {
 	area, err := s.uc.GetArea(ctx, req.Id)
 	if err != nil {

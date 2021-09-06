@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
+	"github.com/Yui-wy/asset-management/pkg/util/pagination"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -45,9 +46,11 @@ func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error)
 	}, nil
 }
 
-func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32) ([]*biz.Area, error) {
+func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32, pageNum, pageSize int64) ([]*biz.Area, error) {
 	var as []Area
 	result := repo.data.db.WithContext(ctx).
+		Limit(int(pageSize)).
+		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
 		Where("is_deleted = false").
 		Where("id IN ?", ids).
 		Find(&as)
@@ -65,9 +68,11 @@ func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32) ([]*biz.A
 	return bas, nil
 }
 
-func (repo *areaRepo) ListArea(ctx context.Context) ([]*biz.Area, error) {
+func (repo *areaRepo) ListArea(ctx context.Context, pageNum, pageSize int64) ([]*biz.Area, error) {
 	var as []Area
 	result := repo.data.db.WithContext(ctx).
+		Limit(int(pageSize)).
+		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
 		Where("is_deleted = false").
 		Find(&as)
 	if result.Error != nil {

@@ -16,7 +16,7 @@ func (s *AssetsService) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.Ge
 }
 
 func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*pb.ListAreasReply, error) {
-	areas, err := s.arc.List(ctx)
+	areas, err := s.arc.List(ctx, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -33,7 +33,7 @@ func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*p
 }
 
 func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsReq) (*pb.GetAreaByIdsReply, error) {
-	areas, err := s.arc.GetByIds(ctx, req.Ids)
+	areas, err := s.arc.GetByIds(ctx, req.Ids, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}

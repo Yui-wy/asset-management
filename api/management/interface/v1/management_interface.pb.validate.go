@@ -1804,6 +1804,10 @@ func (m *ListAreaReq) Validate() error {
 		return nil
 	}
 
+	// no validation rules for PageNum
+
+	// no validation rules for PageSize
+
 	return nil
 }
 

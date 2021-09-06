@@ -466,6 +466,17 @@
             "required": false,
             "type": "string",
             "format": "uint64"
+          },
+          {
+            "name": "areaId",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "collectionFormat": "multi"
           }
         ],
         "tags": [
@@ -1290,6 +1301,14 @@
             "type": "integer",
             "format": "int64"
           }
+        },
+        "pageNum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pageSize": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "==================================="
@@ -1543,6 +1562,13 @@
         "pageSize": {
           "type": "string",
           "format": "int64"
+        },
+        "areaIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },
@@ -1599,6 +1625,13 @@
         },
         "password": {
           "type": "string"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },

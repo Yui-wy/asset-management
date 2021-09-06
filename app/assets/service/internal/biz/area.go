@@ -14,11 +14,11 @@ type Area struct {
 
 type AreaRepo interface {
 	GetArea(ctx context.Context, id uint32) (*Area, error)
-	ListArea(ctx context.Context) ([]*Area, error)
+	ListArea(ctx context.Context, pageNum, pageSize int64) ([]*Area, error)
 	CreateArea(ctx context.Context, a *Area) (*Area, error)
 	UpdateArea(ctx context.Context, a *Area) (*Area, error)
 	DeleteArea(ctx context.Context, id uint32) (bool, error)
-	GetAreasByIds(ctx context.Context, ids []uint32) ([]*Area, error)
+	GetAreasByIds(ctx context.Context, ids []uint32, pageNum, pageSize int64) ([]*Area, error)
 }
 
 type AreaUseCase struct {
@@ -37,12 +37,12 @@ func (uc *AreaUseCase) Get(ctx context.Context, id uint32) (*Area, error) {
 	return uc.repo.GetArea(ctx, id)
 }
 
-func (uc *AreaUseCase) GetByIds(ctx context.Context, ids []uint32) ([]*Area, error) {
-	return uc.repo.GetAreasByIds(ctx, ids)
+func (uc *AreaUseCase) GetByIds(ctx context.Context, ids []uint32, pageNum, pageSize int64) ([]*Area, error) {
+	return uc.repo.GetAreasByIds(ctx, ids, pageNum, pageSize)
 }
 
-func (uc *AreaUseCase) List(ctx context.Context) ([]*Area, error) {
-	return uc.repo.ListArea(ctx)
+func (uc *AreaUseCase) List(ctx context.Context, pageNum, pageSize int64) ([]*Area, error) {
+	return uc.repo.ListArea(ctx, pageNum, pageSize)
 }
 
 func (uc *AreaUseCase) Create(ctx context.Context, area *Area) (*Area, error) {
