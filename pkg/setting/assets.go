@@ -10,8 +10,21 @@ var ASSETS_STATE_MAP = map[int32]string{
 	6: "报废申请中",
 	7: "检修中",
 	8: "修理中",
-	9: "未知状态, 请确认",
+	9: "入库失败",
 }
+
+const (
+	ASSETS_STATE_UNKNOWN     = 0
+	ASSETS_STATE_ST          = 1
+	ASSETS_STATE_ST_APPLY    = 2
+	ASSETS_STATE_ORDER       = 3
+	ASSETS_STATE_ORDER_APPLY = 4
+	ASSETS_STATE_SP          = 5
+	ASSETS_STATE_SP_APPLY    = 6
+	ASSETS_STATE_CHECKING    = 7
+	ASSETS_STATE_REPAIRING   = 8
+	ASSETS_STATE_ST_FAIL     = 9
+)
 
 const (
 	SUPER_ADMIN_USER = 0

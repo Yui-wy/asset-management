@@ -1,13 +1,13 @@
 package setting
 
-var (
-	FORM_UNKNOWN int32 = 0
+const (
+	FORM_UNKNOWN = 0
 	// 用户
-	FORM_SUBMITTED int32 = 1
-	FORM_CANCELED  int32 = 2
+	FORM_SUBMITTED = 1
+	FORM_CANCELED  = 2
 	// 管理员
-	FORM_CONFIRMED int32 = 3
-	FORM_FAIL      int32 = 4
+	FORM_CONFIRMED = 3
+	FORM_FAIL      = 4
 )
 
 var FORM_STATE_MAP = map[int32]string{

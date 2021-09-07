@@ -13,7 +13,7 @@ func (s *ManageMentInterface) Login(ctx context.Context, req *pb.LoginReq) (*pb.
 	if err != nil {
 		return nil, err
 	}
-	token, err := s.AuthUc.Auth(user.Id, user.AreaIds, user.Power, user.UpdataSign)
+	token, err := s.AuthUc.Auth(user.Id, user.UpdataSign)
 	if err != nil {
 		return nil, err
 	}

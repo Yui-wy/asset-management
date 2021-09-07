@@ -16,7 +16,7 @@ import (
 // go build -ldflags "-X main.Version=x.y.z"
 var (
 	// Name is the name of the compiled software.
-	Name string = "asset-management.user.service"
+	Name string = "asmg.management.interface"
 	// Version is the version of the compiled software.
 	Version string
 	// flagconf is the config flag.
@@ -71,7 +71,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, bc.Data, &rc, logger)
+	app, cleanup, err := initApp(bc.Server, bc.Data, &rc, bc.Auth, logger)
 	if err != nil {
 		panic(err)
 	}

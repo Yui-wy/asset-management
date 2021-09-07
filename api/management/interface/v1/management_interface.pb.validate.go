@@ -1446,180 +1446,6 @@ var _ interface {
 	ErrorName() string
 } = GetAssetReplyValidationError{}
 
-// Validate checks the field values on CreateAssetReq with the rules defined in
-// the proto definition for this message. If any rules are violated, an error
-// is returned.
-func (m *CreateAssetReq) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Classes
-
-	// no validation rules for Address
-
-	// no validation rules for AssetInfo
-
-	// no validation rules for PicUrl
-
-	// no validation rules for Price
-
-	// no validation rules for OrderAt
-
-	// no validation rules for OrderNum
-
-	return nil
-}
-
-// CreateAssetReqValidationError is the validation error returned by
-// CreateAssetReq.Validate if the designated constraints aren't met.
-type CreateAssetReqValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CreateAssetReqValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CreateAssetReqValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CreateAssetReqValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CreateAssetReqValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CreateAssetReqValidationError) ErrorName() string { return "CreateAssetReqValidationError" }
-
-// Error satisfies the builtin error interface
-func (e CreateAssetReqValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCreateAssetReq.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CreateAssetReqValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CreateAssetReqValidationError{}
-
-// Validate checks the field values on CreateAssetReply with the rules defined
-// in the proto definition for this message. If any rules are violated, an
-// error is returned.
-func (m *CreateAssetReply) Validate() error {
-	if m == nil {
-		return nil
-	}
-
-	// no validation rules for Id
-
-	// no validation rules for Classes
-
-	// no validation rules for Code
-
-	// no validation rules for AreaId
-
-	// no validation rules for Address
-
-	// no validation rules for AssetInfo
-
-	// no validation rules for PicUrl
-
-	// no validation rules for Price
-
-	// no validation rules for OrderAt
-
-	// no validation rules for OrderNum
-
-	// no validation rules for StateNum
-
-	// no validation rules for State
-
-	// no validation rules for AppliedAt
-
-	// no validation rules for StorageAt
-
-	// no validation rules for ScrappedAt
-
-	return nil
-}
-
-// CreateAssetReplyValidationError is the validation error returned by
-// CreateAssetReply.Validate if the designated constraints aren't met.
-type CreateAssetReplyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e CreateAssetReplyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e CreateAssetReplyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e CreateAssetReplyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e CreateAssetReplyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e CreateAssetReplyValidationError) ErrorName() string { return "CreateAssetReplyValidationError" }
-
-// Error satisfies the builtin error interface
-func (e CreateAssetReplyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sCreateAssetReply.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = CreateAssetReplyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = CreateAssetReplyValidationError{}
-
 // Validate checks the field values on UpdateAssetReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -1641,8 +1467,6 @@ func (m *UpdateAssetReq) Validate() error {
 	// no validation rules for OrderAt
 
 	// no validation rules for OrderNum
-
-	// no validation rules for StateNum
 
 	return nil
 }
@@ -2411,11 +2235,21 @@ func (m *CreateStorageFormReq) Validate() error {
 		return nil
 	}
 
-	// no validation rules for AssetId
-
-	// no validation rules for AssetCode
+	// no validation rules for Classes
 
 	// no validation rules for AreaId
+
+	// no validation rules for Address
+
+	// no validation rules for AssetInfo
+
+	// no validation rules for PicUrl
+
+	// no validation rules for Price
+
+	// no validation rules for OrderAt
+
+	// no validation rules for OrderNum
 
 	return nil
 }
@@ -2567,6 +2401,157 @@ var _ interface {
 	ErrorName() string
 } = CreateStorageFormReplyValidationError{}
 
+// Validate checks the field values on CreateStorageFormsReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *CreateStorageFormsReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	for idx, item := range m.GetAssets() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateStorageFormsReqValidationError{
+					field:  fmt.Sprintf("Assets[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// CreateStorageFormsReqValidationError is the validation error returned by
+// CreateStorageFormsReq.Validate if the designated constraints aren't met.
+type CreateStorageFormsReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateStorageFormsReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateStorageFormsReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateStorageFormsReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateStorageFormsReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateStorageFormsReqValidationError) ErrorName() string {
+	return "CreateStorageFormsReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateStorageFormsReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateStorageFormsReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateStorageFormsReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateStorageFormsReqValidationError{}
+
+// Validate checks the field values on CreateStorageFormsReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *CreateStorageFormsReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Ok
+
+	return nil
+}
+
+// CreateStorageFormsReplyValidationError is the validation error returned by
+// CreateStorageFormsReply.Validate if the designated constraints aren't met.
+type CreateStorageFormsReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateStorageFormsReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateStorageFormsReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateStorageFormsReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateStorageFormsReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateStorageFormsReplyValidationError) ErrorName() string {
+	return "CreateStorageFormsReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateStorageFormsReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateStorageFormsReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateStorageFormsReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateStorageFormsReplyValidationError{}
+
 // Validate checks the field values on UpdateStorageFormReq with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -2578,6 +2563,8 @@ func (m *UpdateStorageFormReq) Validate() error {
 	// no validation rules for Id
 
 	// no validation rules for StateNum
+
+	// no validation rules for AreaId
 
 	return nil
 }
@@ -3228,6 +3215,8 @@ func (m *UpdateScrappedFormReq) Validate() error {
 
 	// no validation rules for StateNum
 
+	// no validation rules for AreaId
+
 	return nil
 }
 
@@ -3867,6 +3856,90 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListStorageFormReply_FormValidationError{}
+
+// Validate checks the field values on CreateStorageFormsReq_Asset with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *CreateStorageFormsReq_Asset) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Classes
+
+	// no validation rules for AreaId
+
+	// no validation rules for Address
+
+	// no validation rules for AssetInfo
+
+	// no validation rules for PicUrl
+
+	// no validation rules for Price
+
+	// no validation rules for OrderAt
+
+	// no validation rules for OrderNum
+
+	return nil
+}
+
+// CreateStorageFormsReq_AssetValidationError is the validation error returned
+// by CreateStorageFormsReq_Asset.Validate if the designated constraints
+// aren't met.
+type CreateStorageFormsReq_AssetValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateStorageFormsReq_AssetValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateStorageFormsReq_AssetValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateStorageFormsReq_AssetValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateStorageFormsReq_AssetValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateStorageFormsReq_AssetValidationError) ErrorName() string {
+	return "CreateStorageFormsReq_AssetValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateStorageFormsReq_AssetValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateStorageFormsReq_Asset.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateStorageFormsReq_AssetValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateStorageFormsReq_AssetValidationError{}
 
 // Validate checks the field values on ListScrappedFormReq_Conf with the rules
 // defined in the proto definition for this message. If any rules are

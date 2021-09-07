@@ -87,13 +87,6 @@ service ManagementInterface {
             body: "*"
         };
     }
-    // 创建资产
-    rpc CreateAsset(CreateAssetReq) returns (CreateAssetReply) {
-        option (google.api.http) = {
-            post: "/asset/create"
-            body: "*"
-        };
-    }
     // 得到资产信息
     rpc GetAsset(GetAssetReq) returns (GetAssetReply) {
         option (google.api.http) = {
@@ -125,15 +118,25 @@ service ManagementInterface {
     rpc CreateStorageForm(CreateStorageFormReq)
         returns (CreateStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/scrapped/create"
+            post: "/form/storage/create"
             body: "*"
         };
     }
-    // 更新申请表
-    rpc UpdateStorageForm(UpdateScrappedFormReq)
-        returns (UpdateScrappedFormReply) {
+
+    // 创建多申请表
+    rpc CreateStorageForms(CreateStorageFormsReq)
+        returns (CreateStorageFormsReply) {
         option (google.api.http) = {
-            post: "/form/scrapped/update"
+            post: "/form/storage/create"
+            body: "*"
+        };
+    }
+
+    // 更新申请表
+    rpc UpdateStorageForm(UpdateStorageFormReq)
+        returns (UpdateStorageFormReply) {
+        option (google.api.http) = {
+            post: "/form/storage/update"
             body: "*"
         };
     }
@@ -160,8 +163,8 @@ service ManagementInterface {
         };
     }
     // 更新申请表
-    rpc UpdateScrappedForm(UpdateStorageFormReq)
-        returns (UpdateStorageFormReply) {
+    rpc UpdateScrappedForm(UpdateScrappedFormReq)
+        returns (UpdateScrappedFormReply) {
         option (google.api.http) = {
             post: "/form/storage/update"
             body: "*"
@@ -248,13 +251,14 @@ message DeleteUserReply {
 //==========================================
 message ListAssetReq {
     message Condition {
-        string classes     = 1;
-        string address     = 2;
-        int32 stateNum     = 3;
-        int64 lowStorageAt = 4;
-        int64 upStorageAt  = 5;
-        string orderBy     = 6;
-        bool sortDesc      = 7;
+        string classes         = 1;
+        string address         = 2;
+        int32 stateNum         = 3;
+        int64 lowStorageAt     = 4;
+        int64 upStorageAt      = 5;
+        string orderBy         = 6;
+        bool sortDesc          = 7;
+        repeated uint32 areaId = 8;
     }
     Condition con  = 1;
     int64 pageNum  = 2;
@@ -303,33 +307,6 @@ message GetAssetReply {
     int64 scrappedAt = 15;
 }
 
-message CreateAssetReq {
-    string classes   = 1;
-    string address   = 3;
-    string assetInfo = 4;
-    string picUrl    = 5;
-    float price      = 6;
-    int64 orderAt    = 7;
-    string orderNum  = 8;
-}
-message CreateAssetReply {
-    uint64 id        = 1;
-    string classes   = 2;
-    string code      = 3;
-    uint32 areaId    = 4;
-    string address   = 5;
-    string assetInfo = 6;
-    string picUrl    = 7;
-    float price      = 8;
-    int64 orderAt    = 9;
-    string orderNum  = 10;
-    int32 stateNum   = 11;
-    string state     = 12;
-    int64 appliedAt  = 13;
-    int64 storageAt  = 14;
-    int64 scrappedAt = 15;
-}
-
 message UpdateAssetReq {
     uint64 id        = 1;
     string address   = 2;
@@ -338,7 +315,6 @@ message UpdateAssetReq {
     float price      = 5;
     int64 orderAt    = 6;
     string orderNum  = 7;
-    int32 stateNum   = 8;
 }
 
 message UpdateAssetReply {
@@ -383,11 +359,12 @@ message GetAreaReply {
 
 message ListStorageFormReq {
     message Conf {
-        uint64 applicantId = 1;
-        uint64 operatorId  = 2;
-        int32 stateNum     = 3;
-        uint64 assetId     = 4;
-        string assetCode   = 5;
+        uint64 applicantId     = 1;
+        uint64 operatorId      = 2;
+        int32 stateNum         = 3;
+        uint64 assetId         = 4;
+        string assetCode       = 5;
+        repeated uint32 areaId = 6;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;
@@ -430,10 +407,16 @@ message GetStorageFormReply {
 }
 
 message CreateStorageFormReq {
-    uint64 assetId   = 1;
-    string assetCode = 2;
-    uint32 areaId    = 3;
+    string classes   = 2;
+    uint32 areaId    = 4;
+    string address   = 5;
+    string assetInfo = 6;
+    string picUrl    = 7;
+    float price      = 8;
+    int64 orderAt    = 9;
+    string orderNum  = 10;
 }
+
 message CreateStorageFormReply {
     int64 id           = 1;
     int64 appliedAt    = 2;
@@ -449,9 +432,28 @@ message CreateStorageFormReply {
     uint32 areaId      = 13;
 }
 
+message CreateStorageFormsReq {
+    message Asset {
+        string classes   = 2;
+        uint32 areaId    = 4;
+        string address   = 5;
+        string assetInfo = 6;
+        string picUrl    = 7;
+        float price      = 8;
+        int64 orderAt    = 9;
+        string orderNum  = 10;
+    }
+    repeated Asset assets = 1;
+}
+
+message CreateStorageFormsReply {
+    bool ok = 1;
+}
+
 message UpdateStorageFormReq {
     int64 id       = 1;
     int32 stateNum = 2;
+    uint32 areaId  = 3;
 }
 message UpdateStorageFormReply {
     int64 id           = 1;
@@ -470,11 +472,12 @@ message UpdateStorageFormReply {
 
 message ListScrappedFormReq {
     message Conf {
-        uint64 applicantId = 1;
-        uint64 operatorId  = 2;
-        int32 stateNum     = 3;
-        uint64 assetId     = 4;
-        string assetCode   = 5;
+        uint64 applicantId     = 1;
+        uint64 operatorId      = 2;
+        int32 stateNum         = 3;
+        uint64 assetId         = 4;
+        string assetCode       = 5;
+        repeated uint32 areaId = 6;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;
@@ -539,6 +542,7 @@ message CreateScrappedFormReply {
 message UpdateScrappedFormReq {
     int64 id       = 1;
     int32 stateNum = 2;
+    uint32 areaId  = 3;
 }
 message UpdateScrappedFormReply {
     int64 id           = 1;

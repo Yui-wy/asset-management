@@ -67,6 +67,7 @@ func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStora
 			AssetId:     req.AssetId,
 			AssetCode:   req.AssetCode,
 			AreaId:      req.AreaId,
+			StateNum:    req.StateNum,
 		},
 	})
 	return &pb.CreateStorageFormReply{

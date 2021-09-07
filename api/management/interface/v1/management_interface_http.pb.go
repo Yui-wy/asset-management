@@ -18,9 +18,9 @@ var _ = binding.EncodeURL
 const _ = http.SupportPackageIsVersion1
 
 type ManagementInterfaceHTTPServer interface {
-	CreateAsset(context.Context, *CreateAssetReq) (*CreateAssetReply, error)
 	CreateScrappedForm(context.Context, *CreateScrappedFormReq) (*CreateScrappedFormReply, error)
 	CreateStorageForm(context.Context, *CreateStorageFormReq) (*CreateStorageFormReply, error)
+	CreateStorageForms(context.Context, *CreateStorageFormsReq) (*CreateStorageFormsReply, error)
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error)
 	GetArea(context.Context, *GetAreaReq) (*GetAreaReply, error)
 	GetAsset(context.Context, *GetAssetReq) (*GetAssetReply, error)
@@ -38,8 +38,8 @@ type ManagementInterfaceHTTPServer interface {
 	ModifyUserPd(context.Context, *ModifyUserPdReq) (*ModifyUserPdReply, error)
 	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	UpdateAsset(context.Context, *UpdateAssetReq) (*UpdateAssetReply, error)
-	UpdateScrappedForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error)
-	UpdateStorageForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error)
+	UpdateScrappedForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error)
+	UpdateStorageForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error)
 }
 
 func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfaceHTTPServer) {
@@ -55,13 +55,13 @@ func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfa
 	r.POST("/area/list", _ManagementInterface_ListArea0_HTTP_Handler(srv))
 	r.GET("/area/detail/{id}", _ManagementInterface_GetArea0_HTTP_Handler(srv))
 	r.POST("/asset/list", _ManagementInterface_ListAsset0_HTTP_Handler(srv))
-	r.POST("/asset/create", _ManagementInterface_CreateAsset0_HTTP_Handler(srv))
 	r.GET("/asset/detail/{id}", _ManagementInterface_GetAsset0_HTTP_Handler(srv))
 	r.POST("/asset/update", _ManagementInterface_UpdateAsset0_HTTP_Handler(srv))
 	r.POST("/form/storage/list", _ManagementInterface_ListStorageForm0_HTTP_Handler(srv))
 	r.GET("/form/storage/{id}", _ManagementInterface_GetStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/scrapped/create", _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/scrapped/update", _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv))
+	r.POST("/form/storage/create", _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv))
+	r.POST("/form/storage/create", _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv))
+	r.POST("/form/storage/update", _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv))
 	r.POST("/form/scrapped/list", _ManagementInterface_ListScrappedForm0_HTTP_Handler(srv))
 	r.GET("/form/scrapped/{id}", _ManagementInterface_GetScrappedForm0_HTTP_Handler(srv))
 	r.POST("/form/scrapped/create", _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv))
@@ -283,25 +283,6 @@ func _ManagementInterface_ListAsset0_HTTP_Handler(srv ManagementInterfaceHTTPSer
 	}
 }
 
-func _ManagementInterface_CreateAsset0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in CreateAssetReq
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/CreateAsset")
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateAsset(ctx, req.(*CreateAssetReq))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*CreateAssetReply)
-		return ctx.Result(200, reply)
-	}
-}
-
 func _ManagementInterface_GetAsset0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in GetAssetReq
@@ -403,21 +384,40 @@ func _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv ManagementInterfac
 	}
 }
 
-func _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
+func _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UpdateScrappedFormReq
+		var in CreateStorageFormsReq
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
-		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/UpdateStorageForm")
+		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/CreateStorageForms")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateStorageForm(ctx, req.(*UpdateScrappedFormReq))
+			return srv.CreateStorageForms(ctx, req.(*CreateStorageFormsReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*UpdateScrappedFormReply)
+		reply := out.(*CreateStorageFormsReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateStorageFormReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/UpdateStorageForm")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateStorageForm(ctx, req.(*UpdateStorageFormReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*UpdateStorageFormReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -484,27 +484,27 @@ func _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv ManagementInterfa
 
 func _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in UpdateStorageFormReq
+		var in UpdateScrappedFormReq
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/UpdateScrappedForm")
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateScrappedForm(ctx, req.(*UpdateStorageFormReq))
+			return srv.UpdateScrappedForm(ctx, req.(*UpdateScrappedFormReq))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*UpdateStorageFormReply)
+		reply := out.(*UpdateScrappedFormReply)
 		return ctx.Result(200, reply)
 	}
 }
 
 type ManagementInterfaceHTTPClient interface {
-	CreateAsset(ctx context.Context, req *CreateAssetReq, opts ...http.CallOption) (rsp *CreateAssetReply, err error)
 	CreateScrappedForm(ctx context.Context, req *CreateScrappedFormReq, opts ...http.CallOption) (rsp *CreateScrappedFormReply, err error)
 	CreateStorageForm(ctx context.Context, req *CreateStorageFormReq, opts ...http.CallOption) (rsp *CreateStorageFormReply, err error)
+	CreateStorageForms(ctx context.Context, req *CreateStorageFormsReq, opts ...http.CallOption) (rsp *CreateStorageFormsReply, err error)
 	DeleteUser(ctx context.Context, req *DeleteUserReq, opts ...http.CallOption) (rsp *DeleteUserReply, err error)
 	GetArea(ctx context.Context, req *GetAreaReq, opts ...http.CallOption) (rsp *GetAreaReply, err error)
 	GetAsset(ctx context.Context, req *GetAssetReq, opts ...http.CallOption) (rsp *GetAssetReply, err error)
@@ -522,8 +522,8 @@ type ManagementInterfaceHTTPClient interface {
 	ModifyUserPd(ctx context.Context, req *ModifyUserPdReq, opts ...http.CallOption) (rsp *ModifyUserPdReply, err error)
 	Register(ctx context.Context, req *RegisterReq, opts ...http.CallOption) (rsp *RegisterReply, err error)
 	UpdateAsset(ctx context.Context, req *UpdateAssetReq, opts ...http.CallOption) (rsp *UpdateAssetReply, err error)
-	UpdateScrappedForm(ctx context.Context, req *UpdateStorageFormReq, opts ...http.CallOption) (rsp *UpdateStorageFormReply, err error)
-	UpdateStorageForm(ctx context.Context, req *UpdateScrappedFormReq, opts ...http.CallOption) (rsp *UpdateScrappedFormReply, err error)
+	UpdateScrappedForm(ctx context.Context, req *UpdateScrappedFormReq, opts ...http.CallOption) (rsp *UpdateScrappedFormReply, err error)
+	UpdateStorageForm(ctx context.Context, req *UpdateStorageFormReq, opts ...http.CallOption) (rsp *UpdateStorageFormReply, err error)
 }
 
 type ManagementInterfaceHTTPClientImpl struct {
@@ -532,19 +532,6 @@ type ManagementInterfaceHTTPClientImpl struct {
 
 func NewManagementInterfaceHTTPClient(client *http.Client) ManagementInterfaceHTTPClient {
 	return &ManagementInterfaceHTTPClientImpl{client}
-}
-
-func (c *ManagementInterfaceHTTPClientImpl) CreateAsset(ctx context.Context, in *CreateAssetReq, opts ...http.CallOption) (*CreateAssetReply, error) {
-	var out CreateAssetReply
-	pattern := "/asset/create"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateAsset"))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
 }
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateScrappedForm(ctx context.Context, in *CreateScrappedFormReq, opts ...http.CallOption) (*CreateScrappedFormReply, error) {
@@ -562,9 +549,22 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateScrappedForm(ctx context.Conte
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForm(ctx context.Context, in *CreateStorageFormReq, opts ...http.CallOption) (*CreateStorageFormReply, error) {
 	var out CreateStorageFormReply
-	pattern := "/form/scrapped/create"
+	pattern := "/form/storage/create"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateStorageForm"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForms(ctx context.Context, in *CreateStorageFormsReq, opts ...http.CallOption) (*CreateStorageFormsReply, error) {
+	var out CreateStorageFormsReply
+	pattern := "/form/storage/create"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateStorageForms"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
@@ -794,8 +794,8 @@ func (c *ManagementInterfaceHTTPClientImpl) UpdateAsset(ctx context.Context, in 
 	return &out, err
 }
 
-func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Context, in *UpdateStorageFormReq, opts ...http.CallOption) (*UpdateStorageFormReply, error) {
-	var out UpdateStorageFormReply
+func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...http.CallOption) (*UpdateScrappedFormReply, error) {
+	var out UpdateScrappedFormReply
 	pattern := "/form/storage/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateScrappedForm"))
@@ -807,9 +807,9 @@ func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Conte
 	return &out, err
 }
 
-func (c *ManagementInterfaceHTTPClientImpl) UpdateStorageForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...http.CallOption) (*UpdateScrappedFormReply, error) {
-	var out UpdateScrappedFormReply
-	pattern := "/form/scrapped/update"
+func (c *ManagementInterfaceHTTPClientImpl) UpdateStorageForm(ctx context.Context, in *UpdateStorageFormReq, opts ...http.CallOption) (*UpdateStorageFormReply, error) {
+	var out UpdateStorageFormReply
+	pattern := "/form/storage/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateStorageForm"))
 	opts = append(opts, http.PathTemplate(pattern))

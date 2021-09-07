@@ -376,6 +376,8 @@ func (m *CreateStorageFormReq) Validate() error {
 
 	// no validation rules for AreaId
 
+	// no validation rules for StateNum
+
 	return nil
 }
 
@@ -1036,6 +1038,8 @@ func (m *CreateScrappedFormReq) Validate() error {
 	// no validation rules for AssetCode
 
 	// no validation rules for AreaId
+
+	// no validation rules for StateNum
 
 	return nil
 }

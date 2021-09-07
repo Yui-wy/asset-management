@@ -81,39 +81,6 @@
         ]
       }
     },
-    "/asset/create": {
-      "post": {
-        "summary": "创建资产",
-        "operationId": "ManagementInterface_CreateAsset",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1CreateAssetReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1CreateAssetReq"
-            }
-          }
-        ],
-        "tags": [
-          "ManagementInterface"
-        ]
-      }
-    },
     "/asset/detail/{id}": {
       "get": {
         "summary": "得到资产信息",
@@ -278,39 +245,6 @@
         ]
       }
     },
-    "/form/scrapped/update": {
-      "post": {
-        "summary": "更新申请表",
-        "operationId": "ManagementInterface_UpdateStorageForm",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1UpdateScrappedFormReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1UpdateScrappedFormReq"
-            }
-          }
-        ],
-        "tags": [
-          "ManagementInterface"
-        ]
-      }
-    },
     "/form/scrapped/{id}": {
       "get": {
         "summary": "查找表单",
@@ -336,6 +270,39 @@
             "required": true,
             "type": "string",
             "format": "int64"
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/storage/create": {
+      "post": {
+        "summary": "创建多申请表",
+        "operationId": "ManagementInterface_CreateStorageForms",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateStorageFormsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateStorageFormsReq"
+            }
           }
         ],
         "tags": [
@@ -384,7 +351,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateStorageFormReply"
+              "$ref": "#/definitions/v1UpdateScrappedFormReply"
             }
           },
           "default": {
@@ -400,7 +367,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1UpdateStorageFormReq"
+              "$ref": "#/definitions/v1UpdateScrappedFormReq"
             }
           }
         ],
@@ -706,6 +673,38 @@
     }
   },
   "definitions": {
+    "CreateStorageFormsReqAsset": {
+      "type": "object",
+      "properties": {
+        "classes": {
+          "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        }
+      }
+    },
     "ListAreaReplyAreas": {
       "type": "object",
       "properties": {
@@ -802,6 +801,13 @@
         },
         "sortDesc": {
           "type": "boolean"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },
@@ -855,92 +861,6 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
-        }
-      }
-    },
-    "v1CreateAssetReply": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "classes": {
-          "type": "string"
-        },
-        "code": {
-          "type": "string"
-        },
-        "areaId": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "address": {
-          "type": "string"
-        },
-        "assetInfo": {
-          "type": "string"
-        },
-        "picUrl": {
-          "type": "string"
-        },
-        "price": {
-          "type": "number",
-          "format": "float"
-        },
-        "orderAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "orderNum": {
-          "type": "string"
-        },
-        "stateNum": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "state": {
-          "type": "string"
-        },
-        "appliedAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "storageAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "scrappedAt": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "v1CreateAssetReq": {
-      "type": "object",
-      "properties": {
-        "classes": {
-          "type": "string"
-        },
-        "address": {
-          "type": "string"
-        },
-        "assetInfo": {
-          "type": "string"
-        },
-        "picUrl": {
-          "type": "string"
-        },
-        "price": {
-          "type": "number",
-          "format": "float"
-        },
-        "orderAt": {
-          "type": "string",
-          "format": "int64"
-        },
-        "orderNum": {
-          "type": "string"
         }
       }
     },
@@ -1061,16 +981,51 @@
     "v1CreateStorageFormReq": {
       "type": "object",
       "properties": {
-        "assetId": {
-          "type": "string",
-          "format": "uint64"
-        },
-        "assetCode": {
+        "classes": {
           "type": "string"
         },
         "areaId": {
           "type": "integer",
           "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "assetInfo": {
+          "type": "string"
+        },
+        "picUrl": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "orderAt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "orderNum": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateStorageFormsReply": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean"
+        }
+      }
+    },
+    "v1CreateStorageFormsReq": {
+      "type": "object",
+      "properties": {
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CreateStorageFormsReqAsset"
+          }
         }
       }
     },
@@ -1438,6 +1393,13 @@
         },
         "assetCode": {
           "type": "string"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },
@@ -1538,6 +1500,13 @@
         },
         "assetCode": {
           "type": "string"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
         }
       }
     },
@@ -1745,10 +1714,6 @@
         },
         "orderNum": {
           "type": "string"
-        },
-        "stateNum": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },
@@ -1811,6 +1776,10 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
@@ -1873,6 +1842,10 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     }

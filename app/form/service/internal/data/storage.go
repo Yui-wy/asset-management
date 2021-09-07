@@ -100,7 +100,7 @@ func (repo *storageRepo) CreateForm(ctx context.Context, sf *biz.StorageForm) (*
 		AppliedAt:   sf.AppliedAt,
 		ApplicantId: sf.ApplicantId,
 		Applicant:   sf.Applicant,
-		StateNum:    setting.FORM_SUBMITTED,
+		StateNum:    sf.StateNum,
 		AssetId:     sf.AssetId,
 		AssetCode:   sf.AssetCode,
 	}

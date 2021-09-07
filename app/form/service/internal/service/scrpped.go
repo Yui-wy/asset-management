@@ -65,6 +65,7 @@ func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScra
 			Applicant:   req.Applicant,
 			AssetId:     req.AssetId,
 			AssetCode:   req.AssetCode,
+			StateNum:    req.StateNum,
 		},
 	})
 	return &pb.CreateScrappedFormReply{

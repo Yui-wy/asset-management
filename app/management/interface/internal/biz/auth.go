@@ -22,11 +22,9 @@ func NewAuthUseCase(conf *conf.Auth, repo UserRepo) *AuthUseCase {
 	}
 }
 
-func (r AuthUseCase) Auth(userId uint64, areaId []uint32, power int32, sign string) (string, error) {
+func (r AuthUseCase) Auth(userId uint64, sign string) (string, error) {
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": userId,
-		"area_id": areaId,
-		"power":   power,
 		"sign":    sign,
 		"exp":     time.Now().Unix() + 864000,
 	})
@@ -53,8 +51,9 @@ func (r AuthUseCase) CheckJWT(ctx context.Context, jwtToken string) (map[string]
 		return nil, errors.New("token overtime.")
 	}
 	result := make(map[string]interface{}, 3)
-	result["user_id"] = claims["user_id"]
-	result["area_id"] = claims["area_id"]
-	result["power"] = claims["power"]
+	result["user_id"] = u.Id
+	result["user_name"] = u.Username
+	result["area_id"] = u.AreaIds
+	result["power"] = u.Power
 	return result, nil
 }

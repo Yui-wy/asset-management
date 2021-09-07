@@ -43,8 +43,6 @@ type ManagementInterfaceClient interface {
 	// 资产系统 =================================
 	// 列出资产(按条件)
 	ListAsset(ctx context.Context, in *ListAssetReq, opts ...grpc.CallOption) (*ListAssetReply, error)
-	// 创建资产
-	CreateAsset(ctx context.Context, in *CreateAssetReq, opts ...grpc.CallOption) (*CreateAssetReply, error)
 	// 得到资产信息
 	GetAsset(ctx context.Context, in *GetAssetReq, opts ...grpc.CallOption) (*GetAssetReply, error)
 	// 更新资产信息
@@ -56,8 +54,10 @@ type ManagementInterfaceClient interface {
 	GetStorageForm(ctx context.Context, in *GetStorageFormReq, opts ...grpc.CallOption) (*GetStorageFormReply, error)
 	// 创建申请表
 	CreateStorageForm(ctx context.Context, in *CreateStorageFormReq, opts ...grpc.CallOption) (*CreateStorageFormReply, error)
+	// 创建多申请表
+	CreateStorageForms(ctx context.Context, in *CreateStorageFormsReq, opts ...grpc.CallOption) (*CreateStorageFormsReply, error)
 	// 更新申请表
-	UpdateStorageForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...grpc.CallOption) (*UpdateScrappedFormReply, error)
+	UpdateStorageForm(ctx context.Context, in *UpdateStorageFormReq, opts ...grpc.CallOption) (*UpdateStorageFormReply, error)
 	// 列出表单
 	ListScrappedForm(ctx context.Context, in *ListScrappedFormReq, opts ...grpc.CallOption) (*ListScrappedFormReply, error)
 	// 查找表单
@@ -65,7 +65,7 @@ type ManagementInterfaceClient interface {
 	// 创建申请表
 	CreateScrappedForm(ctx context.Context, in *CreateScrappedFormReq, opts ...grpc.CallOption) (*CreateScrappedFormReply, error)
 	// 更新申请表
-	UpdateScrappedForm(ctx context.Context, in *UpdateStorageFormReq, opts ...grpc.CallOption) (*UpdateStorageFormReply, error)
+	UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...grpc.CallOption) (*UpdateScrappedFormReply, error)
 }
 
 type managementInterfaceClient struct {
@@ -175,15 +175,6 @@ func (c *managementInterfaceClient) ListAsset(ctx context.Context, in *ListAsset
 	return out, nil
 }
 
-func (c *managementInterfaceClient) CreateAsset(ctx context.Context, in *CreateAssetReq, opts ...grpc.CallOption) (*CreateAssetReply, error) {
-	out := new(CreateAssetReply)
-	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/CreateAsset", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *managementInterfaceClient) GetAsset(ctx context.Context, in *GetAssetReq, opts ...grpc.CallOption) (*GetAssetReply, error) {
 	out := new(GetAssetReply)
 	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/GetAsset", in, out, opts...)
@@ -229,8 +220,17 @@ func (c *managementInterfaceClient) CreateStorageForm(ctx context.Context, in *C
 	return out, nil
 }
 
-func (c *managementInterfaceClient) UpdateStorageForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...grpc.CallOption) (*UpdateScrappedFormReply, error) {
-	out := new(UpdateScrappedFormReply)
+func (c *managementInterfaceClient) CreateStorageForms(ctx context.Context, in *CreateStorageFormsReq, opts ...grpc.CallOption) (*CreateStorageFormsReply, error) {
+	out := new(CreateStorageFormsReply)
+	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/CreateStorageForms", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managementInterfaceClient) UpdateStorageForm(ctx context.Context, in *UpdateStorageFormReq, opts ...grpc.CallOption) (*UpdateStorageFormReply, error) {
+	out := new(UpdateStorageFormReply)
 	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/UpdateStorageForm", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -265,8 +265,8 @@ func (c *managementInterfaceClient) CreateScrappedForm(ctx context.Context, in *
 	return out, nil
 }
 
-func (c *managementInterfaceClient) UpdateScrappedForm(ctx context.Context, in *UpdateStorageFormReq, opts ...grpc.CallOption) (*UpdateStorageFormReply, error) {
-	out := new(UpdateStorageFormReply)
+func (c *managementInterfaceClient) UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...grpc.CallOption) (*UpdateScrappedFormReply, error) {
+	out := new(UpdateScrappedFormReply)
 	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/UpdateScrappedForm", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -303,8 +303,6 @@ type ManagementInterfaceServer interface {
 	// 资产系统 =================================
 	// 列出资产(按条件)
 	ListAsset(context.Context, *ListAssetReq) (*ListAssetReply, error)
-	// 创建资产
-	CreateAsset(context.Context, *CreateAssetReq) (*CreateAssetReply, error)
 	// 得到资产信息
 	GetAsset(context.Context, *GetAssetReq) (*GetAssetReply, error)
 	// 更新资产信息
@@ -316,8 +314,10 @@ type ManagementInterfaceServer interface {
 	GetStorageForm(context.Context, *GetStorageFormReq) (*GetStorageFormReply, error)
 	// 创建申请表
 	CreateStorageForm(context.Context, *CreateStorageFormReq) (*CreateStorageFormReply, error)
+	// 创建多申请表
+	CreateStorageForms(context.Context, *CreateStorageFormsReq) (*CreateStorageFormsReply, error)
 	// 更新申请表
-	UpdateStorageForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error)
+	UpdateStorageForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error)
 	// 列出表单
 	ListScrappedForm(context.Context, *ListScrappedFormReq) (*ListScrappedFormReply, error)
 	// 查找表单
@@ -325,7 +325,7 @@ type ManagementInterfaceServer interface {
 	// 创建申请表
 	CreateScrappedForm(context.Context, *CreateScrappedFormReq) (*CreateScrappedFormReply, error)
 	// 更新申请表
-	UpdateScrappedForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error)
+	UpdateScrappedForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error)
 	mustEmbedUnimplementedManagementInterfaceServer()
 }
 
@@ -366,9 +366,6 @@ func (UnimplementedManagementInterfaceServer) GetArea(context.Context, *GetAreaR
 func (UnimplementedManagementInterfaceServer) ListAsset(context.Context, *ListAssetReq) (*ListAssetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListAsset not implemented")
 }
-func (UnimplementedManagementInterfaceServer) CreateAsset(context.Context, *CreateAssetReq) (*CreateAssetReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateAsset not implemented")
-}
 func (UnimplementedManagementInterfaceServer) GetAsset(context.Context, *GetAssetReq) (*GetAssetReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAsset not implemented")
 }
@@ -384,7 +381,10 @@ func (UnimplementedManagementInterfaceServer) GetStorageForm(context.Context, *G
 func (UnimplementedManagementInterfaceServer) CreateStorageForm(context.Context, *CreateStorageFormReq) (*CreateStorageFormReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateStorageForm not implemented")
 }
-func (UnimplementedManagementInterfaceServer) UpdateStorageForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error) {
+func (UnimplementedManagementInterfaceServer) CreateStorageForms(context.Context, *CreateStorageFormsReq) (*CreateStorageFormsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateStorageForms not implemented")
+}
+func (UnimplementedManagementInterfaceServer) UpdateStorageForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateStorageForm not implemented")
 }
 func (UnimplementedManagementInterfaceServer) ListScrappedForm(context.Context, *ListScrappedFormReq) (*ListScrappedFormReply, error) {
@@ -396,7 +396,7 @@ func (UnimplementedManagementInterfaceServer) GetScrappedForm(context.Context, *
 func (UnimplementedManagementInterfaceServer) CreateScrappedForm(context.Context, *CreateScrappedFormReq) (*CreateScrappedFormReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateScrappedForm not implemented")
 }
-func (UnimplementedManagementInterfaceServer) UpdateScrappedForm(context.Context, *UpdateStorageFormReq) (*UpdateStorageFormReply, error) {
+func (UnimplementedManagementInterfaceServer) UpdateScrappedForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateScrappedForm not implemented")
 }
 func (UnimplementedManagementInterfaceServer) mustEmbedUnimplementedManagementInterfaceServer() {}
@@ -610,24 +610,6 @@ func _ManagementInterface_ListAsset_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ManagementInterface_CreateAsset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateAssetReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ManagementInterfaceServer).CreateAsset(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/management.interface.v1.ManagementInterface/CreateAsset",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ManagementInterfaceServer).CreateAsset(ctx, req.(*CreateAssetReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ManagementInterface_GetAsset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetAssetReq)
 	if err := dec(in); err != nil {
@@ -718,8 +700,26 @@ func _ManagementInterface_CreateStorageForm_Handler(srv interface{}, ctx context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ManagementInterface_CreateStorageForms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateStorageFormsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagementInterfaceServer).CreateStorageForms(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/management.interface.v1.ManagementInterface/CreateStorageForms",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagementInterfaceServer).CreateStorageForms(ctx, req.(*CreateStorageFormsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ManagementInterface_UpdateStorageForm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateScrappedFormReq)
+	in := new(UpdateStorageFormReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -731,7 +731,7 @@ func _ManagementInterface_UpdateStorageForm_Handler(srv interface{}, ctx context
 		FullMethod: "/management.interface.v1.ManagementInterface/UpdateStorageForm",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ManagementInterfaceServer).UpdateStorageForm(ctx, req.(*UpdateScrappedFormReq))
+		return srv.(ManagementInterfaceServer).UpdateStorageForm(ctx, req.(*UpdateStorageFormReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -791,7 +791,7 @@ func _ManagementInterface_CreateScrappedForm_Handler(srv interface{}, ctx contex
 }
 
 func _ManagementInterface_UpdateScrappedForm_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateStorageFormReq)
+	in := new(UpdateScrappedFormReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -803,7 +803,7 @@ func _ManagementInterface_UpdateScrappedForm_Handler(srv interface{}, ctx contex
 		FullMethod: "/management.interface.v1.ManagementInterface/UpdateScrappedForm",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ManagementInterfaceServer).UpdateScrappedForm(ctx, req.(*UpdateStorageFormReq))
+		return srv.(ManagementInterfaceServer).UpdateScrappedForm(ctx, req.(*UpdateScrappedFormReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -860,10 +860,6 @@ var ManagementInterface_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ManagementInterface_ListAsset_Handler,
 		},
 		{
-			MethodName: "CreateAsset",
-			Handler:    _ManagementInterface_CreateAsset_Handler,
-		},
-		{
 			MethodName: "GetAsset",
 			Handler:    _ManagementInterface_GetAsset_Handler,
 		},
@@ -882,6 +878,10 @@ var ManagementInterface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateStorageForm",
 			Handler:    _ManagementInterface_CreateStorageForm_Handler,
+		},
+		{
+			MethodName: "CreateStorageForms",
+			Handler:    _ManagementInterface_CreateStorageForms_Handler,
 		},
 		{
 			MethodName: "UpdateStorageForm",

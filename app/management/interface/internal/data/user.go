@@ -30,9 +30,6 @@ func (rp *userRepo) Login(ctx context.Context, username, password string) (*biz.
 	if err != nil {
 		return nil, err
 	}
-	au, err := rp.data.ac.GetUser(ctx, &av1.GetUserReq{
-		Uid: u.Id,
-	})
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +37,6 @@ func (rp *userRepo) Login(ctx context.Context, username, password string) (*biz.
 		Id:         u.Id,
 		Username:   u.Username,
 		UpdataSign: u.UpdataSign,
-		Power:      au.Power,
 	}, nil
 }
 
@@ -80,10 +76,11 @@ func (rp *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error) {
 		return nil, err
 	}
 	return &biz.User{
-		Id:       u.Id,
-		Username: u.Username,
-		Power:    au.Power,
-		AreaIds:  au.AreaIds,
+		Id:         u.Id,
+		UpdataSign: u.UpdataSign,
+		Username:   u.Username,
+		Power:      au.Power,
+		AreaIds:    au.AreaIds,
 	}, nil
 }
 func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaIds []uint32, nextPower int32) ([]*biz.User, error) {

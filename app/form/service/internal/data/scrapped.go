@@ -100,7 +100,7 @@ func (repo *scrappedRepo) CreateForm(ctx context.Context, sf *biz.ScrappedForm) 
 		ApplicantId: sf.ApplicantId,
 		Applicant:   sf.Applicant,
 		AppliedAt:   sf.AppliedAt,
-		StateNum:    setting.FORM_SUBMITTED,
+		StateNum:    sf.StateNum,
 		AssetId:     sf.AssetId,
 		AssetCode:   sf.AssetCode,
 	}
