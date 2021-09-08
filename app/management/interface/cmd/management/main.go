@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/Yui-wy/asset-management/app/management/interface/internal/conf"
@@ -45,7 +46,15 @@ func newApp(logger log.Logger, gs *grpc.Server, rr registry.Registrar) *kratos.A
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
+
+	logPath, err := os.Create("./management.log")
+	if err != nil {
+		fmt.Println("create file error: ", err)
+		return
+	}
+	logger2 := log.NewFilter(log.NewStdLogger(logPath), log.FilterLevel(log.LevelDebug))
+	logger1 := log.NewStdLogger(os.Stdout)
+	logger := log.With(log.MultiLogger(logger1, logger2),
 		"ts", log.DefaultTimestamp,
 		"caller", log.DefaultCaller,
 		"service.id", id,

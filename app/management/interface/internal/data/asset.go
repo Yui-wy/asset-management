@@ -231,7 +231,32 @@ func (rp *assetRepo) CreateStorageForm(ctx context.Context, form *biz.StorageFor
 		AreaId:      f.AreaId,
 	}, nil
 }
-func (rp *assetRepo) UpdateStorageForm(ctx context.Context, form *biz.StorageForm) (*biz.StorageForm, error)
+func (rp *assetRepo) UpdateStorageForm(ctx context.Context, form *biz.StorageForm) (*biz.StorageForm, error) {
+	f, err := rp.data.fc.UpdateStorageForm(ctx, &fv1.UpdateStorageFormReq{
+		Id:         form.Id,
+		OperatedAt: form.OperatedAt,
+		OperatorId: form.OperatorId,
+		Operator:   form.Operator,
+		StateNum:   form.StateNum,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &biz.StorageForm{
+		Id:          f.Id,
+		AppliedAt:   f.AppliedAt,
+		ApplicantId: f.ApplicantId,
+		Applicant:   f.Applicant,
+		OperatedAt:  f.OperatedAt,
+		OperatorId:  f.OperatorId,
+		Operator:    f.Operator,
+		StateNum:    f.StateNum,
+		State:       f.State,
+		AssetId:     f.AssetId,
+		AssetCode:   f.AssetCode,
+		AreaId:      f.AreaId,
+	}, nil
+}
 
 // scrapp
 func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondition, pageNum, pageSize int64) ([]*biz.ScrappedForm, error) {
@@ -314,4 +339,29 @@ func (rp *assetRepo) CreateScrappedForm(ctx context.Context, form *biz.ScrappedF
 		AreaId:      f.AreaId,
 	}, nil
 }
-func (rp *assetRepo) UpdateScrappedForm(ctx context.Context, form *biz.ScrappedForm) (*biz.ScrappedForm, error)
+func (rp *assetRepo) UpdateScrappedForm(ctx context.Context, form *biz.ScrappedForm) (*biz.ScrappedForm, error) {
+	f, err := rp.data.fc.UpdateScrappedForm(ctx, &fv1.UpdateScrappedFormReq{
+		Id:         form.Id,
+		OperatedAt: form.OperatedAt,
+		OperatorId: form.OperatorId,
+		Operator:   form.Operator,
+		StateNum:   form.StateNum,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &biz.ScrappedForm{
+		Id:          f.Id,
+		AppliedAt:   f.AppliedAt,
+		ApplicantId: f.ApplicantId,
+		Applicant:   f.Applicant,
+		OperatedAt:  f.OperatedAt,
+		OperatorId:  f.OperatorId,
+		Operator:    f.Operator,
+		StateNum:    f.StateNum,
+		State:       f.State,
+		AssetId:     f.AssetId,
+		AssetCode:   f.AssetCode,
+		AreaId:      f.AreaId,
+	}, nil
+}
