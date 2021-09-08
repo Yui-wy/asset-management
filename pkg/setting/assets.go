@@ -1,16 +1,16 @@
 package setting
 
 var ASSETS_STATE_MAP = map[int32]string{
-	0: "未知状态, 请确认",
-	1: "库内",
-	2: "入库申请中",
-	3: "采购中",
-	4: "采购申请中",
-	5: "报废",
-	6: "报废申请中",
-	7: "检修中",
-	8: "修理中",
-	9: "入库失败",
+	ASSETS_STATE_UNKNOWN:     "未知状态, 请确认",
+	ASSETS_STATE_ST:          "库内",
+	ASSETS_STATE_ST_APPLY:    "入库申请中",
+	ASSETS_STATE_ORDER:       "采购中",
+	ASSETS_STATE_ORDER_APPLY: "采购申请中",
+	ASSETS_STATE_SP:          "报废",
+	ASSETS_STATE_SP_APPLY:    "报废申请中",
+	ASSETS_STATE_CHECKING:    "检修中",
+	ASSETS_STATE_REPAIRING:   "修理中",
+	ASSETS_STATE_ST_FAIL:     "入库失败",
 }
 
 const (
@@ -31,8 +31,3 @@ const (
 	AREA_ADMIN_USER  = 1
 	AREA_USER        = 2
 )
-
-var TABLE_MAP = map[int32]string{
-	AREA_ADMIN_USER: "admin_areas",
-	AREA_USER:       "user_areas",
-}

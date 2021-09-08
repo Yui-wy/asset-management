@@ -46,7 +46,7 @@ func newApp(logger log.Logger, gs *grpc.Server, rr registry.Registrar) *kratos.A
 
 func main() {
 	flag.Parse()
-	logPath, err := os.Create("./user.log")
+	logPath, err := os.Create("/log/user.log")
 	if err != nil {
 		fmt.Println("create file error: ", err)
 		return

@@ -14,6 +14,11 @@ import (
 
 var _ biz.UserRepo = (*userRepo)(nil)
 
+var TABLE_MAP = map[int32]string{
+	setting.AREA_ADMIN_USER: "admin_areas",
+	setting.AREA_USER:       "user_areas",
+}
+
 type userRepo struct {
 	data *Data
 	log  *log.Helper
@@ -34,7 +39,7 @@ type AdminArea struct {
 }
 
 func (AdminArea) TableName() string {
-	return setting.TABLE_MAP[setting.AREA_ADMIN_USER]
+	return TABLE_MAP[setting.AREA_ADMIN_USER]
 }
 
 type UserArea struct {
@@ -45,7 +50,7 @@ type UserArea struct {
 }
 
 func (UserArea) TableName() string {
-	return setting.TABLE_MAP[setting.AREA_USER]
+	return TABLE_MAP[setting.AREA_USER]
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
@@ -72,7 +77,7 @@ func (repo *userRepo) GetUser(ctx context.Context, uid uint64) (*biz.User, error
 	}
 	var areaIdMaps []map[string]interface{}
 	result = repo.data.db.WithContext(ctx).
-		Table(setting.TABLE_MAP[u.Power]).
+		Table(TABLE_MAP[u.Power]).
 		Where("uid = ?", uid).
 		Find(&areaIdMaps)
 	if result.Error != nil {
@@ -126,7 +131,7 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		})
 	}
 	result = tx.WithContext(ctx).
-		Table(setting.TABLE_MAP[u.Power]).
+		Table(TABLE_MAP[u.Power]).
 		Create(umap)
 	if result.Error != nil {
 		tx.Rollback()
@@ -157,7 +162,7 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		return nil, errors.New(500, "Super admin", "super admin can not be updated.")
 	}
 	result = tx.WithContext(ctx).
-		Exec(fmt.Sprintf("DELETE FROM %s WHERE uid=?", setting.TABLE_MAP[uu.Power]), uu.Uid)
+		Exec(fmt.Sprintf("DELETE FROM %s WHERE uid=?", TABLE_MAP[uu.Power]), uu.Uid)
 	if result.Error != nil {
 		tx.Rollback()
 		repo.log.Errorf(" UpdateUser2. Error:%d", result.Error)
@@ -179,7 +184,7 @@ func (repo *userRepo) UpdateUser(ctx context.Context, u *biz.User) (*biz.User, e
 		})
 	}
 	result = tx.WithContext(ctx).
-		Table(setting.TABLE_MAP[uu.Power]).
+		Table(TABLE_MAP[uu.Power]).
 		Create(umap)
 	if result.Error != nil {
 		tx.Rollback()
@@ -211,7 +216,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 		// 按Areaids搜索
 		results := []map[string]interface{}{}
 		result := repo.data.db.WithContext(ctx).
-			Table(setting.TABLE_MAP[power]).
+			Table(TABLE_MAP[power]).
 			Where("aid = ?", areaIds[0]).Find(&results)
 		if result.Error != nil {
 			repo.log.Errorf(" ListUser2. Error:%d", result.Error)
@@ -224,7 +229,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 		for i := 1; i < len(areaIds); i++ {
 			results = []map[string]interface{}{}
 			result = repo.data.db.WithContext(ctx).
-				Table(setting.TABLE_MAP[power]).
+				Table(TABLE_MAP[power]).
 				Where("aid = ?", areaIds[i]).
 				Where("uid IN ?", uids).
 				Find(&results)
@@ -251,7 +256,7 @@ func (repo *userRepo) ListUser(ctx context.Context, power int32, areaIds []uint3
 	for _, u := range us {
 		var areaIdMaps []map[string]interface{}
 		result := repo.data.db.WithContext(ctx).
-			Table(setting.TABLE_MAP[u.Power]).
+			Table(TABLE_MAP[u.Power]).
 			Where("uid = ?", u.Uid).
 			Find(&areaIdMaps)
 		if result.Error != nil {
