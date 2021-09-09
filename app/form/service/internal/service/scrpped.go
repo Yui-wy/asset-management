@@ -9,6 +9,9 @@ import (
 
 func (s *FormService) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFormReq) (*pb.GetScrappedFormReply, error) {
 	form, err := s.spu.Get(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.GetScrappedFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -22,7 +25,7 @@ func (s *FormService) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFo
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }
 func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
 	forms, err := s.spu.List(ctx, &biz.ScConfig{
@@ -35,6 +38,9 @@ func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrapped
 			AreaId:      req.Conf.AreaId,
 		},
 	}, req.PageNum, req.PageSize)
+	if err != nil {
+		return nil, err
+	}
 	reply := make([]*pb.ListScrappedFormReply_Form, 0)
 	for _, form := range forms {
 		reply = append(reply, &pb.ListScrappedFormReply_Form{
@@ -54,7 +60,7 @@ func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrapped
 	}
 	return &pb.ListScrappedFormReply{
 		Forms: reply,
-	}, err
+	}, nil
 }
 func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScrappedFormReq) (*pb.CreateScrappedFormReply, error) {
 	form, err := s.spu.Create(ctx, &biz.ScrappedForm{
@@ -68,6 +74,9 @@ func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScra
 			StateNum:    req.StateNum,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.CreateScrappedFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -81,7 +90,7 @@ func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScra
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }
 func (s *FormService) UpdateScrappedForm(ctx context.Context, req *pb.UpdateScrappedFormReq) (*pb.UpdateScrappedFormReply, error) {
 	form, err := s.spu.Update(ctx, &biz.ScrappedForm{
@@ -93,6 +102,9 @@ func (s *FormService) UpdateScrappedForm(ctx context.Context, req *pb.UpdateScra
 			StateNum:   req.StateNum,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.UpdateScrappedFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -106,5 +118,5 @@ func (s *FormService) UpdateScrappedForm(ctx context.Context, req *pb.UpdateScra
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }

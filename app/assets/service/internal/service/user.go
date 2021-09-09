@@ -16,7 +16,7 @@ func (s *AssetsService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.Ge
 		Uid:     u.Uid,
 		Power:   u.Power,
 		AreaIds: u.AreaIds,
-	}, err
+	}, nil
 }
 func (s *AssetsService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*pb.CreateUserReply, error) {
 	if len(req.AreaIds) == 0 {
@@ -34,7 +34,7 @@ func (s *AssetsService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (
 		Uid:     u.Uid,
 		Power:   u.Power,
 		AreaIds: u.AreaIds,
-	}, err
+	}, nil
 }
 func (s *AssetsService) UpdateUserArea(ctx context.Context, req *pb.UpdateUserAreaReq) (*pb.UpdateUserAreaReply, error) {
 	u, err := s.uc.Update(ctx, &biz.User{
@@ -49,7 +49,7 @@ func (s *AssetsService) UpdateUserArea(ctx context.Context, req *pb.UpdateUserAr
 		Uid:     u.Uid,
 		Power:   u.Power,
 		AreaIds: u.AreaIds,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
@@ -67,5 +67,5 @@ func (s *AssetsService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.
 	}
 	return &pb.ListUserReply{
 		Results: users,
-	}, err
+	}, nil
 }

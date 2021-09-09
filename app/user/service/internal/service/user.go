@@ -34,20 +34,26 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*p
 	return &pb.CreateUserReply{
 		Id:       user.Id,
 		Username: user.Username,
-	}, err
+	}, nil
 }
 
 func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetUserReply, error) {
 	user, err := s.uc.Get(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.GetUserReply{
 		Id:         user.Id,
 		Username:   user.Username,
 		UpdataSign: user.UpdataSign,
-	}, err
+	}, nil
 }
 
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
 	users, err := s.uc.List(ctx, req.Ids, req.PageNum, req.PageSize)
+	if err != nil {
+		return nil, err
+	}
 	rs := make([]*pb.ListUserReply_User, 0)
 	for _, x := range users {
 		rs = append(rs, &pb.ListUserReply_User{
@@ -57,14 +63,17 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 	}
 	return &pb.ListUserReply{
 		Results: rs,
-	}, err
+	}, nil
 }
 
 func (s *UserService) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
 	ok, err := s.uc.Deleted(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.DeleteUserReply{
 		Ok: ok,
-	}, err
+	}, nil
 }
 
 func (s *UserService) UpdatePassword(ctx context.Context, req *pb.UpdatePasswordReq) (*pb.UpdatePasswordReply, error) {
@@ -72,10 +81,13 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *pb.UpdatePassword
 		Id:       req.Id,
 		Password: req.Password,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.UpdatePasswordReply{
 		Id:       user.Id,
 		Username: user.Username,
-	}, err
+	}, nil
 }
 
 func (s *UserService) VerifyPassword(ctx context.Context, req *pb.VerifyPasswordReq) (*pb.VerifyPasswordReply, error) {
@@ -83,9 +95,12 @@ func (s *UserService) VerifyPassword(ctx context.Context, req *pb.VerifyPassword
 		Username: req.Username,
 		Password: req.Password,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.VerifyPasswordReply{
 		Id:         u.Id,
 		Username:   u.Username,
 		UpdataSign: u.UpdataSign,
-	}, err
+	}, nil
 }

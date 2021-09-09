@@ -9,10 +9,13 @@ import (
 
 func (s *AssetsService) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.GetAreaReply, error) {
 	area, err := s.arc.Get(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.GetAreaReply{
 		Id:       area.Id,
 		AreaInfo: area.AreaInfo,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*pb.ListAreasReply, error) {
@@ -29,7 +32,7 @@ func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*p
 	}
 	return &pb.ListAreasReply{
 		Areas: rs,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsReq) (*pb.GetAreaByIdsReply, error) {
@@ -46,7 +49,7 @@ func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsRe
 	}
 	return &pb.GetAreaByIdsReply{
 		Areas: rs,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) CreateArea(ctx context.Context, req *pb.CreateAreaReq) (*pb.CreateAreaReply, error) {
@@ -60,7 +63,7 @@ func (s *AssetsService) CreateArea(ctx context.Context, req *pb.CreateAreaReq) (
 	return &pb.CreateAreaReply{
 		Id:       area.Id,
 		AreaInfo: area.AreaInfo,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) UpdateArea(ctx context.Context, req *pb.UpdateAreaReq) (*pb.UpdateAreaReply, error) {
@@ -68,15 +71,21 @@ func (s *AssetsService) UpdateArea(ctx context.Context, req *pb.UpdateAreaReq) (
 		Id:       req.Id,
 		AreaInfo: req.AreaInfo,
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.UpdateAreaReply{
 		Id:       area.Id,
 		AreaInfo: area.AreaInfo,
-	}, err
+	}, nil
 }
 
 func (s *AssetsService) DeleteArea(ctx context.Context, req *pb.DeleteAreaReq) (*pb.DeleteAreaReply, error) {
 	ok, err := s.arc.Delete(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.DeleteAreaReply{
 		Ok: ok,
-	}, err
+	}, nil
 }

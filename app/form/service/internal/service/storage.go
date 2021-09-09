@@ -9,6 +9,9 @@ import (
 
 func (s *FormService) GetStorageForm(ctx context.Context, req *pb.GetStorageFormReq) (*pb.GetStorageFormReply, error) {
 	form, err := s.stu.Get(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
 	return &pb.GetStorageFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -22,7 +25,7 @@ func (s *FormService) GetStorageForm(ctx context.Context, req *pb.GetStorageForm
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }
 func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
 	forms, err := s.stu.List(ctx,
@@ -36,6 +39,9 @@ func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFo
 				AssetCode:   req.Conf.AssetCode,
 			},
 		}, req.PageNum, req.PageSize)
+	if err != nil {
+		return nil, err
+	}
 	reply := make([]*pb.ListStorageFormReply_Form, 0)
 	for _, form := range forms {
 		reply = append(reply, &pb.ListStorageFormReply_Form{
@@ -55,10 +61,9 @@ func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFo
 	}
 	return &pb.ListStorageFormReply{
 		Forms: reply,
-	}, err
+	}, nil
 }
 func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStorageFormReq) (*pb.CreateStorageFormReply, error) {
-
 	form, err := s.stu.Create(ctx, &biz.StorageForm{
 		BaseForm: &biz.BaseForm{
 			ApplicantId: req.ApplicantId,
@@ -70,6 +75,9 @@ func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStora
 			StateNum:    req.StateNum,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.CreateStorageFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -83,7 +91,7 @@ func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStora
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }
 func (s *FormService) UpdateStorageForm(ctx context.Context, req *pb.UpdateStorageFormReq) (*pb.UpdateStorageFormReply, error) {
 	form, err := s.stu.Update(ctx, &biz.StorageForm{
@@ -95,6 +103,9 @@ func (s *FormService) UpdateStorageForm(ctx context.Context, req *pb.UpdateStora
 			StateNum:   req.StateNum,
 		},
 	})
+	if err != nil {
+		return nil, err
+	}
 	return &pb.UpdateStorageFormReply{
 		Id:          form.Id,
 		AppliedAt:   form.AppliedAt,
@@ -108,5 +119,5 @@ func (s *FormService) UpdateStorageForm(ctx context.Context, req *pb.UpdateStora
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
-	}, err
+	}, nil
 }
