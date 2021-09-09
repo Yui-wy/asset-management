@@ -64,7 +64,7 @@ func NewDiscovery(conf *conf.Registry) registry.Discovery {
 	return r
 }
 
-func NewUserServiceClient(r registry.Discovery) userv1.UserClient {
+func NewUserServiceClient(r registry.Discovery, conf *conf.Client) userv1.UserClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("discovery:///asmg.user.service"),
@@ -72,6 +72,7 @@ func NewUserServiceClient(r registry.Discovery) userv1.UserClient {
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
+		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)
@@ -79,7 +80,7 @@ func NewUserServiceClient(r registry.Discovery) userv1.UserClient {
 	return userv1.NewUserClient(conn)
 }
 
-func NewAssetServiceClient(r registry.Discovery) assetv1.AssetsClient {
+func NewAssetServiceClient(r registry.Discovery, conf *conf.Client) assetv1.AssetsClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("discovery:///asmg.asset.service"),
@@ -87,6 +88,7 @@ func NewAssetServiceClient(r registry.Discovery) assetv1.AssetsClient {
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
+		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)
@@ -94,7 +96,7 @@ func NewAssetServiceClient(r registry.Discovery) assetv1.AssetsClient {
 	return assetv1.NewAssetsClient(conn)
 }
 
-func NewFormServiceClient(r registry.Discovery) formv1.FormClient {
+func NewFormServiceClient(r registry.Discovery, conf *conf.Client) formv1.FormClient {
 	conn, err := grpc.DialInsecure(
 		context.Background(),
 		grpc.WithEndpoint("discovery:///asmg.form.service"),
@@ -102,6 +104,7 @@ func NewFormServiceClient(r registry.Discovery) formv1.FormClient {
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
+		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)

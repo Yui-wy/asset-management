@@ -9,6 +9,13 @@ message Bootstrap {
     Server server = 1;
     Data data     = 2;
     Auth auth     = 3;
+    Client client = 4;
+}
+message Client {
+    message GRPC {
+        google.protobuf.Duration timeout = 1;
+    }
+    GRPC grpc = 1;
 }
 
 message Server {

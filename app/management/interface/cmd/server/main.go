@@ -83,7 +83,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, bc.Data, &rc, bc.Auth, logger)
+	app, cleanup, err := initApp(bc.Server, bc.Data, bc.Client, &rc, bc.Auth, logger)
 	if err != nil {
 		panic(err)
 	}

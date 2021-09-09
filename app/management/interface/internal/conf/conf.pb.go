@@ -29,6 +29,7 @@ type Bootstrap struct {
 	Server *Server `protobuf:"bytes,1,opt,name=server,proto3" json:"server,omitempty"`
 	Data   *Data   `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
 	Auth   *Auth   `protobuf:"bytes,3,opt,name=auth,proto3" json:"auth,omitempty"`
+	Client *Client `protobuf:"bytes,4,opt,name=client,proto3" json:"client,omitempty"`
 }
 
 func (x *Bootstrap) Reset() {
@@ -84,6 +85,60 @@ func (x *Bootstrap) GetAuth() *Auth {
 	return nil
 }
 
+func (x *Bootstrap) GetClient() *Client {
+	if x != nil {
+		return x.Client
+	}
+	return nil
+}
+
+type Client struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Grpc *Client_GRPC `protobuf:"bytes,1,opt,name=grpc,proto3" json:"grpc,omitempty"`
+}
+
+func (x *Client) Reset() {
+	*x = Client{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Client) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Client) ProtoMessage() {}
+
+func (x *Client) ProtoReflect() protoreflect.Message {
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Client.ProtoReflect.Descriptor instead.
+func (*Client) Descriptor() ([]byte, []int) {
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Client) GetGrpc() *Client_GRPC {
+	if x != nil {
+		return x.Grpc
+	}
+	return nil
+}
+
 type Server struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -96,7 +151,7 @@ type Server struct {
 func (x *Server) Reset() {
 	*x = Server{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[1]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -109,7 +164,7 @@ func (x *Server) String() string {
 func (*Server) ProtoMessage() {}
 
 func (x *Server) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[1]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -122,7 +177,7 @@ func (x *Server) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server.ProtoReflect.Descriptor instead.
 func (*Server) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{1}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Server) GetHttp() *Server_HTTP {
@@ -150,7 +205,7 @@ type Auth struct {
 func (x *Auth) Reset() {
 	*x = Auth{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[2]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -163,7 +218,7 @@ func (x *Auth) String() string {
 func (*Auth) ProtoMessage() {}
 
 func (x *Auth) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[2]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -176,7 +231,7 @@ func (x *Auth) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Auth.ProtoReflect.Descriptor instead.
 func (*Auth) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{2}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *Auth) GetKey() string {
@@ -198,7 +253,7 @@ type Data struct {
 func (x *Data) Reset() {
 	*x = Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[3]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -211,7 +266,7 @@ func (x *Data) String() string {
 func (*Data) ProtoMessage() {}
 
 func (x *Data) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[3]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -224,7 +279,7 @@ func (x *Data) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data.ProtoReflect.Descriptor instead.
 func (*Data) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{3}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Data) GetDatabase() *Data_Database {
@@ -252,7 +307,7 @@ type Registry struct {
 func (x *Registry) Reset() {
 	*x = Registry{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[4]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -265,7 +320,7 @@ func (x *Registry) String() string {
 func (*Registry) ProtoMessage() {}
 
 func (x *Registry) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[4]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -278,12 +333,59 @@ func (x *Registry) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Registry.ProtoReflect.Descriptor instead.
 func (*Registry) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{4}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *Registry) GetConsul() *Registry_Consul {
 	if x != nil {
 		return x.Consul
+	}
+	return nil
+}
+
+type Client_GRPC struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Timeout *durationpb.Duration `protobuf:"bytes,1,opt,name=timeout,proto3" json:"timeout,omitempty"`
+}
+
+func (x *Client_GRPC) Reset() {
+	*x = Client_GRPC{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Client_GRPC) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Client_GRPC) ProtoMessage() {}
+
+func (x *Client_GRPC) ProtoReflect() protoreflect.Message {
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Client_GRPC.ProtoReflect.Descriptor instead.
+func (*Client_GRPC) Descriptor() ([]byte, []int) {
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{1, 0}
+}
+
+func (x *Client_GRPC) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
 	}
 	return nil
 }
@@ -301,7 +403,7 @@ type Server_HTTP struct {
 func (x *Server_HTTP) Reset() {
 	*x = Server_HTTP{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[5]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -314,7 +416,7 @@ func (x *Server_HTTP) String() string {
 func (*Server_HTTP) ProtoMessage() {}
 
 func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[5]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -327,7 +429,7 @@ func (x *Server_HTTP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_HTTP.ProtoReflect.Descriptor instead.
 func (*Server_HTTP) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{1, 0}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{2, 0}
 }
 
 func (x *Server_HTTP) GetNetwork() string {
@@ -364,7 +466,7 @@ type Server_GRPC struct {
 func (x *Server_GRPC) Reset() {
 	*x = Server_GRPC{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[6]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -377,7 +479,7 @@ func (x *Server_GRPC) String() string {
 func (*Server_GRPC) ProtoMessage() {}
 
 func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[6]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -390,7 +492,7 @@ func (x *Server_GRPC) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Server_GRPC.ProtoReflect.Descriptor instead.
 func (*Server_GRPC) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{1, 1}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{2, 1}
 }
 
 func (x *Server_GRPC) GetNetwork() string {
@@ -426,7 +528,7 @@ type Data_Database struct {
 func (x *Data_Database) Reset() {
 	*x = Data_Database{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[7]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -439,7 +541,7 @@ func (x *Data_Database) String() string {
 func (*Data_Database) ProtoMessage() {}
 
 func (x *Data_Database) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[7]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -452,7 +554,7 @@ func (x *Data_Database) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Database.ProtoReflect.Descriptor instead.
 func (*Data_Database) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{3, 0}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{4, 0}
 }
 
 func (x *Data_Database) GetDriver() string {
@@ -483,7 +585,7 @@ type Data_Redis struct {
 func (x *Data_Redis) Reset() {
 	*x = Data_Redis{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[8]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -496,7 +598,7 @@ func (x *Data_Redis) String() string {
 func (*Data_Redis) ProtoMessage() {}
 
 func (x *Data_Redis) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[8]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -509,7 +611,7 @@ func (x *Data_Redis) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data_Redis.ProtoReflect.Descriptor instead.
 func (*Data_Redis) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{3, 1}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{4, 1}
 }
 
 func (x *Data_Redis) GetNetwork() string {
@@ -552,7 +654,7 @@ type Registry_Consul struct {
 func (x *Registry_Consul) Reset() {
 	*x = Registry_Consul{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[9]
+		mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -565,7 +667,7 @@ func (x *Registry_Consul) String() string {
 func (*Registry_Consul) ProtoMessage() {}
 
 func (x *Registry_Consul) ProtoReflect() protoreflect.Message {
-	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[9]
+	mi := &file_app_management_interface_internal_conf_conf_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -578,7 +680,7 @@ func (x *Registry_Consul) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Registry_Consul.ProtoReflect.Descriptor instead.
 func (*Registry_Consul) Descriptor() ([]byte, []int) {
-	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{4, 0}
+	return file_app_management_interface_internal_conf_conf_proto_rawDescGZIP(), []int{5, 0}
 }
 
 func (x *Registry_Consul) GetAddress() string {
@@ -604,7 +706,7 @@ var file_app_management_interface_internal_conf_conf_proto_rawDesc = []byte{
 	0x6f, 0x74, 0x6f, 0x12, 0x0a, 0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x1a,
 	0x1e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66,
 	0x2f, 0x64, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22,
-	0x83, 0x01, 0x0a, 0x09, 0x42, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x12, 0x2a, 0x0a,
+	0xaf, 0x01, 0x0a, 0x09, 0x42, 0x6f, 0x6f, 0x74, 0x73, 0x74, 0x72, 0x61, 0x70, 0x12, 0x2a, 0x0a,
 	0x06, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e,
 	0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x65, 0x72, 0x76, 0x65,
 	0x72, 0x52, 0x06, 0x73, 0x65, 0x72, 0x76, 0x65, 0x72, 0x12, 0x24, 0x0a, 0x04, 0x64, 0x61, 0x74,
@@ -612,7 +714,17 @@ var file_app_management_interface_internal_conf_conf_proto_rawDesc = []byte{
 	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12,
 	0x24, 0x0a, 0x04, 0x61, 0x75, 0x74, 0x68, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x10, 0x2e,
 	0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x41, 0x75, 0x74, 0x68, 0x52,
-	0x04, 0x61, 0x75, 0x74, 0x68, 0x22, 0xb8, 0x02, 0x0a, 0x06, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72,
+	0x04, 0x61, 0x75, 0x74, 0x68, 0x12, 0x2a, 0x0a, 0x06, 0x63, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61,
+	0x70, 0x69, 0x2e, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x52, 0x06, 0x63, 0x6c, 0x69, 0x65, 0x6e,
+	0x74, 0x22, 0x72, 0x0a, 0x06, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x12, 0x2b, 0x0a, 0x04, 0x67,
+	0x72, 0x70, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6b, 0x72, 0x61, 0x74,
+	0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x43, 0x6c, 0x69, 0x65, 0x6e, 0x74, 0x2e, 0x47, 0x52,
+	0x50, 0x43, 0x52, 0x04, 0x67, 0x72, 0x70, 0x63, 0x1a, 0x3b, 0x0a, 0x04, 0x47, 0x52, 0x50, 0x43,
+	0x12, 0x33, 0x0a, 0x07, 0x74, 0x69, 0x6d, 0x65, 0x6f, 0x75, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x19, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x62, 0x75, 0x66, 0x2e, 0x44, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x07, 0x74, 0x69,
+	0x6d, 0x65, 0x6f, 0x75, 0x74, 0x22, 0xb8, 0x02, 0x0a, 0x06, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72,
 	0x12, 0x2b, 0x0a, 0x04, 0x68, 0x74, 0x74, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17,
 	0x2e, 0x6b, 0x72, 0x61, 0x74, 0x6f, 0x73, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x65, 0x72, 0x76,
 	0x65, 0x72, 0x2e, 0x48, 0x54, 0x54, 0x50, 0x52, 0x04, 0x68, 0x74, 0x74, 0x70, 0x12, 0x2b, 0x0a,
@@ -681,38 +793,43 @@ func file_app_management_interface_internal_conf_conf_proto_rawDescGZIP() []byte
 	return file_app_management_interface_internal_conf_conf_proto_rawDescData
 }
 
-var file_app_management_interface_internal_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_app_management_interface_internal_conf_conf_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_app_management_interface_internal_conf_conf_proto_goTypes = []interface{}{
 	(*Bootstrap)(nil),           // 0: kratos.api.Bootstrap
-	(*Server)(nil),              // 1: kratos.api.Server
-	(*Auth)(nil),                // 2: kratos.api.Auth
-	(*Data)(nil),                // 3: kratos.api.Data
-	(*Registry)(nil),            // 4: kratos.api.Registry
-	(*Server_HTTP)(nil),         // 5: kratos.api.Server.HTTP
-	(*Server_GRPC)(nil),         // 6: kratos.api.Server.GRPC
-	(*Data_Database)(nil),       // 7: kratos.api.Data.Database
-	(*Data_Redis)(nil),          // 8: kratos.api.Data.Redis
-	(*Registry_Consul)(nil),     // 9: kratos.api.Registry.Consul
-	(*durationpb.Duration)(nil), // 10: google.protobuf.Duration
+	(*Client)(nil),              // 1: kratos.api.Client
+	(*Server)(nil),              // 2: kratos.api.Server
+	(*Auth)(nil),                // 3: kratos.api.Auth
+	(*Data)(nil),                // 4: kratos.api.Data
+	(*Registry)(nil),            // 5: kratos.api.Registry
+	(*Client_GRPC)(nil),         // 6: kratos.api.Client.GRPC
+	(*Server_HTTP)(nil),         // 7: kratos.api.Server.HTTP
+	(*Server_GRPC)(nil),         // 8: kratos.api.Server.GRPC
+	(*Data_Database)(nil),       // 9: kratos.api.Data.Database
+	(*Data_Redis)(nil),          // 10: kratos.api.Data.Redis
+	(*Registry_Consul)(nil),     // 11: kratos.api.Registry.Consul
+	(*durationpb.Duration)(nil), // 12: google.protobuf.Duration
 }
 var file_app_management_interface_internal_conf_conf_proto_depIdxs = []int32{
-	1,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
-	3,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
-	2,  // 2: kratos.api.Bootstrap.auth:type_name -> kratos.api.Auth
-	5,  // 3: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
-	6,  // 4: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
-	7,  // 5: kratos.api.Data.database:type_name -> kratos.api.Data.Database
-	8,  // 6: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
-	9,  // 7: kratos.api.Registry.consul:type_name -> kratos.api.Registry.Consul
-	10, // 8: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
-	10, // 9: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
-	10, // 10: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
-	10, // 11: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	2,  // 0: kratos.api.Bootstrap.server:type_name -> kratos.api.Server
+	4,  // 1: kratos.api.Bootstrap.data:type_name -> kratos.api.Data
+	3,  // 2: kratos.api.Bootstrap.auth:type_name -> kratos.api.Auth
+	1,  // 3: kratos.api.Bootstrap.client:type_name -> kratos.api.Client
+	6,  // 4: kratos.api.Client.grpc:type_name -> kratos.api.Client.GRPC
+	7,  // 5: kratos.api.Server.http:type_name -> kratos.api.Server.HTTP
+	8,  // 6: kratos.api.Server.grpc:type_name -> kratos.api.Server.GRPC
+	9,  // 7: kratos.api.Data.database:type_name -> kratos.api.Data.Database
+	10, // 8: kratos.api.Data.redis:type_name -> kratos.api.Data.Redis
+	11, // 9: kratos.api.Registry.consul:type_name -> kratos.api.Registry.Consul
+	12, // 10: kratos.api.Client.GRPC.timeout:type_name -> google.protobuf.Duration
+	12, // 11: kratos.api.Server.HTTP.timeout:type_name -> google.protobuf.Duration
+	12, // 12: kratos.api.Server.GRPC.timeout:type_name -> google.protobuf.Duration
+	12, // 13: kratos.api.Data.Redis.read_timeout:type_name -> google.protobuf.Duration
+	12, // 14: kratos.api.Data.Redis.write_timeout:type_name -> google.protobuf.Duration
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_app_management_interface_internal_conf_conf_proto_init() }
@@ -734,7 +851,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Server); i {
+			switch v := v.(*Client); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -746,7 +863,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Auth); i {
+			switch v := v.(*Server); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -758,7 +875,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Data); i {
+			switch v := v.(*Auth); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -770,7 +887,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Registry); i {
+			switch v := v.(*Data); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -782,7 +899,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Server_HTTP); i {
+			switch v := v.(*Registry); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -794,7 +911,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Server_GRPC); i {
+			switch v := v.(*Client_GRPC); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -806,7 +923,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Data_Database); i {
+			switch v := v.(*Server_HTTP); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -818,7 +935,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Data_Redis); i {
+			switch v := v.(*Server_GRPC); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -830,6 +947,30 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			}
 		}
 		file_app_management_interface_internal_conf_conf_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Data_Database); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_app_management_interface_internal_conf_conf_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Data_Redis); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_app_management_interface_internal_conf_conf_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Registry_Consul); i {
 			case 0:
 				return &v.state
@@ -848,7 +989,7 @@ func file_app_management_interface_internal_conf_conf_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_app_management_interface_internal_conf_conf_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

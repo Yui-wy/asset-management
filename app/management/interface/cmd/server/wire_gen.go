@@ -19,11 +19,11 @@ import (
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Registry, auth *conf.Auth, logger log.Logger) (*kratos.App, func(), error) {
+func initApp(confServer *conf.Server, confData *conf.Data, client *conf.Client, registry *conf.Registry, auth *conf.Auth, logger log.Logger) (*kratos.App, func(), error) {
 	discovery := data.NewDiscovery(registry)
-	userClient := data.NewUserServiceClient(discovery)
-	assetsClient := data.NewAssetServiceClient(discovery)
-	formClient := data.NewFormServiceClient(discovery)
+	userClient := data.NewUserServiceClient(discovery, client)
+	assetsClient := data.NewAssetServiceClient(discovery, client)
+	formClient := data.NewFormServiceClient(discovery, client)
 	dataData, cleanup, err := data.NewData(logger, userClient, assetsClient, formClient)
 	if err != nil {
 		return nil, nil, err
