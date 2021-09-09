@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"strings"
 	"time"
@@ -28,13 +29,13 @@ func (r AuthUseCase) Auth(userId uint64, sign string) (string, error) {
 		"sign":    sign,
 		"exp":     time.Now().Unix() + 864000,
 	})
-	return claims.SignedString(r.key)
+	return claims.SignedString([]byte(r.key))
 }
 
 // TODO: 搜索用户验证密码
 func (r AuthUseCase) CheckJWT(ctx context.Context, jwtToken string) (map[string]interface{}, error) {
 	token, err := jwt.Parse(jwtToken, func(jwtToken *jwt.Token) (interface{}, error) {
-		return r.key, nil
+		return []byte(r.key), nil
 	})
 	if err != nil {
 		return nil, err
@@ -43,10 +44,18 @@ func (r AuthUseCase) CheckJWT(ctx context.Context, jwtToken string) (map[string]
 	if !ok {
 		return nil, errors.New("token type error")
 	}
-	if claims["exp"].(int64) < time.Now().Unix() {
+	var expInt int64
+	exp := claims["exp"]
+	switch expType := exp.(type) {
+	case float64:
+		expInt = int64(expType)
+	case json.Number:
+		expInt, _ = expType.Int64()
+	}
+	if expInt < time.Now().Unix() {
 		return nil, errors.New("token overtime.")
 	}
-	u, err := r.repo.GetUser(ctx, claims["user_id"].(uint64))
+	u, err := r.repo.GetUser(ctx, uint64(claims["user_id"].(float64)))
 	if strings.Compare(u.UpdataSign, claims["sign"].(string)) == -1 {
 		return nil, errors.New("token overtime.")
 	}
