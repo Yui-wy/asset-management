@@ -72,7 +72,7 @@ func NewUserServiceClient(r registry.Discovery, conf *conf.Client) userv1.UserCl
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
-		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
+		grpc.WithTimeout(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)
@@ -88,7 +88,7 @@ func NewAssetServiceClient(r registry.Discovery, conf *conf.Client) assetv1.Asse
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
-		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
+		grpc.WithTimeout(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)
@@ -104,7 +104,7 @@ func NewFormServiceClient(r registry.Discovery, conf *conf.Client) formv1.FormCl
 		grpc.WithMiddleware(
 			recovery.Recovery(),
 		),
-		grpc.WithOptions(conf.Grpc.Timeout.AsDuration()),
+		grpc.WithTimeout(conf.Grpc.Timeout.AsDuration()),
 	)
 	if err != nil {
 		panic(err)
