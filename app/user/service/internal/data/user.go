@@ -24,7 +24,7 @@ type userRepo struct {
 
 type User struct {
 	ID         uint64 `gorm:"primarykey"`
-	Username   string `gorm:"not null;uniqueIndex:user_name"`
+	Username   string `gorm:"not null;size:64;uniqueIndex:user_name"`
 	Password   string
 	UpdataSign string `gorm:"not null"`
 	IsDeleted  bool   `gorm:"not null"`
