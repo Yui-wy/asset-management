@@ -50,7 +50,7 @@ func newApp(logger log.Logger, hs *http.Server, gs *grpc.Server, rr registry.Reg
 func main() {
 	flag.Parse()
 
-	logPath, err := os.Create("./management.log")
+	logPath, err := os.Create("/log/management.log")
 	if err != nil {
 		fmt.Println("create file error: ", err)
 		return
