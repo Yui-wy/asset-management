@@ -13,7 +13,7 @@ service ManagementInterface {
     // 用户登陆
     rpc Login(LoginReq) returns (LoginReply) {
         option (google.api.http) = {
-            post: "/user/logout"
+            post: "/user/login"
             body: "*"
         };
     }
@@ -26,7 +26,7 @@ service ManagementInterface {
     // 用户登出
     rpc Logout(LogoutReq) returns (LogoutReply) {
         option (google.api.http) = {
-            post: "/user/login"
+            post: "/user/logout"
             body: "*"
         };
     }

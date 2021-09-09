@@ -22,7 +22,7 @@ type Area struct {
 	IsDeleted bool   `gorm:"not null"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	DeletedAt time.Time
+	DeletedAt int64
 }
 
 func NewAreaRepo(data *Data, logger log.Logger) biz.AreaRepo {
@@ -132,7 +132,7 @@ func (repo *areaRepo) DeleteArea(ctx context.Context, id uint32) (bool, error) {
 		return false, result.Error
 	}
 	au.IsDeleted = true
-	au.DeletedAt = time.Now()
+	au.DeletedAt = time.Now().Unix()
 	result = repo.data.db.WithContext(ctx).Save(&au)
 	if result.Error != nil {
 		repo.log.Errorf(" DeleteArea2. Error:%d", result.Error)

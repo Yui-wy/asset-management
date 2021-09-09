@@ -509,39 +509,6 @@
     },
     "/user/login": {
       "post": {
-        "summary": "用户登出",
-        "operationId": "ManagementInterface_Logout",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1LogoutReply"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1LogoutReq"
-            }
-          }
-        ],
-        "tags": [
-          "ManagementInterface"
-        ]
-      }
-    },
-    "/user/logout": {
-      "post": {
         "summary": "用户系统 =================================\n用户登陆",
         "operationId": "ManagementInterface_Login",
         "responses": {
@@ -565,6 +532,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1LoginReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/user/logout": {
+      "post": {
+        "summary": "用户登出",
+        "operationId": "ManagementInterface_Logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1LogoutReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1LogoutReq"
             }
           }
         ],

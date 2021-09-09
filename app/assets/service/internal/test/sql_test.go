@@ -8,13 +8,14 @@ import (
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/data"
+	"github.com/Yui-wy/asset-management/pkg/setting"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func TestSql(t *testing.T) {
-	dns := "root:Mashiro&1314@tcp(127.0.0.1:3306)/test_asset?charset=utf8mb4&parseTime=True&loc=Local"
+	dns := "root:root@tcp(127.0.0.1:33306)/test_assets?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 	if err != nil {
 		fmt.Printf("failed opening connection to mysql: %v", err)
@@ -42,16 +43,20 @@ func TestSql(t *testing.T) {
 	// Areas==============================================
 	// ar := data.NewAreaRepo(dd, logger)
 	// b, err := ar.CreateArea(ctx, &biz.Area{
-	// 	AreaInfo: "Area Test2",
+	// 	AreaInfo: "Area Test3",
 	// })
-	// b, err := ar.GetArea(ctx, 1)
-	// b, err := ar.GetAreasByIds(ctx, []uint32{1})
-	// b, err := ar.ListArea(ctx)
-	// b, err := ar.DeleteArea(ctx, 1)
-	// b, err := ar.UpdateArea(ctx, &biz.Area{
-	// 	Id:       2,
-	// 	AreaInfo: "Modify info2",
-	// })
+	// // b, err := ar.GetArea(ctx, 1)
+	// // b, err := ar.GetAreasByIds(ctx, []uint32{1})
+	// // b, err := ar.ListArea(ctx)
+	// // b, err := ar.DeleteArea(ctx, 1)
+	// // b, err := ar.UpdateArea(ctx, &biz.Area{
+	// // 	Id:       2,
+	// // 	AreaInfo: "Modify info2",
+	// // })
+	// if err != nil {
+	// 	fmt.Printf("%e", err)
+	// }
+	// fmt.Printf("%+v", b)
 	// Assets=============================================
 	// assr := data.NewAssetRepo(dd, logger)
 	// b, err := assr.CreatAsset(ctx, &biz.Asset{
@@ -103,11 +108,15 @@ func TestSql(t *testing.T) {
 	// b, err := cr.GetClasses(ctx)
 	// Users===============================================
 	ur := data.NewUserRepo(dd, logger)
-	// b, err := ur.CreateUser(ctx, &biz.User{
-	// 	Uid:   1,
-	// 	Power: data.SUPER_ADMIN_USER,
-	// })
-	// fmt.Printf("%+v\n", b)
+	b, err := ur.CreateUser(ctx, &biz.User{
+		Uid:     1,
+		Power:   setting.AREA_ADMIN_USER,
+		AreaIds: []uint32{1, 2},
+	})
+	if err != nil {
+		fmt.Printf("%e", err)
+	}
+	fmt.Printf("%+v\n", b)
 	// b, err := ur.CreateUser(ctx, &biz.User{
 	// 	Uid:     4,
 	// 	Power:   data.AREA_ADMIN_USER,
@@ -122,10 +131,10 @@ func TestSql(t *testing.T) {
 	// fmt.Printf("%+v\n", b)
 	// b, err := ur.ListUser(ctx, data.AREA_ADMIN_USER, []uint32{1, 2})
 	// fmt.Printf("%+v\n", b[0])
-	b, err := ur.UpdateUser(ctx, &biz.User{
-		Uid:     4,
-		AreaIds: []uint32{1},
-	})
-	fmt.Printf("%+v\n", b)
+	// b, err := ur.UpdateUser(ctx, &biz.User{
+	// 	Uid:     4,
+	// 	AreaIds: []uint32{1},
+	// })
+	// fmt.Printf("%+v\n", b)
 	// ====================================================
 }

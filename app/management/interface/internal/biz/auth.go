@@ -50,7 +50,7 @@ func (r AuthUseCase) CheckJWT(ctx context.Context, jwtToken string) (map[string]
 	if strings.Compare(u.UpdataSign, claims["sign"].(string)) == -1 {
 		return nil, errors.New("token overtime.")
 	}
-	result := make(map[string]interface{}, 3)
+	result := make(map[string]interface{}, 4)
 	result["user_id"] = u.Id
 	result["user_name"] = u.Username
 	result["area_id"] = u.AreaIds

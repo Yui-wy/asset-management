@@ -51,7 +51,7 @@ func main() {
 		fmt.Println("create file error: ", err)
 		return
 	}
-	logger2 := log.NewFilter(log.NewStdLogger(logPath), log.FilterLevel(log.LevelDebug))
+	logger2 := log.NewStdLogger(logPath)
 	logger1 := log.NewStdLogger(os.Stdout)
 	logger := log.With(log.MultiLogger(logger1, logger2),
 		"ts", log.DefaultTimestamp,

@@ -44,9 +44,9 @@ type ManagementInterfaceHTTPServer interface {
 
 func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfaceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/user/logout", _ManagementInterface_Login0_HTTP_Handler(srv))
+	r.POST("/user/login", _ManagementInterface_Login0_HTTP_Handler(srv))
 	r.GET("/user/key", _ManagementInterface_GetKey0_HTTP_Handler(srv))
-	r.POST("/user/login", _ManagementInterface_Logout0_HTTP_Handler(srv))
+	r.POST("/user/logout", _ManagementInterface_Logout0_HTTP_Handler(srv))
 	r.POST("/user/register", _ManagementInterface_Register0_HTTP_Handler(srv))
 	r.GET("/user/{id}", _ManagementInterface_GetUser0_HTTP_Handler(srv))
 	r.POST("/user/list", _ManagementInterface_ListUser0_HTTP_Handler(srv))
@@ -731,7 +731,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListUser(ctx context.Context, in *Li
 
 func (c *ManagementInterfaceHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...http.CallOption) (*LoginReply, error) {
 	var out LoginReply
-	pattern := "/user/logout"
+	pattern := "/user/login"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Login"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -744,7 +744,7 @@ func (c *ManagementInterfaceHTTPClientImpl) Login(ctx context.Context, in *Login
 
 func (c *ManagementInterfaceHTTPClientImpl) Logout(ctx context.Context, in *LogoutReq, opts ...http.CallOption) (*LogoutReply, error) {
 	var out LogoutReply
-	pattern := "/user/login"
+	pattern := "/user/logout"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Logout"))
 	opts = append(opts, http.PathTemplate(pattern))

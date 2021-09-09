@@ -34,9 +34,10 @@ func initApp(confServer *conf.Server, confData *conf.Data, registry *conf.Regist
 	assetRepo := data.NewAssetRepo(dataData, logger)
 	assetUseCase := biz.NewAssetUseCase(assetRepo, logger)
 	manageMentInterface := service.NewManagementInterface(logger, userUseCase, authUseCase, assetUseCase)
+	httpServer := server.NewHTTPServer(confServer, logger, manageMentInterface)
 	grpcServer := server.NewGRPCServer(confServer, manageMentInterface, logger)
 	registrar := server.NewRegistrar(registry)
-	app := newApp(logger, grpcServer, registrar)
+	app := newApp(logger, httpServer, grpcServer, registrar)
 	return app, func() {
 		cleanup()
 	}, nil

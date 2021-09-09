@@ -30,7 +30,7 @@ type User struct {
 	IsDeleted  bool   `gorm:"not null"`
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
-	DeletedAt  time.Time
+	DeletedAt  int64
 }
 
 func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
@@ -169,7 +169,7 @@ func (repo *userRepo) DeleteUser(ctx context.Context, id uint64) (bool, error) {
 	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
 		Username:  u.Username + "+^)-" + fmt.Sprintf("%d%d", rand.Intn(100), u.ID),
 		IsDeleted: true,
-		DeletedAt: time.Now(),
+		DeletedAt: time.Now().Unix(),
 	})
 	if result.Error != nil {
 		repo.log.Errorf("DeleteUser2 error. Error:%d", result.Error)
