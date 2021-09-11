@@ -12,6 +12,13 @@ bin/
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 *.vscode
-
+1
 # Dependency directories (remove the comment below to include it)
 # vendor/
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*

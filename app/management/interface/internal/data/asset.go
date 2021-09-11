@@ -26,7 +26,7 @@ func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageN
 	as, err := rp.data.ac.ListAssets(ctx, &av1.ListAssetsReq{
 		PageNum:  pageNum,
 		PageSize: pageSize,
-		Con: &av1.ListAssetsReq_Condition{
+		Conf: &av1.ListAssetsReq_Condition{
 			Classes:      c.Classes,
 			Address:      c.Address,
 			StateNum:     c.StateNum,
@@ -60,7 +60,7 @@ func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageN
 			ScrappedAt: a.ScrappedAt,
 		})
 	}
-	return nil, nil
+	return assets, nil
 }
 func (rp *assetRepo) GetAsset(ctx context.Context, assetId uint64) (*biz.Asset, error) {
 	a, err := rp.data.ac.GetAssets(ctx, &av1.GetAssetsReq{Id: assetId})
@@ -87,13 +87,16 @@ func (rp *assetRepo) GetAsset(ctx context.Context, assetId uint64) (*biz.Asset, 
 }
 func (rp *assetRepo) UpdateAsset(ctx context.Context, asset *biz.Asset) (*biz.Asset, error) {
 	a, err := rp.data.ac.UpdateAssets(ctx, &av1.UpdateAssetsdReq{
-		Id:        asset.Id,
-		Address:   asset.Address,
-		AssetInfo: asset.AssetInfo,
-		PicUrl:    asset.PicUrl,
-		Price:     asset.Price,
-		OrderAt:   asset.OrderAt,
-		OrderNum:  asset.OrderNum,
+		Id:         asset.Id,
+		Address:    asset.Address,
+		AssetInfo:  asset.AssetInfo,
+		PicUrl:     asset.PicUrl,
+		Price:      asset.Price,
+		OrderAt:    asset.OrderAt,
+		OrderNum:   asset.OrderNum,
+		StateNum:   asset.StateNum,
+		StorageAt:  asset.StorageAt,
+		ScrappedAt: asset.ScrappedAt,
 	})
 	if err != nil {
 		return nil, err
@@ -126,6 +129,8 @@ func (rp *assetRepo) CreateAsset(ctx context.Context, asset *biz.Asset) (*biz.As
 		Price:     asset.Price,
 		OrderAt:   asset.OrderAt,
 		OrderNum:  asset.OrderNum,
+		StateNum:  asset.StateNum,
+		AppliedAt: asset.AppliedAt,
 	})
 	if err != nil {
 		return nil, err

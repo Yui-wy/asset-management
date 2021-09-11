@@ -78,7 +78,7 @@ message ListAssetsReq {
         repeated uint32 areaId = 7;
         bool sortDesc          = 8;
     }
-    Condition con  = 1;
+    Condition conf  = 1;
     int64 pageNum  = 2;
     int64 pageSize = 3;
 }

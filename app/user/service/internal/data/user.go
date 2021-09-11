@@ -137,10 +137,10 @@ func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, e
 		repo.log.Errorf("UpdateUser2 error. Error:%d", err)
 		return nil, err
 	}
-	result = repo.data.db.WithContext(ctx).Model(&u).Updates(User{
-		Password:   hp,
-		UpdataSign: util.CreateMD5Random(u.Username),
-	})
+	u.ID = b.Id
+	u.Password = hp
+	u.UpdataSign = util.CreateMD5Random(u.Username)
+	result = repo.data.db.WithContext(ctx).Save(&u)
 	if result.Error != nil {
 		repo.log.Errorf("UpdateUser3 error. Error:%d", result.Error)
 		return nil, result.Error

@@ -43,12 +43,12 @@ func NewScrappedRepo(data *Data, logger log.Logger) biz.ScrappedRepo {
 }
 
 func (repo *scrappedRepo) GetForm(ctx context.Context, id int64) (*biz.ScrappedForm, error) {
-	form := &ScrappedForm{}
-	result := repo.data.db.WithContext(ctx).First(form, id)
+	form := ScrappedForm{}
+	result := repo.data.db.WithContext(ctx).First(&form, id)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return nil, nil
+	return repo.setbiz(&form), nil
 }
 
 func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, pageNum, pageSize int64) ([]*biz.ScrappedForm, error) {
@@ -57,7 +57,7 @@ func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, page
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
 
-	if !inspection.IsZeros(conf.AreaId) {
+	if inspection.IsZeros(conf.AreaId) {
 		err := errors.New(500, "AreaId is nil", "please set areaId")
 		repo.log.Errorf(" ListForm1. Error:%d", err)
 		return nil, err
@@ -118,21 +118,20 @@ func (repo *scrappedRepo) CreateForm(ctx context.Context, sf *biz.ScrappedForm) 
 	return repo.setbiz(&spf), nil
 }
 func (repo *scrappedRepo) UpdateForm(ctx context.Context, sf *biz.ScrappedForm) (*biz.ScrappedForm, error) {
-	s := ScrappedForm{
-		ID: sf.Id,
-	}
-	result := repo.data.db.WithContext(ctx).Model(&s).Updates(ScrappedForm{
-		OperatedAt: sf.OperatedAt,
-		OperatorId: sf.OperatorId,
-		Operator:   sf.Operator,
-		StateNum:   sf.StateNum,
-	})
+	spf := ScrappedForm{}
+	result := repo.data.db.WithContext(ctx).First(&spf, sf.Id)
 	if result.Error != nil {
 		repo.log.Errorf(" UpdateForm1. Error: %d", result.Error)
 		return nil, result.Error
 	}
-	spf := ScrappedForm{}
-	result = repo.data.db.WithContext(ctx).First(&spf, s.ID)
+	if spf.StateNum != setting.FORM_SUBMITTED {
+		return nil, errors.New(500, "form cant be operated", "Form is locked.")
+	}
+	spf.OperatedAt = sf.OperatedAt
+	spf.OperatorId = sf.OperatorId
+	spf.Operator = sf.Operator
+	spf.StateNum = sf.StateNum
+	result = repo.data.db.WithContext(ctx).Save(&spf)
 	if result.Error != nil {
 		repo.log.Errorf(" UpdateForm2. Error: %d", result.Error)
 		return nil, result.Error

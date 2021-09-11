@@ -8,7 +8,6 @@ import (
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/data"
-	"github.com/Yui-wy/asset-management/pkg/setting"
 	"github.com/go-kratos/kratos/v2/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -58,7 +57,7 @@ func TestSql(t *testing.T) {
 	// }
 	// fmt.Printf("%+v", b)
 	// Assets=============================================
-	// assr := data.NewAssetRepo(dd, logger)
+	assr := data.NewAssetRepo(dd, logger)
 	// b, err := assr.CreatAsset(ctx, &biz.Asset{
 	// 	Classes:   "030201",
 	// 	AreaId:    1,
@@ -68,11 +67,12 @@ func TestSql(t *testing.T) {
 	// 	StorageAt: time.Now().Unix() + 100,
 	// })
 	// b, err := assr.GetAsset(ctx, 2)
-	// b, err := assr.ListAssets(ctx, &biz.SearchConf{
-	// 	Classes:      "030201",
-	// 	LowStorageAt: 1,
-	// 	// OrderBy:      "code",
-	// }, 1, 5)
+	b, err := assr.ListAssets(ctx, &biz.SearchConf{
+		AreaId: []uint32{1, 2},
+		LowStorageAt: -1,
+		UpStorageAt: 1631195266,
+	}, 1, 5)
+	fmt.Printf("%+v\n", b)
 	// b, err := assr.UpdateAsset(ctx, &biz.Asset{
 	// 	Id: 3,
 	// 	// Address:   "test address 233",
@@ -107,16 +107,16 @@ func TestSql(t *testing.T) {
 	// b, err := cr.CreateClasses(ctx, tb)
 	// b, err := cr.GetClasses(ctx)
 	// Users===============================================
-	ur := data.NewUserRepo(dd, logger)
-	b, err := ur.CreateUser(ctx, &biz.User{
-		Uid:     1,
-		Power:   setting.AREA_ADMIN_USER,
-		AreaIds: []uint32{1, 2},
-	})
-	if err != nil {
-		fmt.Printf("%e", err)
-	}
-	fmt.Printf("%+v\n", b)
+	// ur := data.NewUserRepo(dd, logger)
+	// b, err := ur.CreateUser(ctx, &biz.User{
+	// 	Uid:     1,
+	// 	Power:   setting.AREA_ADMIN_USER,
+	// 	AreaIds: []uint32{1, 2},
+	// })
+	// if err != nil {
+	// 	fmt.Printf("%e", err)
+	// }
+	// fmt.Printf("%+v\n", b)
 	// b, err := ur.CreateUser(ctx, &biz.User{
 	// 	Uid:     4,
 	// 	Power:   data.AREA_ADMIN_USER,

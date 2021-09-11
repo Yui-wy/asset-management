@@ -1133,7 +1133,7 @@ func (m *ListAssetReq) Validate() error {
 		return nil
 	}
 
-	if v, ok := interface{}(m.GetCon()).(interface{ Validate() error }); ok {
+	if v, ok := interface{}(m.GetConf()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return ListAssetReqValidationError{
 				field:  "Con",

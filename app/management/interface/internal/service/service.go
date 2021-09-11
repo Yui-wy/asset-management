@@ -80,7 +80,10 @@ func (uc *ManageMentInterface) getUserDetail(ctx context.Context, areaId []uint3
 		return nil, auth.ErrAreaFail
 	}
 	result := ctx.Value("x-md-global-user").(map[string]interface{})
-	userPower := result["power"].(int32)
+	userPower, ok := result["power"].(int32)
+	if !ok {
+		return nil, auth.ErrPowerFail
+	}
 	uaid := result["area_id"].([]uint32)
 	for _, i := range areaId {
 		notInArray := true

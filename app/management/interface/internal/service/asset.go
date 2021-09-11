@@ -11,19 +11,19 @@ import (
 )
 
 func (s *ManageMentInterface) ListAsset(ctx context.Context, req *pb.ListAssetReq) (*pb.ListAssetReply, error) {
-	_, err := s.getUserDetail(ctx, req.Con.AreaId)
+	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
 	if err != nil {
 		return nil, err
 	}
 	as, err := s.ac.List(ctx, &biz.AssetCondition{
-		Classes:      req.Con.Classes,
-		Address:      req.Con.Address,
-		StateNum:     req.Con.StateNum,
-		LowStorageAt: req.Con.LowStorageAt,
-		UpStorageAt:  req.Con.UpStorageAt,
-		OrderBy:      req.Con.OrderBy,
-		SortDesc:     req.Con.SortDesc,
-		AreaId:       req.Con.AreaId,
+		Classes:      req.Conf.Classes,
+		Address:      req.Conf.Address,
+		StateNum:     req.Conf.StateNum,
+		LowStorageAt: req.Conf.LowStorageAt,
+		UpStorageAt:  req.Conf.UpStorageAt,
+		OrderBy:      req.Conf.OrderBy,
+		SortDesc:     req.Conf.SortDesc,
+		AreaId:       req.Conf.AreaId,
 	},
 		req.PageNum,
 		req.PageSize)
@@ -273,6 +273,9 @@ func (s *ManageMentInterface) UpdateStorageForm(ctx context.Context, req *pb.Upd
 
 func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
 	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
+	if err != nil {
+		return nil, err
+	}
 	sps, err := s.ac.ListScrappedForm(ctx, &biz.ScrappedCondition{
 		ApplicantId: req.Conf.ApplicantId,
 		OperatorId:  req.Conf.OperatorId,

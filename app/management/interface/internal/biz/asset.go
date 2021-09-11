@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Yui-wy/asset-management/pkg/setting"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -183,6 +184,16 @@ func (s *AssetUseCase) GetScrappedForm(ctx context.Context, id int64) (*Scrapped
 	return s.repo.GetScrappedForm(ctx, id)
 }
 func (s *AssetUseCase) CreateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error) {
+	asset, err := s.repo.GetAsset(ctx, form.AssetId)
+	if err != nil {
+		return nil, err
+	}
+	if (asset.StateNum == setting.ASSETS_STATE_SP) ||
+		(asset.StateNum == setting.ASSETS_STATE_SP_APPLY) ||
+		(asset.StateNum == setting.ASSETS_STATE_ST_APPLY) ||
+		(asset.StateNum == setting.ASSETS_STATE_ORDER_APPLY) {
+		return nil, errors.New(500, "cannot scrapped", "cannot scrapped")
+	}
 	f, err := s.repo.CreateScrappedForm(ctx, form)
 	if err != nil {
 		return nil, err

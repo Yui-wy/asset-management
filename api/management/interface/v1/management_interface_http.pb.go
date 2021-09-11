@@ -60,12 +60,12 @@ func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfa
 	r.POST("/form/storage/list", _ManagementInterface_ListStorageForm0_HTTP_Handler(srv))
 	r.GET("/form/storage/{id}", _ManagementInterface_GetStorageForm0_HTTP_Handler(srv))
 	r.POST("/form/storage/create", _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/storage/create", _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv))
+	r.POST("/form/storage/creates", _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv))
 	r.POST("/form/storage/update", _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv))
 	r.POST("/form/scrapped/list", _ManagementInterface_ListScrappedForm0_HTTP_Handler(srv))
 	r.GET("/form/scrapped/{id}", _ManagementInterface_GetScrappedForm0_HTTP_Handler(srv))
 	r.POST("/form/scrapped/create", _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv))
-	r.POST("/form/storage/update", _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv))
+	r.POST("/form/scrapped/update", _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv))
 }
 
 func _ManagementInterface_Login0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
@@ -562,7 +562,7 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForm(ctx context.Contex
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForms(ctx context.Context, in *CreateStorageFormsReq, opts ...http.CallOption) (*CreateStorageFormsReply, error) {
 	var out CreateStorageFormsReply
-	pattern := "/form/storage/create"
+	pattern := "/form/storage/creates"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateStorageForms"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -796,7 +796,7 @@ func (c *ManagementInterfaceHTTPClientImpl) UpdateAsset(ctx context.Context, in 
 
 func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...http.CallOption) (*UpdateScrappedFormReply, error) {
 	var out UpdateScrappedFormReply
-	pattern := "/form/storage/update"
+	pattern := "/form/scrapped/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateScrappedForm"))
 	opts = append(opts, http.PathTemplate(pattern))

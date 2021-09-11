@@ -127,7 +127,7 @@ service ManagementInterface {
     rpc CreateStorageForms(CreateStorageFormsReq)
         returns (CreateStorageFormsReply) {
         option (google.api.http) = {
-            post: "/form/storage/create"
+            post: "/form/storage/creates"
             body: "*"
         };
     }
@@ -166,7 +166,7 @@ service ManagementInterface {
     rpc UpdateScrappedForm(UpdateScrappedFormReq)
         returns (UpdateScrappedFormReply) {
         option (google.api.http) = {
-            post: "/form/storage/update"
+            post: "/form/scrapped/update"
             body: "*"
         };
     }
@@ -260,7 +260,7 @@ message ListAssetReq {
         bool sortDesc          = 7;
         repeated uint32 areaId = 8;
     }
-    Condition con  = 1;
+    Condition conf = 1;
     int64 pageNum  = 2;
     int64 pageSize = 3;
 }

@@ -245,6 +245,39 @@
         ]
       }
     },
+    "/form/scrapped/update": {
+      "post": {
+        "summary": "更新申请表",
+        "operationId": "ManagementInterface_UpdateScrappedForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdateScrappedFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdateScrappedFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
     "/form/scrapped/{id}": {
       "get": {
         "summary": "查找表单",
@@ -278,6 +311,39 @@
       }
     },
     "/form/storage/create": {
+      "post": {
+        "summary": "创建申请表",
+        "operationId": "ManagementInterface_CreateStorageForm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateStorageFormReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateStorageFormReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/form/storage/creates": {
       "post": {
         "summary": "创建多申请表",
         "operationId": "ManagementInterface_CreateStorageForms",
@@ -346,12 +412,12 @@
     "/form/storage/update": {
       "post": {
         "summary": "更新申请表",
-        "operationId": "ManagementInterface_UpdateScrappedForm",
+        "operationId": "ManagementInterface_UpdateStorageForm",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1UpdateScrappedFormReply"
+              "$ref": "#/definitions/v1UpdateStorageFormReply"
             }
           },
           "default": {
@@ -367,7 +433,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1UpdateScrappedFormReq"
+              "$ref": "#/definitions/v1UpdateStorageFormReq"
             }
           }
         ],
@@ -1282,7 +1348,7 @@
     "v1ListAssetReq": {
       "type": "object",
       "properties": {
-        "con": {
+        "conf": {
           "$ref": "#/definitions/ListAssetReqCondition"
         },
         "pageNum": {

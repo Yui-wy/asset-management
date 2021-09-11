@@ -63,7 +63,7 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 	result := repo.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
-	if !inspection.IsZeros(conf.AreaId) {
+	if inspection.IsZeros(conf.AreaId) {
 		err := errors.New(500, "AreaId is nil", "please set areaId")
 		repo.log.Errorf(" ListForm1. Error:%d", err)
 		return nil, err
@@ -82,7 +82,7 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 		result = result.Where("storage_at >= ?", conf.LowStorageAt)
 	}
 	if !inspection.IsZeros(conf.UpStorageAt) {
-		result = result.Where("storage_at =< ?", conf.UpStorageAt)
+		result = result.Where("storage_at <= ?", conf.UpStorageAt)
 	}
 	if !inspection.IsZeros(conf.OrderBy) {
 		if conf.SortDesc {

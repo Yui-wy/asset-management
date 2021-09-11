@@ -42,12 +42,12 @@ func NewStorageRepo(data *Data, logger log.Logger) biz.StorageRepo {
 }
 
 func (repo *storageRepo) GetForm(ctx context.Context, id int64) (*biz.StorageForm, error) {
-	form := &StorageForm{}
-	result := repo.data.db.WithContext(ctx).First(form, id)
+	form := StorageForm{}
+	result := repo.data.db.WithContext(ctx).First(&form, id)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return repo.setbiz(form), nil
+	return repo.setbiz(&form), nil
 }
 
 func (repo *storageRepo) ListForm(ctx context.Context, conf *biz.StConfig, pageNum, pageSize int64) ([]*biz.StorageForm, error) {
@@ -118,23 +118,23 @@ func (repo *storageRepo) CreateForm(ctx context.Context, sf *biz.StorageForm) (*
 	return repo.setbiz(&sff), nil
 }
 func (repo *storageRepo) UpdateForm(ctx context.Context, sf *biz.StorageForm) (*biz.StorageForm, error) {
-	s := StorageForm{
-		ID: sf.Id,
-	}
-	result := repo.data.db.WithContext(ctx).Model(&s).Updates(StorageForm{
-		OperatedAt: sf.OperatedAt,
-		OperatorId: sf.OperatorId,
-		Operator:   sf.Operator,
-		StateNum:   sf.StateNum,
-	})
+	sff := StorageForm{}
+	result := repo.data.db.WithContext(ctx).First(&sff, sf.Id)
 	if result.Error != nil {
 		repo.log.Errorf(" UpdateForm1. Error: %d", result.Error)
 		return nil, result.Error
 	}
-	sff := StorageForm{}
-	result = repo.data.db.WithContext(ctx).First(&sff, s.ID)
+	if sff.StateNum != setting.FORM_SUBMITTED {
+		repo.log.Error(" UpdateForm2. Error: form cant be operated")
+		return nil, errors.New(500, "form cant be operated", "Form is locked.")
+	}
+	sff.OperatedAt = sf.OperatedAt
+	sff.OperatorId = sf.OperatorId
+	sff.Operator = sf.Operator
+	sff.StateNum = sf.StateNum
+	result = repo.data.db.WithContext(ctx).Save(&sff)
 	if result.Error != nil {
-		repo.log.Errorf(" UpdateForm2. Error: %d", result.Error)
+		repo.log.Errorf(" UpdateForm3. Error: %d", result.Error)
 		return nil, result.Error
 	}
 	return repo.setbiz(&sff), nil
