@@ -188,7 +188,7 @@ func (s *ManageMentInterface) CreateStorageForm(ctx context.Context, req *pb.Cre
 		Price:     req.Price,
 		OrderAt:   req.OrderAt,
 		OrderNum:  req.OrderNum,
-	}, u.Id, u.Username)
+	}, u.Uid, u.Username)
 	if err != nil {
 		s.log.Error(err)
 		return nil, err
@@ -248,7 +248,7 @@ func (s *ManageMentInterface) UpdateStorageForm(ctx context.Context, req *pb.Upd
 	form, err := s.ac.UpdateStorageForm(ctx, &biz.StorageForm{
 		Id:         req.Id,
 		StateNum:   req.StateNum,
-		OperatorId: u.Id,
+		OperatorId: u.Uid,
 		Operator:   u.Username,
 		OperatedAt: time.Now().Unix(),
 	})
@@ -341,7 +341,7 @@ func (s *ManageMentInterface) CreateScrappedForm(ctx context.Context, req *pb.Cr
 		AssetId:     req.AssetId,
 		AssetCode:   req.AssetCode,
 		AreaId:      req.AreaId,
-		ApplicantId: u.Id,
+		ApplicantId: u.Uid,
 		Applicant:   u.Username,
 		AppliedAt:   time.Now().Unix(),
 		StateNum:    setting.FORM_SUBMITTED,
@@ -375,7 +375,7 @@ func (s *ManageMentInterface) UpdateScrappedForm(ctx context.Context, req *pb.Up
 	form, err := s.ac.UpdateScrappedForm(ctx, &biz.ScrappedForm{
 		Id:         req.Id,
 		StateNum:   req.StateNum,
-		OperatorId: u.Id,
+		OperatorId: u.Uid,
 		Operator:   u.Username,
 		OperatedAt: time.Now().Unix(),
 	})

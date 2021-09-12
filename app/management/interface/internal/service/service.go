@@ -19,15 +19,8 @@ type ManageMentInterface struct {
 
 	log    *log.Helper
 	uc     *biz.UserUseCase
-	AuthUc *biz.AuthUseCase
+	authUc *biz.AuthUseCase
 	ac     *biz.AssetUseCase
-}
-
-type UserDetails struct {
-	Id       uint64
-	Username string
-	Power    int32
-	AreaId   []uint32
 }
 
 func NewManagementInterface(
@@ -39,25 +32,26 @@ func NewManagementInterface(
 	return &ManageMentInterface{
 		log:    log.NewHelper(log.With(logger, "module", "service/user")),
 		uc:     uc,
-		AuthUc: authUc,
+		authUc: authUc,
 		ac:     ac,
 	}
 }
 
-func (uc *ManageMentInterface) checkPower(ctx context.Context, power int32, areaId []uint32) (*UserDetails, error) {
+func (uc *ManageMentInterface) checkPower(ctx context.Context, power int32, areaId []uint32) (*biz.AuthUser, error) {
 	if inspection.IsZeros(areaId) {
 		return nil, auth.ErrAreaFail
 	}
-	result := ctx.Value("x-md-global-user").(map[string]interface{})
-	userPower, ok := result["power"].(int32)
-	if !ok || (userPower != power) {
+	userAuth, ok := uc.authUc.FromContext(ctx)
+	if !ok {
+		return nil, auth.ErrWrongContext
+	}
+	if userAuth.Power != power {
 		return nil, auth.ErrPowerFail
 	}
 	// 确保在区域范围内的权限正确
-	uaid := result["area_id"].([]uint32)
 	for _, i := range areaId {
 		notInArray := true
-		for _, k := range uaid {
+		for _, k := range userAuth.AreaIds {
 			if k == i {
 				notInArray = false
 				break
@@ -67,27 +61,20 @@ func (uc *ManageMentInterface) checkPower(ctx context.Context, power int32, area
 			return nil, auth.ErrAreaFail
 		}
 	}
-	return &UserDetails{
-		Id:       result["user_id"].(uint64),
-		Username: result["user_name"].(string),
-		AreaId:   uaid,
-		Power:    userPower,
-	}, nil
+	return userAuth, nil
 }
 
-func (uc *ManageMentInterface) getUserDetail(ctx context.Context, areaId []uint32) (*UserDetails, error) {
+func (uc *ManageMentInterface) getUserDetail(ctx context.Context, areaId []uint32) (*biz.AuthUser, error) {
 	if inspection.IsZeros(areaId) {
 		return nil, auth.ErrAreaFail
 	}
-	result := ctx.Value("x-md-global-user").(map[string]interface{})
-	userPower, ok := result["power"].(int32)
+	userAuth, ok := uc.authUc.FromContext(ctx)
 	if !ok {
-		return nil, auth.ErrPowerFail
+		return nil, auth.ErrWrongContext
 	}
-	uaid := result["area_id"].([]uint32)
 	for _, i := range areaId {
 		notInArray := true
-		for _, k := range uaid {
+		for _, k := range userAuth.AreaIds {
 			if k == i {
 				notInArray = false
 				break
@@ -97,10 +84,9 @@ func (uc *ManageMentInterface) getUserDetail(ctx context.Context, areaId []uint3
 			return nil, auth.ErrAreaFail
 		}
 	}
-	return &UserDetails{
-		Id:       result["user_id"].(uint64),
-		Username: result["user_name"].(string),
-		AreaId:   uaid,
-		Power:    userPower,
-	}, nil
+	return userAuth, nil
+}
+
+func (uc *ManageMentInterface) GetAuthUseCase() *biz.AuthUseCase {
+	return uc.authUc
 }

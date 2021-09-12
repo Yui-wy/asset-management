@@ -20,7 +20,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, s *service.ManageMentInter
 		http.Middleware(
 			recovery.Recovery(),
 			logging.Server(logger),
-			jwt.NewAuthMiddleware(s.AuthUc),
+			jwt.NewAuthMiddleware(s.GetAuthUseCase()),
 		),
 		http.Filter(handlers.CORS(
 			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Token"}),
