@@ -26,6 +26,7 @@ type ManagementInterfaceHTTPServer interface {
 	GetAsset(context.Context, *GetAssetReq) (*GetAssetReply, error)
 	GetKey(context.Context, *GetKeyReq) (*GetKeyReply, error)
 	GetScrappedForm(context.Context, *GetScrappedFormReq) (*GetScrappedFormReply, error)
+	GetSelf(context.Context, *GetSelfReq) (*GetSelfReply, error)
 	GetStorageForm(context.Context, *GetStorageFormReq) (*GetStorageFormReply, error)
 	GetUser(context.Context, *GetUserReq) (*GetUserReply, error)
 	ListArea(context.Context, *ListAreaReq) (*ListAreaReply, error)
@@ -44,28 +45,29 @@ type ManagementInterfaceHTTPServer interface {
 
 func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfaceHTTPServer) {
 	r := s.Route("/")
-	r.POST("/user/login", _ManagementInterface_Login0_HTTP_Handler(srv))
-	r.GET("/user/key", _ManagementInterface_GetKey0_HTTP_Handler(srv))
-	r.POST("/user/logout", _ManagementInterface_Logout0_HTTP_Handler(srv))
-	r.POST("/user/register", _ManagementInterface_Register0_HTTP_Handler(srv))
-	r.GET("/user/{id}", _ManagementInterface_GetUser0_HTTP_Handler(srv))
-	r.POST("/user/list", _ManagementInterface_ListUser0_HTTP_Handler(srv))
-	r.POST("/user/pd", _ManagementInterface_ModifyUserPd0_HTTP_Handler(srv))
-	r.DELETE("/user", _ManagementInterface_DeleteUser0_HTTP_Handler(srv))
-	r.POST("/area/list", _ManagementInterface_ListArea0_HTTP_Handler(srv))
-	r.GET("/area/detail/{id}", _ManagementInterface_GetArea0_HTTP_Handler(srv))
-	r.POST("/asset/list", _ManagementInterface_ListAsset0_HTTP_Handler(srv))
-	r.GET("/asset/detail/{id}", _ManagementInterface_GetAsset0_HTTP_Handler(srv))
-	r.POST("/asset/update", _ManagementInterface_UpdateAsset0_HTTP_Handler(srv))
-	r.POST("/form/storage/list", _ManagementInterface_ListStorageForm0_HTTP_Handler(srv))
-	r.GET("/form/storage/{id}", _ManagementInterface_GetStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/storage/create", _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/storage/creates", _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv))
-	r.POST("/form/storage/update", _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv))
-	r.POST("/form/scrapped/list", _ManagementInterface_ListScrappedForm0_HTTP_Handler(srv))
-	r.GET("/form/scrapped/{id}", _ManagementInterface_GetScrappedForm0_HTTP_Handler(srv))
-	r.POST("/form/scrapped/create", _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv))
-	r.POST("/form/scrapped/update", _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv))
+	r.POST("/v1/user/login", _ManagementInterface_Login0_HTTP_Handler(srv))
+	r.GET("/v1/user/key", _ManagementInterface_GetKey0_HTTP_Handler(srv))
+	r.POST("/v1/user/logout", _ManagementInterface_Logout0_HTTP_Handler(srv))
+	r.POST("/v1/user/register", _ManagementInterface_Register0_HTTP_Handler(srv))
+	r.GET("/v1/user/{id}", _ManagementInterface_GetUser0_HTTP_Handler(srv))
+	r.GET("/v1/self", _ManagementInterface_GetSelf0_HTTP_Handler(srv))
+	r.POST("/v1/user/list", _ManagementInterface_ListUser0_HTTP_Handler(srv))
+	r.POST("/v1/user/pd", _ManagementInterface_ModifyUserPd0_HTTP_Handler(srv))
+	r.DELETE("/v1/user", _ManagementInterface_DeleteUser0_HTTP_Handler(srv))
+	r.POST("/v1/area/list", _ManagementInterface_ListArea0_HTTP_Handler(srv))
+	r.GET("/v1/area/detail/{id}", _ManagementInterface_GetArea0_HTTP_Handler(srv))
+	r.POST("/v1/asset/list", _ManagementInterface_ListAsset0_HTTP_Handler(srv))
+	r.GET("/v1/asset/detail/{id}", _ManagementInterface_GetAsset0_HTTP_Handler(srv))
+	r.POST("/v1/asset/update", _ManagementInterface_UpdateAsset0_HTTP_Handler(srv))
+	r.POST("/v1/form/storage/list", _ManagementInterface_ListStorageForm0_HTTP_Handler(srv))
+	r.GET("/v1/form/storage/{id}", _ManagementInterface_GetStorageForm0_HTTP_Handler(srv))
+	r.POST("/v1/form/storage/create", _ManagementInterface_CreateStorageForm0_HTTP_Handler(srv))
+	r.POST("/v1/form/storage/creates", _ManagementInterface_CreateStorageForms0_HTTP_Handler(srv))
+	r.POST("/v1/form/storage/update", _ManagementInterface_UpdateStorageForm0_HTTP_Handler(srv))
+	r.POST("/v1/form/scrapped/list", _ManagementInterface_ListScrappedForm0_HTTP_Handler(srv))
+	r.GET("/v1/form/scrapped/{id}", _ManagementInterface_GetScrappedForm0_HTTP_Handler(srv))
+	r.POST("/v1/form/scrapped/create", _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv))
+	r.POST("/v1/form/scrapped/update", _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv))
 }
 
 func _ManagementInterface_Login0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
@@ -162,6 +164,25 @@ func _ManagementInterface_GetUser0_HTTP_Handler(srv ManagementInterfaceHTTPServe
 			return err
 		}
 		reply := out.(*GetUserReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _ManagementInterface_GetSelf0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetSelfReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/GetSelf")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetSelf(ctx, req.(*GetSelfReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetSelfReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -510,6 +531,7 @@ type ManagementInterfaceHTTPClient interface {
 	GetAsset(ctx context.Context, req *GetAssetReq, opts ...http.CallOption) (rsp *GetAssetReply, err error)
 	GetKey(ctx context.Context, req *GetKeyReq, opts ...http.CallOption) (rsp *GetKeyReply, err error)
 	GetScrappedForm(ctx context.Context, req *GetScrappedFormReq, opts ...http.CallOption) (rsp *GetScrappedFormReply, err error)
+	GetSelf(ctx context.Context, req *GetSelfReq, opts ...http.CallOption) (rsp *GetSelfReply, err error)
 	GetStorageForm(ctx context.Context, req *GetStorageFormReq, opts ...http.CallOption) (rsp *GetStorageFormReply, err error)
 	GetUser(ctx context.Context, req *GetUserReq, opts ...http.CallOption) (rsp *GetUserReply, err error)
 	ListArea(ctx context.Context, req *ListAreaReq, opts ...http.CallOption) (rsp *ListAreaReply, err error)
@@ -536,7 +558,7 @@ func NewManagementInterfaceHTTPClient(client *http.Client) ManagementInterfaceHT
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateScrappedForm(ctx context.Context, in *CreateScrappedFormReq, opts ...http.CallOption) (*CreateScrappedFormReply, error) {
 	var out CreateScrappedFormReply
-	pattern := "/form/scrapped/create"
+	pattern := "/v1/form/scrapped/create"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateScrappedForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -549,7 +571,7 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateScrappedForm(ctx context.Conte
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForm(ctx context.Context, in *CreateStorageFormReq, opts ...http.CallOption) (*CreateStorageFormReply, error) {
 	var out CreateStorageFormReply
-	pattern := "/form/storage/create"
+	pattern := "/v1/form/storage/create"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateStorageForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -562,7 +584,7 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForm(ctx context.Contex
 
 func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForms(ctx context.Context, in *CreateStorageFormsReq, opts ...http.CallOption) (*CreateStorageFormsReply, error) {
 	var out CreateStorageFormsReply
-	pattern := "/form/storage/creates"
+	pattern := "/v1/form/storage/creates"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/CreateStorageForms"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -575,7 +597,7 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForms(ctx context.Conte
 
 func (c *ManagementInterfaceHTTPClientImpl) DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...http.CallOption) (*DeleteUserReply, error) {
 	var out DeleteUserReply
-	pattern := "/user"
+	pattern := "/v1/user"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/DeleteUser"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -588,7 +610,7 @@ func (c *ManagementInterfaceHTTPClientImpl) DeleteUser(ctx context.Context, in *
 
 func (c *ManagementInterfaceHTTPClientImpl) GetArea(ctx context.Context, in *GetAreaReq, opts ...http.CallOption) (*GetAreaReply, error) {
 	var out GetAreaReply
-	pattern := "/area/detail/{id}"
+	pattern := "/v1/area/detail/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetArea"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -601,7 +623,7 @@ func (c *ManagementInterfaceHTTPClientImpl) GetArea(ctx context.Context, in *Get
 
 func (c *ManagementInterfaceHTTPClientImpl) GetAsset(ctx context.Context, in *GetAssetReq, opts ...http.CallOption) (*GetAssetReply, error) {
 	var out GetAssetReply
-	pattern := "/asset/detail/{id}"
+	pattern := "/v1/asset/detail/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetAsset"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -614,7 +636,7 @@ func (c *ManagementInterfaceHTTPClientImpl) GetAsset(ctx context.Context, in *Ge
 
 func (c *ManagementInterfaceHTTPClientImpl) GetKey(ctx context.Context, in *GetKeyReq, opts ...http.CallOption) (*GetKeyReply, error) {
 	var out GetKeyReply
-	pattern := "/user/key"
+	pattern := "/v1/user/key"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetKey"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -627,7 +649,7 @@ func (c *ManagementInterfaceHTTPClientImpl) GetKey(ctx context.Context, in *GetK
 
 func (c *ManagementInterfaceHTTPClientImpl) GetScrappedForm(ctx context.Context, in *GetScrappedFormReq, opts ...http.CallOption) (*GetScrappedFormReply, error) {
 	var out GetScrappedFormReply
-	pattern := "/form/scrapped/{id}"
+	pattern := "/v1/form/scrapped/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetScrappedForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -638,9 +660,22 @@ func (c *ManagementInterfaceHTTPClientImpl) GetScrappedForm(ctx context.Context,
 	return &out, err
 }
 
+func (c *ManagementInterfaceHTTPClientImpl) GetSelf(ctx context.Context, in *GetSelfReq, opts ...http.CallOption) (*GetSelfReply, error) {
+	var out GetSelfReply
+	pattern := "/v1/self"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetSelf"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *ManagementInterfaceHTTPClientImpl) GetStorageForm(ctx context.Context, in *GetStorageFormReq, opts ...http.CallOption) (*GetStorageFormReply, error) {
 	var out GetStorageFormReply
-	pattern := "/form/storage/{id}"
+	pattern := "/v1/form/storage/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetStorageForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -653,7 +688,7 @@ func (c *ManagementInterfaceHTTPClientImpl) GetStorageForm(ctx context.Context, 
 
 func (c *ManagementInterfaceHTTPClientImpl) GetUser(ctx context.Context, in *GetUserReq, opts ...http.CallOption) (*GetUserReply, error) {
 	var out GetUserReply
-	pattern := "/user/{id}"
+	pattern := "/v1/user/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetUser"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -666,7 +701,7 @@ func (c *ManagementInterfaceHTTPClientImpl) GetUser(ctx context.Context, in *Get
 
 func (c *ManagementInterfaceHTTPClientImpl) ListArea(ctx context.Context, in *ListAreaReq, opts ...http.CallOption) (*ListAreaReply, error) {
 	var out ListAreaReply
-	pattern := "/area/list"
+	pattern := "/v1/area/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ListArea"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -679,7 +714,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListArea(ctx context.Context, in *Li
 
 func (c *ManagementInterfaceHTTPClientImpl) ListAsset(ctx context.Context, in *ListAssetReq, opts ...http.CallOption) (*ListAssetReply, error) {
 	var out ListAssetReply
-	pattern := "/asset/list"
+	pattern := "/v1/asset/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ListAsset"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -692,7 +727,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListAsset(ctx context.Context, in *L
 
 func (c *ManagementInterfaceHTTPClientImpl) ListScrappedForm(ctx context.Context, in *ListScrappedFormReq, opts ...http.CallOption) (*ListScrappedFormReply, error) {
 	var out ListScrappedFormReply
-	pattern := "/form/scrapped/list"
+	pattern := "/v1/form/scrapped/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ListScrappedForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -705,7 +740,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListScrappedForm(ctx context.Context
 
 func (c *ManagementInterfaceHTTPClientImpl) ListStorageForm(ctx context.Context, in *ListStorageFormReq, opts ...http.CallOption) (*ListStorageFormReply, error) {
 	var out ListStorageFormReply
-	pattern := "/form/storage/list"
+	pattern := "/v1/form/storage/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ListStorageForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -718,7 +753,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListStorageForm(ctx context.Context,
 
 func (c *ManagementInterfaceHTTPClientImpl) ListUser(ctx context.Context, in *ListUserReq, opts ...http.CallOption) (*ListUserReply, error) {
 	var out ListUserReply
-	pattern := "/user/list"
+	pattern := "/v1/user/list"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ListUser"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -731,7 +766,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ListUser(ctx context.Context, in *Li
 
 func (c *ManagementInterfaceHTTPClientImpl) Login(ctx context.Context, in *LoginReq, opts ...http.CallOption) (*LoginReply, error) {
 	var out LoginReply
-	pattern := "/user/login"
+	pattern := "/v1/user/login"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Login"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -744,7 +779,7 @@ func (c *ManagementInterfaceHTTPClientImpl) Login(ctx context.Context, in *Login
 
 func (c *ManagementInterfaceHTTPClientImpl) Logout(ctx context.Context, in *LogoutReq, opts ...http.CallOption) (*LogoutReply, error) {
 	var out LogoutReply
-	pattern := "/user/logout"
+	pattern := "/v1/user/logout"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Logout"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -757,7 +792,7 @@ func (c *ManagementInterfaceHTTPClientImpl) Logout(ctx context.Context, in *Logo
 
 func (c *ManagementInterfaceHTTPClientImpl) ModifyUserPd(ctx context.Context, in *ModifyUserPdReq, opts ...http.CallOption) (*ModifyUserPdReply, error) {
 	var out ModifyUserPdReply
-	pattern := "/user/pd"
+	pattern := "/v1/user/pd"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ModifyUserPd"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -770,7 +805,7 @@ func (c *ManagementInterfaceHTTPClientImpl) ModifyUserPd(ctx context.Context, in
 
 func (c *ManagementInterfaceHTTPClientImpl) Register(ctx context.Context, in *RegisterReq, opts ...http.CallOption) (*RegisterReply, error) {
 	var out RegisterReply
-	pattern := "/user/register"
+	pattern := "/v1/user/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Register"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -783,7 +818,7 @@ func (c *ManagementInterfaceHTTPClientImpl) Register(ctx context.Context, in *Re
 
 func (c *ManagementInterfaceHTTPClientImpl) UpdateAsset(ctx context.Context, in *UpdateAssetReq, opts ...http.CallOption) (*UpdateAssetReply, error) {
 	var out UpdateAssetReply
-	pattern := "/asset/update"
+	pattern := "/v1/asset/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateAsset"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -796,7 +831,7 @@ func (c *ManagementInterfaceHTTPClientImpl) UpdateAsset(ctx context.Context, in 
 
 func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...http.CallOption) (*UpdateScrappedFormReply, error) {
 	var out UpdateScrappedFormReply
-	pattern := "/form/scrapped/update"
+	pattern := "/v1/form/scrapped/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateScrappedForm"))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -809,7 +844,7 @@ func (c *ManagementInterfaceHTTPClientImpl) UpdateScrappedForm(ctx context.Conte
 
 func (c *ManagementInterfaceHTTPClientImpl) UpdateStorageForm(ctx context.Context, in *UpdateStorageFormReq, opts ...http.CallOption) (*UpdateStorageFormReply, error) {
 	var out UpdateStorageFormReply
-	pattern := "/form/storage/update"
+	pattern := "/v1/form/storage/update"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/UpdateStorageForm"))
 	opts = append(opts, http.PathTemplate(pattern))

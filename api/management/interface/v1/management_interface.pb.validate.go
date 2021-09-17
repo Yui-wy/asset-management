@@ -514,7 +514,7 @@ func (m *GetUserReply) Validate() error {
 
 	// no validation rules for Username
 
-	// no validation rules for AssetPower
+	// no validation rules for Power
 
 	return nil
 }
@@ -572,6 +572,141 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = GetUserReplyValidationError{}
+
+// Validate checks the field values on GetSelfReq with the rules defined in the
+// proto definition for this message. If any rules are violated, an error is returned.
+func (m *GetSelfReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// GetSelfReqValidationError is the validation error returned by
+// GetSelfReq.Validate if the designated constraints aren't met.
+type GetSelfReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSelfReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSelfReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSelfReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSelfReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSelfReqValidationError) ErrorName() string { return "GetSelfReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetSelfReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSelfReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSelfReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSelfReqValidationError{}
+
+// Validate checks the field values on GetSelfReply with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *GetSelfReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Username
+
+	// no validation rules for Power
+
+	return nil
+}
+
+// GetSelfReplyValidationError is the validation error returned by
+// GetSelfReply.Validate if the designated constraints aren't met.
+type GetSelfReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSelfReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSelfReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSelfReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSelfReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSelfReplyValidationError) ErrorName() string { return "GetSelfReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetSelfReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSelfReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSelfReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSelfReplyValidationError{}
 
 // Validate checks the field values on ListUserReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
@@ -1136,7 +1271,7 @@ func (m *ListAssetReq) Validate() error {
 	if v, ok := interface{}(m.GetConf()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return ListAssetReqValidationError{
-				field:  "Con",
+				field:  "Conf",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -3379,7 +3514,7 @@ func (m *ListUserReply_Users) Validate() error {
 
 	// no validation rules for Username
 
-	// no validation rules for AssetPower
+	// no validation rules for Power
 
 	return nil
 }

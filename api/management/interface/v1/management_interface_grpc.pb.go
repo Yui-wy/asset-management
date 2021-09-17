@@ -29,6 +29,8 @@ type ManagementInterfaceClient interface {
 	Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterReply, error)
 	// 得到用户 admin
 	GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserReply, error)
+	// 得到自己的用户信息
+	GetSelf(ctx context.Context, in *GetSelfReq, opts ...grpc.CallOption) (*GetSelfReply, error)
 	// 列出用户 admin
 	ListUser(ctx context.Context, in *ListUserReq, opts ...grpc.CallOption) (*ListUserReply, error)
 	// 修改密码 admin
@@ -115,6 +117,15 @@ func (c *managementInterfaceClient) Register(ctx context.Context, in *RegisterRe
 func (c *managementInterfaceClient) GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserReply, error) {
 	out := new(GetUserReply)
 	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managementInterfaceClient) GetSelf(ctx context.Context, in *GetSelfReq, opts ...grpc.CallOption) (*GetSelfReply, error) {
+	out := new(GetSelfReply)
+	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/GetSelf", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -289,6 +300,8 @@ type ManagementInterfaceServer interface {
 	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	// 得到用户 admin
 	GetUser(context.Context, *GetUserReq) (*GetUserReply, error)
+	// 得到自己的用户信息
+	GetSelf(context.Context, *GetSelfReq) (*GetSelfReply, error)
 	// 列出用户 admin
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
 	// 修改密码 admin
@@ -347,6 +360,9 @@ func (UnimplementedManagementInterfaceServer) Register(context.Context, *Registe
 }
 func (UnimplementedManagementInterfaceServer) GetUser(context.Context, *GetUserReq) (*GetUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedManagementInterfaceServer) GetSelf(context.Context, *GetSelfReq) (*GetSelfReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSelf not implemented")
 }
 func (UnimplementedManagementInterfaceServer) ListUser(context.Context, *ListUserReq) (*ListUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
@@ -498,6 +514,24 @@ func _ManagementInterface_GetUser_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagementInterfaceServer).GetUser(ctx, req.(*GetUserReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagementInterface_GetSelf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSelfReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagementInterfaceServer).GetSelf(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/management.interface.v1.ManagementInterface/GetSelf",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagementInterfaceServer).GetSelf(ctx, req.(*GetSelfReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -834,6 +868,10 @@ var ManagementInterface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _ManagementInterface_GetUser_Handler,
+		},
+		{
+			MethodName: "GetSelf",
+			Handler:    _ManagementInterface_GetSelf_Handler,
 		},
 		{
 			MethodName: "ListUser",

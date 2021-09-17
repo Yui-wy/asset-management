@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/area/detail/{id}": {
+    "/v1/area/detail/{id}": {
       "get": {
         "summary": "通过ID得到区域",
         "operationId": "ManagementInterface_GetArea",
@@ -48,7 +48,7 @@
         ]
       }
     },
-    "/area/list": {
+    "/v1/area/list": {
       "post": {
         "summary": "区域系统 =================================\n列出所有区域详细信息",
         "operationId": "ManagementInterface_ListArea",
@@ -81,7 +81,7 @@
         ]
       }
     },
-    "/asset/detail/{id}": {
+    "/v1/asset/detail/{id}": {
       "get": {
         "summary": "得到资产信息",
         "operationId": "ManagementInterface_GetAsset",
@@ -113,7 +113,7 @@
         ]
       }
     },
-    "/asset/list": {
+    "/v1/asset/list": {
       "post": {
         "summary": "资产系统 =================================\n列出资产(按条件)",
         "operationId": "ManagementInterface_ListAsset",
@@ -146,7 +146,7 @@
         ]
       }
     },
-    "/asset/update": {
+    "/v1/asset/update": {
       "post": {
         "summary": "更新资产信息",
         "operationId": "ManagementInterface_UpdateAsset",
@@ -179,7 +179,7 @@
         ]
       }
     },
-    "/form/scrapped/create": {
+    "/v1/form/scrapped/create": {
       "post": {
         "summary": "创建申请表",
         "operationId": "ManagementInterface_CreateScrappedForm",
@@ -212,7 +212,7 @@
         ]
       }
     },
-    "/form/scrapped/list": {
+    "/v1/form/scrapped/list": {
       "post": {
         "summary": "列出表单",
         "operationId": "ManagementInterface_ListScrappedForm",
@@ -245,7 +245,7 @@
         ]
       }
     },
-    "/form/scrapped/update": {
+    "/v1/form/scrapped/update": {
       "post": {
         "summary": "更新申请表",
         "operationId": "ManagementInterface_UpdateScrappedForm",
@@ -278,7 +278,7 @@
         ]
       }
     },
-    "/form/scrapped/{id}": {
+    "/v1/form/scrapped/{id}": {
       "get": {
         "summary": "查找表单",
         "operationId": "ManagementInterface_GetScrappedForm",
@@ -310,7 +310,7 @@
         ]
       }
     },
-    "/form/storage/create": {
+    "/v1/form/storage/create": {
       "post": {
         "summary": "创建申请表",
         "operationId": "ManagementInterface_CreateStorageForm",
@@ -343,7 +343,7 @@
         ]
       }
     },
-    "/form/storage/creates": {
+    "/v1/form/storage/creates": {
       "post": {
         "summary": "创建多申请表",
         "operationId": "ManagementInterface_CreateStorageForms",
@@ -376,7 +376,7 @@
         ]
       }
     },
-    "/form/storage/list": {
+    "/v1/form/storage/list": {
       "post": {
         "summary": "单表系统 =================================\n列出表单",
         "operationId": "ManagementInterface_ListStorageForm",
@@ -409,7 +409,7 @@
         ]
       }
     },
-    "/form/storage/update": {
+    "/v1/form/storage/update": {
       "post": {
         "summary": "更新申请表",
         "operationId": "ManagementInterface_UpdateStorageForm",
@@ -442,7 +442,7 @@
         ]
       }
     },
-    "/form/storage/{id}": {
+    "/v1/form/storage/{id}": {
       "get": {
         "summary": "查找表单",
         "operationId": "ManagementInterface_GetStorageForm",
@@ -474,7 +474,30 @@
         ]
       }
     },
-    "/user": {
+    "/v1/self": {
+      "get": {
+        "summary": "得到自己的用户信息",
+        "operationId": "ManagementInterface_GetSelf",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetSelfReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/v1/user": {
       "delete": {
         "summary": "删除用户 admin",
         "operationId": "ManagementInterface_DeleteUser",
@@ -517,7 +540,7 @@
         ]
       }
     },
-    "/user/key": {
+    "/v1/user/key": {
       "get": {
         "summary": "得到RSA密钥",
         "operationId": "ManagementInterface_GetKey",
@@ -540,7 +563,7 @@
         ]
       }
     },
-    "/user/list": {
+    "/v1/user/list": {
       "post": {
         "summary": "列出用户 admin",
         "operationId": "ManagementInterface_ListUser",
@@ -573,7 +596,7 @@
         ]
       }
     },
-    "/user/login": {
+    "/v1/user/login": {
       "post": {
         "summary": "用户系统 =================================\n用户登陆",
         "operationId": "ManagementInterface_Login",
@@ -606,7 +629,7 @@
         ]
       }
     },
-    "/user/logout": {
+    "/v1/user/logout": {
       "post": {
         "summary": "用户登出",
         "operationId": "ManagementInterface_Logout",
@@ -639,7 +662,7 @@
         ]
       }
     },
-    "/user/pd": {
+    "/v1/user/pd": {
       "post": {
         "summary": "修改密码 admin",
         "operationId": "ManagementInterface_ModifyUserPd",
@@ -672,7 +695,7 @@
         ]
       }
     },
-    "/user/register": {
+    "/v1/user/register": {
       "post": {
         "summary": "用户注册 admin",
         "operationId": "ManagementInterface_Register",
@@ -705,7 +728,7 @@
         ]
       }
     },
-    "/user/{id}": {
+    "/v1/user/{id}": {
       "get": {
         "summary": "得到用户 admin",
         "operationId": "ManagementInterface_GetUser",
@@ -887,7 +910,7 @@
         "username": {
           "type": "string"
         },
-        "assetPower": {
+        "power": {
           "type": "integer",
           "format": "int32"
         },
@@ -1230,6 +1253,29 @@
         }
       }
     },
+    "v1GetSelfReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "power": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "areaIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "v1GetStorageFormReply": {
       "type": "object",
       "properties": {
@@ -1289,7 +1335,7 @@
         "username": {
           "type": "string"
         },
-        "assetPower": {
+        "power": {
           "type": "integer",
           "format": "int32"
         },

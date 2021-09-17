@@ -13,20 +13,20 @@ service ManagementInterface {
     // 用户登陆
     rpc Login(LoginReq) returns (LoginReply) {
         option (google.api.http) = {
-            post: "/user/login"
+            post: "/v1/user/login"
             body: "*"
         };
     }
     // 得到RSA密钥
     rpc GetKey(GetKeyReq) returns (GetKeyReply) {
         option (google.api.http) = {
-            get: "/user/key"
+            get: "/v1/user/key"
         };
     }
     // 用户登出
     rpc Logout(LogoutReq) returns (LogoutReply) {
         option (google.api.http) = {
-            post: "/user/logout"
+            post: "/v1/user/logout"
             body: "*"
         };
     }
@@ -34,41 +34,47 @@ service ManagementInterface {
     // 用户注册 admin
     rpc Register(RegisterReq) returns (RegisterReply) {
         option (google.api.http) = {
-            post: "/user/register"
+            post: "/v1/user/register"
             body: "*"
         };
     }
     // 得到用户 admin
     rpc GetUser(GetUserReq) returns (GetUserReply) {
         option (google.api.http) = {
-            get: "/user/{id}"
+            get: "/v1/user/{id}"
+        };
+    }
+    // 得到自己的用户信息
+    rpc GetSelf(GetSelfReq) returns (GetSelfReply) {
+        option (google.api.http) = {
+            get: "/v1/self"
         };
     }
     // 列出用户 admin
     rpc ListUser(ListUserReq) returns (ListUserReply) {
         option (google.api.http) = {
-            post: "/user/list"
+            post: "/v1/user/list"
             body: "*"
         };
     }
     // 修改密码 admin
     rpc ModifyUserPd(ModifyUserPdReq) returns (ModifyUserPdReply) {
         option (google.api.http) = {
-            post: "/user/pd"
+            post: "/v1/user/pd"
             body: "*"
         };
     }
     // 删除用户 admin
     rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {
         option (google.api.http) = {
-            delete: "/user"
+            delete: "/v1/user"
         };
     }
     // 区域系统 =================================
     // 列出所有区域详细信息
     rpc ListArea(ListAreaReq) returns (ListAreaReply) {
         option (google.api.http) = {
-            post: "/area/list"
+            post: "/v1/area/list"
             body: "*"
         };
     }
@@ -76,27 +82,27 @@ service ManagementInterface {
     // 通过ID得到区域
     rpc GetArea(GetAreaReq) returns (GetAreaReply) {
         option (google.api.http) = {
-            get: "/area/detail/{id}"
+            get: "/v1/area/detail/{id}"
         };
     }
     // 资产系统 =================================
     // 列出资产(按条件)
     rpc ListAsset(ListAssetReq) returns (ListAssetReply) {
         option (google.api.http) = {
-            post: "/asset/list"
+            post: "/v1/asset/list"
             body: "*"
         };
     }
     // 得到资产信息
     rpc GetAsset(GetAssetReq) returns (GetAssetReply) {
         option (google.api.http) = {
-            get: "/asset/detail/{id}"
+            get: "/v1/asset/detail/{id}"
         };
     }
     // 更新资产信息
     rpc UpdateAsset(UpdateAssetReq) returns (UpdateAssetReply) {
         option (google.api.http) = {
-            post: "/asset/update"
+            post: "/v1/asset/update"
             body: "*"
         };
     }
@@ -104,21 +110,21 @@ service ManagementInterface {
     // 列出表单
     rpc ListStorageForm(ListStorageFormReq) returns (ListStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/storage/list"
+            post: "/v1/form/storage/list"
             body: "*"
         };
     }
     // 查找表单
     rpc GetStorageForm(GetStorageFormReq) returns (GetStorageFormReply) {
         option (google.api.http) = {
-            get: "/form/storage/{id}"
+            get: "/v1/form/storage/{id}"
         };
     }
     // 创建申请表
     rpc CreateStorageForm(CreateStorageFormReq)
         returns (CreateStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/storage/create"
+            post: "/v1/form/storage/create"
             body: "*"
         };
     }
@@ -127,7 +133,7 @@ service ManagementInterface {
     rpc CreateStorageForms(CreateStorageFormsReq)
         returns (CreateStorageFormsReply) {
         option (google.api.http) = {
-            post: "/form/storage/creates"
+            post: "/v1/form/storage/creates"
             body: "*"
         };
     }
@@ -136,7 +142,7 @@ service ManagementInterface {
     rpc UpdateStorageForm(UpdateStorageFormReq)
         returns (UpdateStorageFormReply) {
         option (google.api.http) = {
-            post: "/form/storage/update"
+            post: "/v1/form/storage/update"
             body: "*"
         };
     }
@@ -144,21 +150,21 @@ service ManagementInterface {
     // 列出表单
     rpc ListScrappedForm(ListScrappedFormReq) returns (ListScrappedFormReply) {
         option (google.api.http) = {
-            post: "/form/scrapped/list"
+            post: "/v1/form/scrapped/list"
             body: "*"
         };
     }
     // 查找表单
     rpc GetScrappedForm(GetScrappedFormReq) returns (GetScrappedFormReply) {
         option (google.api.http) = {
-            get: "/form/scrapped/{id}"
+            get: "/v1/form/scrapped/{id}"
         };
     }
     // 创建申请表
     rpc CreateScrappedForm(CreateScrappedFormReq)
         returns (CreateScrappedFormReply) {
         option (google.api.http) = {
-            post: "/form/scrapped/create"
+            post: "/v1/form/scrapped/create"
             body: "*"
         };
     }
@@ -166,7 +172,7 @@ service ManagementInterface {
     rpc UpdateScrappedForm(UpdateScrappedFormReq)
         returns (UpdateScrappedFormReply) {
         option (google.api.http) = {
-            post: "/form/scrapped/update"
+            post: "/v1/form/scrapped/update"
             body: "*"
         };
     }
@@ -206,7 +212,16 @@ message GetUserReq {
 message GetUserReply {
     uint64 id               = 1;
     string username         = 2;
-    int32 assetPower        = 3;
+    int32 power             = 3;
+    repeated uint32 areaIds = 4;
+}
+
+message GetSelfReq {}
+
+message GetSelfReply {
+    uint64 id               = 1;
+    string username         = 2;
+    int32 power             = 3;
     repeated uint32 areaIds = 4;
 }
 
@@ -220,7 +235,7 @@ message ListUserReply {
     message Users {
         uint64 id               = 1;
         string username         = 2;
-        int32 assetPower        = 3;
+        int32 power             = 3;
         repeated uint32 areaIds = 4;
     }
     repeated Users users = 1;

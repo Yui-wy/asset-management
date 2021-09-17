@@ -5,6 +5,7 @@ import (
 
 	pb "github.com/Yui-wy/asset-management/api/management/interface/v1"
 	"github.com/Yui-wy/asset-management/app/management/interface/internal/biz"
+	"github.com/Yui-wy/asset-management/pkg/errors/auth"
 	"github.com/Yui-wy/asset-management/pkg/setting"
 )
 
@@ -65,10 +66,22 @@ func (s *ManageMentInterface) GetUser(ctx context.Context, req *pb.GetUserReq) (
 		return nil, err
 	}
 	return &pb.GetUserReply{
-		Id:         user.Id,
-		Username:   user.Username,
-		AssetPower: user.Power,
-		AreaIds:    user.AreaIds,
+		Id:       user.Id,
+		Username: user.Username,
+		Power:    user.Power,
+		AreaIds:  user.AreaIds,
+	}, nil
+}
+func (s *ManageMentInterface) GetSelf(ctx context.Context, req *pb.GetSelfReq) (*pb.GetSelfReply, error) {
+	userAuth, ok := s.authUc.FromContext(ctx)
+	if !ok {
+		return nil, auth.ErrWrongContext
+	}
+	return &pb.GetSelfReply{
+		Id:       userAuth.Uid,
+		Username: userAuth.Username,
+		Power:    userAuth.Power,
+		AreaIds:  userAuth.AreaIds,
 	}, nil
 }
 func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
@@ -83,10 +96,10 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 	r := make([]*pb.ListUserReply_Users, 0)
 	for _, user := range users {
 		r = append(r, &pb.ListUserReply_Users{
-			Id:         user.Id,
-			Username:   user.Username,
-			AssetPower: user.Power,
-			AreaIds:    user.AreaIds,
+			Id:       user.Id,
+			Username: user.Username,
+			Power:    user.Power,
+			AreaIds:  user.AreaIds,
 		})
 	}
 	return &pb.ListUserReply{
