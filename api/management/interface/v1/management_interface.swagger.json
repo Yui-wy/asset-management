@@ -179,6 +179,29 @@
         ]
       }
     },
+    "/v1/classes/list": {
+      "get": {
+        "summary": "得到全部类目",
+        "operationId": "ManagementInterface_GetClasses",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetClassesReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
     "/v1/form/scrapped/create": {
       "post": {
         "summary": "创建申请表",
@@ -794,6 +817,28 @@
         }
       }
     },
+    "GetClassesReplyClasses": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "code": {
+          "type": "string"
+        },
+        "clzInfo": {
+          "type": "string"
+        },
+        "level": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "pcode": {
+          "type": "string"
+        }
+      }
+    },
     "ListAreaReplyAreas": {
       "type": "object",
       "properties": {
@@ -1193,6 +1238,17 @@
         "scrappedAt": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1GetClassesReply": {
+      "type": "object",
+      "properties": {
+        "clz": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetClassesReplyClasses"
+          }
         }
       }
     },

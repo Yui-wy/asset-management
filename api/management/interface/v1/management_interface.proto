@@ -176,6 +176,13 @@ service ManagementInterface {
             body: "*"
         };
     }
+
+    // 得到全部类目
+    rpc GetClasses(GetClassesReq) returns (GetClassesReply) {
+        option (google.api.http) = {
+            get: "/v1/classes/list"
+        };
+    }
 }
 
 message LoginReq {
@@ -577,4 +584,17 @@ message UpdateScrappedFormReply {
     uint64 assetId     = 11;
     string assetCode   = 12;
     uint32 areaId      = 13;
+}
+
+message GetClassesReq {}
+
+message GetClassesReply {
+    message Classes {
+        uint64 id      = 1;
+        string code    = 2;
+        string clzInfo = 3;
+        uint32 level   = 4;
+        string pcode   = 5;
+    }
+    repeated Classes clz = 1;
 }

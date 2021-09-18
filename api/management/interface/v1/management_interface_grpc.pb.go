@@ -68,6 +68,8 @@ type ManagementInterfaceClient interface {
 	CreateScrappedForm(ctx context.Context, in *CreateScrappedFormReq, opts ...grpc.CallOption) (*CreateScrappedFormReply, error)
 	// 更新申请表
 	UpdateScrappedForm(ctx context.Context, in *UpdateScrappedFormReq, opts ...grpc.CallOption) (*UpdateScrappedFormReply, error)
+	// 得到全部类目
+	GetClasses(ctx context.Context, in *GetClassesReq, opts ...grpc.CallOption) (*GetClassesReply, error)
 }
 
 type managementInterfaceClient struct {
@@ -285,6 +287,15 @@ func (c *managementInterfaceClient) UpdateScrappedForm(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *managementInterfaceClient) GetClasses(ctx context.Context, in *GetClassesReq, opts ...grpc.CallOption) (*GetClassesReply, error) {
+	out := new(GetClassesReply)
+	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/GetClasses", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ManagementInterfaceServer is the server API for ManagementInterface service.
 // All implementations must embed UnimplementedManagementInterfaceServer
 // for forward compatibility
@@ -339,6 +350,8 @@ type ManagementInterfaceServer interface {
 	CreateScrappedForm(context.Context, *CreateScrappedFormReq) (*CreateScrappedFormReply, error)
 	// 更新申请表
 	UpdateScrappedForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error)
+	// 得到全部类目
+	GetClasses(context.Context, *GetClassesReq) (*GetClassesReply, error)
 	mustEmbedUnimplementedManagementInterfaceServer()
 }
 
@@ -414,6 +427,9 @@ func (UnimplementedManagementInterfaceServer) CreateScrappedForm(context.Context
 }
 func (UnimplementedManagementInterfaceServer) UpdateScrappedForm(context.Context, *UpdateScrappedFormReq) (*UpdateScrappedFormReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateScrappedForm not implemented")
+}
+func (UnimplementedManagementInterfaceServer) GetClasses(context.Context, *GetClassesReq) (*GetClassesReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetClasses not implemented")
 }
 func (UnimplementedManagementInterfaceServer) mustEmbedUnimplementedManagementInterfaceServer() {}
 
@@ -842,6 +858,24 @@ func _ManagementInterface_UpdateScrappedForm_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ManagementInterface_GetClasses_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetClassesReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagementInterfaceServer).GetClasses(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/management.interface.v1.ManagementInterface/GetClasses",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagementInterfaceServer).GetClasses(ctx, req.(*GetClassesReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ManagementInterface_ServiceDesc is the grpc.ServiceDesc for ManagementInterface service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -940,6 +974,10 @@ var ManagementInterface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateScrappedForm",
 			Handler:    _ManagementInterface_UpdateScrappedForm_Handler,
+		},
+		{
+			MethodName: "GetClasses",
+			Handler:    _ManagementInterface_GetClasses_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

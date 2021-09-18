@@ -86,6 +86,14 @@ type ScrappedCondition struct {
 	AreaId      []uint32
 }
 
+type Class struct {
+	Id      uint64
+	Code    string
+	ClzInfo string
+	Level   uint32
+	Pcode   string
+}
+
 type AssetRepo interface {
 	// asset
 	ListAsset(ctx context.Context, condition *AssetCondition, pageNum, pageSize int64) ([]*Asset, int64, error)
@@ -102,6 +110,8 @@ type AssetRepo interface {
 	GetScrappedForm(ctx context.Context, id int64) (*ScrappedForm, error)
 	CreateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error)
 	UpdateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error)
+	// classes
+	GetClasses(ctx context.Context) ([]*Class, error)
 }
 
 type AssetUseCase struct {
@@ -128,7 +138,7 @@ func (s *AssetUseCase) Update(ctx context.Context, asset *Asset) (*Asset, error)
 	return s.repo.UpdateAsset(ctx, asset)
 }
 
-func (s *AssetUseCase) ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm,int64, error) {
+func (s *AssetUseCase) ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm, int64, error) {
 	return s.repo.ListStorageForm(ctx, condition, pageNum, pageSize)
 }
 func (s *AssetUseCase) GetStorageForm(ctx context.Context, id int64) (*StorageForm, error) {
@@ -177,7 +187,7 @@ func (s *AssetUseCase) UpdateStorageForm(ctx context.Context, form *StorageForm)
 	return f, nil
 }
 
-func (s *AssetUseCase) ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm,int64, error) {
+func (s *AssetUseCase) ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm, int64, error) {
 	return s.repo.ListScrappedForm(ctx, condition, pageNum, pageSize)
 }
 func (s *AssetUseCase) GetScrappedForm(ctx context.Context, id int64) (*ScrappedForm, error) {
@@ -224,4 +234,8 @@ func (s *AssetUseCase) UpdateScrappedForm(ctx context.Context, form *ScrappedFor
 		return nil, err
 	}
 	return f, nil
+}
+
+func (s *AssetUseCase) GetClasses(ctx context.Context) ([]*Class, error) {
+	return s.GetClasses(ctx)
 }

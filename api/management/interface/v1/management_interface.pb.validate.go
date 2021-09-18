@@ -3512,6 +3512,151 @@ var _ interface {
 	ErrorName() string
 } = UpdateScrappedFormReplyValidationError{}
 
+// Validate checks the field values on GetClassesReq with the rules defined in
+// the proto definition for this message. If any rules are violated, an error
+// is returned.
+func (m *GetClassesReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	return nil
+}
+
+// GetClassesReqValidationError is the validation error returned by
+// GetClassesReq.Validate if the designated constraints aren't met.
+type GetClassesReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetClassesReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetClassesReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetClassesReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetClassesReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetClassesReqValidationError) ErrorName() string { return "GetClassesReqValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetClassesReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetClassesReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetClassesReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetClassesReqValidationError{}
+
+// Validate checks the field values on GetClassesReply with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *GetClassesReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	for idx, item := range m.GetClz() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetClassesReplyValidationError{
+					field:  fmt.Sprintf("Clz[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// GetClassesReplyValidationError is the validation error returned by
+// GetClassesReply.Validate if the designated constraints aren't met.
+type GetClassesReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetClassesReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetClassesReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetClassesReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetClassesReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetClassesReplyValidationError) ErrorName() string { return "GetClassesReplyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e GetClassesReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetClassesReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetClassesReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetClassesReplyValidationError{}
+
 // Validate checks the field values on ListUserReply_Users with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -4253,3 +4398,80 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListScrappedFormReply_FormValidationError{}
+
+// Validate checks the field values on GetClassesReply_Classes with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetClassesReply_Classes) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Code
+
+	// no validation rules for ClzInfo
+
+	// no validation rules for Level
+
+	// no validation rules for Pcode
+
+	return nil
+}
+
+// GetClassesReply_ClassesValidationError is the validation error returned by
+// GetClassesReply_Classes.Validate if the designated constraints aren't met.
+type GetClassesReply_ClassesValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetClassesReply_ClassesValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetClassesReply_ClassesValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetClassesReply_ClassesValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetClassesReply_ClassesValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetClassesReply_ClassesValidationError) ErrorName() string {
+	return "GetClassesReply_ClassesValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetClassesReply_ClassesValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetClassesReply_Classes.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetClassesReply_ClassesValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetClassesReply_ClassesValidationError{}

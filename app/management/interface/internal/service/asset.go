@@ -212,7 +212,7 @@ func (s *ManageMentInterface) CreateStorageForm(ctx context.Context, req *pb.Cre
 }
 
 // 重写
-func (s *ManageMentInterface) CreateStoragesForm(ctx context.Context, req *pb.CreateStorageFormsReq) (*pb.CreateStorageFormsReply, error) {
+func (s *ManageMentInterface) CreateStorageForms(ctx context.Context, req *pb.CreateStorageFormsReq) (*pb.CreateStorageFormsReply, error) {
 	for _, v := range req.Assets {
 		_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, []uint32{v.AreaId})
 		if err != nil {
@@ -398,5 +398,25 @@ func (s *ManageMentInterface) UpdateScrappedForm(ctx context.Context, req *pb.Up
 		AssetId:     form.AssetId,
 		AssetCode:   form.AssetCode,
 		AreaId:      form.AreaId,
+	}, nil
+}
+
+func (s *ManageMentInterface) GetClasses(ctx context.Context, req *pb.GetClassesReq) (*pb.GetClassesReply, error) {
+	cs, err := s.ac.GetClasses(ctx)
+	if err != nil {
+		return nil, err
+	}
+	results := make([]*pb.GetClassesReply_Classes, 0)
+	for _, c := range cs {
+		results = append(results, &pb.GetClassesReply_Classes{
+			Id:      c.Id,
+			Code:    c.Code,
+			Pcode:   c.Pcode,
+			ClzInfo: c.ClzInfo,
+			Level:   c.Level,
+		})
+	}
+	return &pb.GetClassesReply{
+		Clz: results,
 	}, nil
 }

@@ -24,6 +24,7 @@ type ManagementInterfaceHTTPServer interface {
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error)
 	GetArea(context.Context, *GetAreaReq) (*GetAreaReply, error)
 	GetAsset(context.Context, *GetAssetReq) (*GetAssetReply, error)
+	GetClasses(context.Context, *GetClassesReq) (*GetClassesReply, error)
 	GetKey(context.Context, *GetKeyReq) (*GetKeyReply, error)
 	GetScrappedForm(context.Context, *GetScrappedFormReq) (*GetScrappedFormReply, error)
 	GetSelf(context.Context, *GetSelfReq) (*GetSelfReply, error)
@@ -68,6 +69,7 @@ func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfa
 	r.GET("/v1/form/scrapped/{id}", _ManagementInterface_GetScrappedForm0_HTTP_Handler(srv))
 	r.POST("/v1/form/scrapped/create", _ManagementInterface_CreateScrappedForm0_HTTP_Handler(srv))
 	r.POST("/v1/form/scrapped/update", _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv))
+	r.GET("/v1/classes/list", _ManagementInterface_GetClasses0_HTTP_Handler(srv))
 }
 
 func _ManagementInterface_Login0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
@@ -522,6 +524,25 @@ func _ManagementInterface_UpdateScrappedForm0_HTTP_Handler(srv ManagementInterfa
 	}
 }
 
+func _ManagementInterface_GetClasses0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in GetClassesReq
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/GetClasses")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetClasses(ctx, req.(*GetClassesReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetClassesReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 type ManagementInterfaceHTTPClient interface {
 	CreateScrappedForm(ctx context.Context, req *CreateScrappedFormReq, opts ...http.CallOption) (rsp *CreateScrappedFormReply, err error)
 	CreateStorageForm(ctx context.Context, req *CreateStorageFormReq, opts ...http.CallOption) (rsp *CreateStorageFormReply, err error)
@@ -529,6 +550,7 @@ type ManagementInterfaceHTTPClient interface {
 	DeleteUser(ctx context.Context, req *DeleteUserReq, opts ...http.CallOption) (rsp *DeleteUserReply, err error)
 	GetArea(ctx context.Context, req *GetAreaReq, opts ...http.CallOption) (rsp *GetAreaReply, err error)
 	GetAsset(ctx context.Context, req *GetAssetReq, opts ...http.CallOption) (rsp *GetAssetReply, err error)
+	GetClasses(ctx context.Context, req *GetClassesReq, opts ...http.CallOption) (rsp *GetClassesReply, err error)
 	GetKey(ctx context.Context, req *GetKeyReq, opts ...http.CallOption) (rsp *GetKeyReply, err error)
 	GetScrappedForm(ctx context.Context, req *GetScrappedFormReq, opts ...http.CallOption) (rsp *GetScrappedFormReply, err error)
 	GetSelf(ctx context.Context, req *GetSelfReq, opts ...http.CallOption) (rsp *GetSelfReply, err error)
@@ -626,6 +648,19 @@ func (c *ManagementInterfaceHTTPClientImpl) GetAsset(ctx context.Context, in *Ge
 	pattern := "/v1/asset/detail/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetAsset"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ManagementInterfaceHTTPClientImpl) GetClasses(ctx context.Context, in *GetClassesReq, opts ...http.CallOption) (*GetClassesReply, error) {
+	var out GetClassesReply
+	pattern := "/v1/classes/list"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/GetClasses"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {

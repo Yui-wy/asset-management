@@ -370,3 +370,22 @@ func (rp *assetRepo) UpdateScrappedForm(ctx context.Context, form *biz.ScrappedF
 		AreaId:      f.AreaId,
 	}, nil
 }
+
+func (rp *assetRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
+	cs, err := rp.data.ac.GetClasses(ctx, &av1.GetClassesReq{})
+	if err != nil {
+		rp.log.Errorf("Error: %e", err)
+		return nil, err
+	}
+	results := make([]*biz.Class, 0)
+	for _, c := range cs.Clz {
+		results = append(results, &biz.Class{
+			Id:      c.Id,
+			Code:    c.Code,
+			Pcode:   c.Pcode,
+			ClzInfo: c.ClzInfo,
+			Level:   c.Level,
+		})
+	}
+	return results, nil
+}
