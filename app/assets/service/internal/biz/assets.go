@@ -53,7 +53,7 @@ type SearchConf struct {
 
 type AssetRepo interface {
 	GetAsset(ctx context.Context, id uint64) (*Asset, error)
-	ListAssets(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, error)
+	ListAssets(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, int64, error)
 	CreatAsset(ctx context.Context, a *Asset) (*Asset, error)
 	DeleteAsset(ctx context.Context, id uint64) (bool, error)
 	UpdateAsset(ctx context.Context, a *Asset) (*Asset, error)
@@ -75,7 +75,7 @@ func (ac *AssetUseCase) Get(ctx context.Context, id uint64) (*Asset, error) {
 	return ac.repo.GetAsset(ctx, id)
 }
 
-func (ac *AssetUseCase) List(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, error) {
+func (ac *AssetUseCase) List(ctx context.Context, conf *SearchConf, pageNum, pageSize int64) ([]*Asset, int64, error) {
 	return ac.repo.ListAssets(ctx, conf, pageNum, pageSize)
 }
 

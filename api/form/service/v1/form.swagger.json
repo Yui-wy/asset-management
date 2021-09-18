@@ -251,6 +251,10 @@
           "items": {
             "$ref": "#/definitions/v1ListScrappedFormReplyForm"
           }
+        },
+        "pageTotal": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -342,6 +346,10 @@
           "items": {
             "$ref": "#/definitions/v1ListStorageFormReplyForm"
           }
+        },
+        "pageTotal": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

@@ -8,6 +8,7 @@ import (
 
 	"github.com/Yui-wy/asset-management/app/management/interface/internal/conf"
 	"github.com/Yui-wy/asset-management/pkg/errors/auth"
+	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -23,12 +24,13 @@ const (
 	bearerFormat string = "Bearer %s"
 
 	// authorizationKey holds the key used to store the JWT Token in the request header.
-	authorizationKey string = "Authorization"
+	authorizationKey string = "asmg-token"
 )
 
 type AuthUseCase struct {
 	key  string
 	repo UserRepo
+	log  *log.Helper
 }
 
 type AuthUser struct {
@@ -44,10 +46,11 @@ type AuthClaims struct {
 	jwt.StandardClaims
 }
 
-func NewAuthUseCase(conf *conf.Auth, repo UserRepo) *AuthUseCase {
+func NewAuthUseCase(conf *conf.Auth, repo UserRepo, logger log.Logger) *AuthUseCase {
 	return &AuthUseCase{
 		key:  conf.Key,
 		repo: repo,
+		log:  log.NewHelper(log.With(logger, "module", "usercase/auth")),
 	}
 }
 
@@ -74,10 +77,11 @@ func (r AuthUseCase) CheckJWT(ctx context.Context) (context.Context, error) {
 	}
 	auths := strings.SplitN(header.RequestHeader().Get(authorizationKey), " ", 2)
 	if len(auths) != 2 || !strings.EqualFold(auths[0], bearerWord) {
-		return nil, auth.ErrMissingJwtToken
+		return ctx, nil
 	}
 	jwtToken := auths[1]
-	tokenInfo, err := jwt.Parse(jwtToken, func(jwtToken *jwt.Token) (interface{}, error) {
+	claims := &AuthClaims{}
+	tokenInfo, err := jwt.ParseWithClaims(jwtToken, claims, func(jwtToken *jwt.Token) (interface{}, error) {
 		return []byte(r.key), nil
 	})
 	if err != nil {
@@ -95,11 +99,11 @@ func (r AuthUseCase) CheckJWT(ctx context.Context) (context.Context, error) {
 	} else if tokenInfo.Method != jwt.SigningMethodHS256 {
 		return nil, auth.ErrUnSupportSigningMethod
 	}
-	claims, ok := tokenInfo.Claims.(AuthClaims)
 	u, err := r.repo.GetUser(ctx, claims.UserId)
 	if strings.Compare(u.UpdataSign, claims.Sign) == -1 {
 		return nil, auth.ErrTokenExpired
 	}
+	r.log.Debugf("Token user: %+v", u)
 	info := &AuthUser{
 		Uid:      u.Id,
 		Username: u.Username,

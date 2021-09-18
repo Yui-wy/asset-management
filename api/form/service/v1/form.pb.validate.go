@@ -297,6 +297,8 @@ func (m *ListStorageFormReply) Validate() error {
 
 	}
 
+	// no validation rules for PageTotal
+
 	return nil
 }
 
@@ -959,6 +961,8 @@ func (m *ListScrappedFormReply) Validate() error {
 		}
 
 	}
+
+	// no validation rules for PageTotal
 
 	return nil
 }

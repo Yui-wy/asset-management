@@ -67,10 +67,10 @@ func TestSql(t *testing.T) {
 	// 	StorageAt: time.Now().Unix() + 100,
 	// })
 	// b, err := assr.GetAsset(ctx, 2)
-	b, err := assr.ListAssets(ctx, &biz.SearchConf{
-		AreaId: []uint32{1, 2},
+	b, _, err := assr.ListAssets(ctx, &biz.SearchConf{
+		AreaId:       []uint32{1, 2},
 		LowStorageAt: -1,
-		UpStorageAt: 1631195266,
+		UpStorageAt:  1631195266,
 	}, 1, 5)
 	fmt.Printf("%+v\n", b)
 	// b, err := assr.UpdateAsset(ctx, &biz.Asset{

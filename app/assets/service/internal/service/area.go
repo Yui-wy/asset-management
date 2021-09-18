@@ -19,7 +19,7 @@ func (s *AssetsService) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.Ge
 }
 
 func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*pb.ListAreasReply, error) {
-	areas, err := s.arc.List(ctx, req.PageNum, req.PageSize)
+	areas, pageTotal, err := s.arc.List(ctx, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -31,12 +31,13 @@ func (s *AssetsService) ListAreas(ctx context.Context, req *pb.ListAreasReq) (*p
 		})
 	}
 	return &pb.ListAreasReply{
-		Areas: rs,
+		Areas:     rs,
+		PageTotal: pageTotal,
 	}, nil
 }
 
 func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsReq) (*pb.GetAreaByIdsReply, error) {
-	areas, err := s.arc.GetByIds(ctx, req.Ids, req.PageNum, req.PageSize)
+	areas, pageTotal, err := s.arc.GetByIds(ctx, req.Ids, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +49,8 @@ func (s *AssetsService) GetAreaByIds(ctx context.Context, req *pb.GetAreaByIdsRe
 		})
 	}
 	return &pb.GetAreaByIdsReply{
-		Areas: rs,
+		Areas:     rs,
+		PageTotal: pageTotal,
 	}, nil
 }
 

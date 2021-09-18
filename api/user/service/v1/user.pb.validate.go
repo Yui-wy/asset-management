@@ -400,6 +400,8 @@ func (m *ListUserReply) Validate() error {
 
 	}
 
+	// no validation rules for PageTotal
+
 	return nil
 }
 

@@ -16,7 +16,7 @@ type ScConfig struct {
 
 type ScrappedRepo interface {
 	GetForm(ctx context.Context, id int64) (*ScrappedForm, error)
-	ListForm(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, error)
+	ListForm(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, int64, error)
 	CreateForm(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error)
 	UpdateForm(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error)
 }
@@ -36,7 +36,7 @@ func NewScrappedUseCase(repo ScrappedRepo, logger log.Logger) *ScrappedUseCase {
 func (s *ScrappedUseCase) Get(ctx context.Context, id int64) (*ScrappedForm, error) {
 	return s.repo.GetForm(ctx, id)
 }
-func (s *ScrappedUseCase) List(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, error) {
+func (s *ScrappedUseCase) List(ctx context.Context, conf *ScConfig,pageNum, pageSize int64) ([]*ScrappedForm, int64, error) {
 	return s.repo.ListForm(ctx, conf,pageNum, pageSize)
 }
 func (s *ScrappedUseCase) Create(ctx context.Context, sf *ScrappedForm) (*ScrappedForm, error) {

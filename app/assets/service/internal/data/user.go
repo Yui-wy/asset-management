@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	pb "github.com/Yui-wy/asset-management/api/assets/service/v1"
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
 	"github.com/Yui-wy/asset-management/pkg/setting"
 	"github.com/Yui-wy/asset-management/pkg/util/inspection"
@@ -96,6 +97,9 @@ func (repo *userRepo) GetUser(ctx context.Context, uid uint64) (*biz.User, error
 }
 
 func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, error) {
+	if inspection.IsZeros(u.AreaIds) && (u.Power != setting.SUPER_ADMIN_USER) {
+		return nil, pb.ErrorNoAreaError("Please set correct area")
+	}
 	/* 先创建user, 在关联areaId */
 	uc := User{
 		Uid:   u.Uid,
@@ -110,6 +114,7 @@ func (repo *userRepo) CreateUser(ctx context.Context, u *biz.User) (*biz.User, e
 	}
 	// 权限认证
 	if u.Power == setting.SUPER_ADMIN_USER {
+		tx.Commit()
 		repo.log.Debug(" CreateUser2. Debug: create super admin")
 		return &biz.User{
 			Uid:     uc.Uid,

@@ -326,6 +326,10 @@
           "items": {
             "$ref": "#/definitions/v1GetAreaByIdsReplyAreas"
           }
+        },
+        "pageTotal": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -472,6 +476,10 @@
           "items": {
             "$ref": "#/definitions/v1ListAreasReplyAreas"
           }
+        },
+        "pageTotal": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -495,6 +503,10 @@
           "items": {
             "$ref": "#/definitions/ListAssetsReplyAssets"
           }
+        },
+        "pageTotal": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

@@ -88,17 +88,17 @@ type ScrappedCondition struct {
 
 type AssetRepo interface {
 	// asset
-	ListAsset(ctx context.Context, condition *AssetCondition, pageNum, pageSize int64) ([]*Asset, error)
+	ListAsset(ctx context.Context, condition *AssetCondition, pageNum, pageSize int64) ([]*Asset, int64, error)
 	GetAsset(ctx context.Context, assetId uint64) (*Asset, error)
 	UpdateAsset(ctx context.Context, asset *Asset) (*Asset, error)
 	CreateAsset(ctx context.Context, asset *Asset) (*Asset, error)
 	// storage
-	ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm, error)
+	ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm, int64, error)
 	GetStorageForm(ctx context.Context, id int64) (*StorageForm, error)
 	CreateStorageForm(ctx context.Context, form *StorageForm) (*StorageForm, error)
 	UpdateStorageForm(ctx context.Context, form *StorageForm) (*StorageForm, error)
 	// scrapp
-	ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm, error)
+	ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm, int64, error)
 	GetScrappedForm(ctx context.Context, id int64) (*ScrappedForm, error)
 	CreateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error)
 	UpdateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error)
@@ -116,7 +116,7 @@ func NewAssetUseCase(repo AssetRepo, logger log.Logger) *AssetUseCase {
 	}
 }
 
-func (s *AssetUseCase) List(ctx context.Context, condition *AssetCondition, pageNum, pageSize int64) ([]*Asset, error) {
+func (s *AssetUseCase) List(ctx context.Context, condition *AssetCondition, pageNum, pageSize int64) ([]*Asset, int64, error) {
 	return s.repo.ListAsset(ctx, condition, pageNum, pageSize)
 }
 
@@ -128,7 +128,7 @@ func (s *AssetUseCase) Update(ctx context.Context, asset *Asset) (*Asset, error)
 	return s.repo.UpdateAsset(ctx, asset)
 }
 
-func (s *AssetUseCase) ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm, error) {
+func (s *AssetUseCase) ListStorageForm(ctx context.Context, condition *StorageCondition, pageNum, pageSize int64) ([]*StorageForm,int64, error) {
 	return s.repo.ListStorageForm(ctx, condition, pageNum, pageSize)
 }
 func (s *AssetUseCase) GetStorageForm(ctx context.Context, id int64) (*StorageForm, error) {
@@ -177,7 +177,7 @@ func (s *AssetUseCase) UpdateStorageForm(ctx context.Context, form *StorageForm)
 	return f, nil
 }
 
-func (s *AssetUseCase) ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm, error) {
+func (s *AssetUseCase) ListScrappedForm(ctx context.Context, condition *ScrappedCondition, pageNum, pageSize int64) ([]*ScrappedForm,int64, error) {
 	return s.repo.ListScrappedForm(ctx, condition, pageNum, pageSize)
 }
 func (s *AssetUseCase) GetScrappedForm(ctx context.Context, id int64) (*ScrappedForm, error) {

@@ -16,7 +16,7 @@ type StConfig struct {
 
 type StorageRepo interface {
 	GetForm(ctx context.Context, id int64) (*StorageForm, error)
-	ListForm(ctx context.Context, conf *StConfig,pageNum, pageSize int64) ([]*StorageForm, error)
+	ListForm(ctx context.Context, conf *StConfig, pageNum, pageSize int64) ([]*StorageForm, int64, error)
 	CreateForm(ctx context.Context, sf *StorageForm) (*StorageForm, error)
 	UpdateForm(ctx context.Context, sf *StorageForm) (*StorageForm, error)
 }
@@ -36,8 +36,8 @@ func NewStorageUseCase(repo StorageRepo, logger log.Logger) *StorageUseCase {
 func (s *StorageUseCase) Get(ctx context.Context, id int64) (*StorageForm, error) {
 	return s.repo.GetForm(ctx, id)
 }
-func (s *StorageUseCase) List(ctx context.Context, conf *StConfig, pageNum, pageSize int64) ([]*StorageForm, error) {
-	return s.repo.ListForm(ctx, conf,pageNum, pageSize)
+func (s *StorageUseCase) List(ctx context.Context, conf *StConfig, pageNum, pageSize int64) ([]*StorageForm, int64, error) {
+	return s.repo.ListForm(ctx, conf, pageNum, pageSize)
 }
 func (s *StorageUseCase) Create(ctx context.Context, sf *StorageForm) (*StorageForm, error) {
 	return s.repo.CreateForm(ctx, sf)

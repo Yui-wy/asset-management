@@ -30,7 +30,7 @@ func initApp(confServer *conf.Server, confData *conf.Data, client *conf.Client, 
 	}
 	userRepo := data.NewUserRepo(dataData, logger)
 	userUseCase := biz.NewUserUseCase(userRepo, logger)
-	authUseCase := biz.NewAuthUseCase(auth, userRepo)
+	authUseCase := biz.NewAuthUseCase(auth, userRepo, logger)
 	assetRepo := data.NewAssetRepo(dataData, logger)
 	assetUseCase := biz.NewAssetUseCase(assetRepo, logger)
 	manageMentInterface := service.NewManagementInterface(logger, userUseCase, authUseCase, assetUseCase)

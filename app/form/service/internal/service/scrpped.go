@@ -28,7 +28,7 @@ func (s *FormService) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFo
 	}, nil
 }
 func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
-	forms, err := s.spu.List(ctx, &biz.ScConfig{
+	forms, totalPage, err := s.spu.List(ctx, &biz.ScConfig{
 		BaseConfig: &biz.BaseConfig{
 			ApplicantId: req.Conf.ApplicantId,
 			OperatorId:  req.Conf.OperatorId,
@@ -59,7 +59,8 @@ func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrapped
 		})
 	}
 	return &pb.ListScrappedFormReply{
-		Forms: reply,
+		Forms:     reply,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *FormService) CreateScrappedForm(ctx context.Context, req *pb.CreateScrappedFormReq) (*pb.CreateScrappedFormReply, error) {

@@ -19,9 +19,6 @@ func (s *AssetsService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.Ge
 	}, nil
 }
 func (s *AssetsService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*pb.CreateUserReply, error) {
-	if len(req.AreaIds) == 0 {
-		return nil, pb.ErrorNoAreaError("Please set correct area")
-	}
 	u, err := s.uc.Create(ctx, &biz.User{
 		Uid:     req.Uid,
 		Power:   req.Power,

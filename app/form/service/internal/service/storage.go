@@ -28,7 +28,7 @@ func (s *FormService) GetStorageForm(ctx context.Context, req *pb.GetStorageForm
 	}, nil
 }
 func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
-	forms, err := s.stu.List(ctx,
+	forms, totalPage, err := s.stu.List(ctx,
 		&biz.StConfig{
 			BaseConfig: &biz.BaseConfig{
 				AreaId:      req.Conf.AreaId,
@@ -60,7 +60,8 @@ func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFo
 		})
 	}
 	return &pb.ListStorageFormReply{
-		Forms: reply,
+		Forms:     reply,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *FormService) CreateStorageForm(ctx context.Context, req *pb.CreateStorageFormReq) (*pb.CreateStorageFormReply, error) {

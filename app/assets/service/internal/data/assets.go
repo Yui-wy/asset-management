@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
@@ -58,15 +59,15 @@ func (repo *assetRepo) GetAsset(ctx context.Context, id uint64) (*biz.Asset, err
 	return repo.setbizAsset(&a), nil
 }
 
-func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pageNum, pageSize int64) ([]*biz.Asset, error) {
+func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pageNum, pageSize int64) ([]*biz.Asset, int64, error) {
 	var as []Asset
-	result := repo.data.db.WithContext(ctx).
+	result := repo.data.db.
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
 	if inspection.IsZeros(conf.AreaId) {
 		err := errors.New(500, "AreaId is nil", "please set areaId")
 		repo.log.Errorf(" ListForm1. Error:%d", err)
-		return nil, err
+		return nil, 0, err
 	}
 	result = result.Where("area_id IN ?", conf.AreaId)
 	if !inspection.IsZeros(conf.Classes) {
@@ -93,16 +94,25 @@ func (repo *assetRepo) ListAssets(ctx context.Context, conf *biz.SearchConf, pag
 	} else {
 		result.Order("suff_code asc")
 	}
-	result = result.Find(&as)
+	tx := result.WithContext(ctx)
+	result = tx.Find(&as)
 	if result.Error != nil {
 		repo.log.Errorf(" ListAssets. Error:%d", result.Error)
-		return nil, result.Error
+		return nil, 0, result.Error
 	}
+	var total int64
+	result = tx.Count(&total)
+	totalPage := int64(math.Ceil(float64(total) / float64(pageSize)))
+	if result.Error != nil {
+		repo.log.Errorf(" ListAssets. Error:%d", result.Error)
+		return nil, 0, result.Error
+	}
+
 	bas := make([]*biz.Asset, 0)
 	for _, a := range as {
 		bas = append(bas, repo.setbizAsset(&a))
 	}
-	return bas, nil
+	return bas, totalPage, nil
 }
 
 func (repo *assetRepo) CreatAsset(ctx context.Context, ba *biz.Asset) (*biz.Asset, error) {

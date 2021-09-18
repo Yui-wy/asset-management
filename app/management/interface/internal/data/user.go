@@ -83,13 +83,13 @@ func (rp *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error) {
 		AreaIds:    au.AreaIds,
 	}, nil
 }
-func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaIds []uint32, nextPower int32) ([]*biz.User, error) {
+func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaIds []uint32, nextPower int32) ([]*biz.User, int64, error) {
 	au, err := rp.data.ac.ListUser(ctx, &av1.ListUserReq{
 		AreaIds:   areaIds,
 		NextPower: nextPower,
 	})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	ids := make([]uint64, 0)
 	for _, u := range au.Results {
@@ -101,7 +101,7 @@ func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaI
 		PageSize: pageSize,
 	})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	results := make([]*biz.User, 0)
 	for _, u := range us.Results {
@@ -117,7 +117,7 @@ func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaI
 			}
 		}
 	}
-	return results, nil
+	return results, us.PageTotal, nil
 }
 func (rp *userRepo) ModifyPd(ctx context.Context, id uint64, password string) (bool, error) {
 	_, err := rp.data.uc.UpdatePassword(ctx, &uv1.UpdatePasswordReq{
@@ -146,14 +146,14 @@ func (rp *userRepo) DeleteUser(ctx context.Context, id uint64) (bool, error) {
 }
 
 // area
-func (rp *userRepo) ListArea(ctx context.Context, areaIds []uint32, pageNum, pageSize int64) ([]*biz.Area, error) {
+func (rp *userRepo) ListArea(ctx context.Context, areaIds []uint32, pageNum, pageSize int64) ([]*biz.Area, int64, error) {
 	as, err := rp.data.ac.GetAreaByIds(ctx, &av1.GetAreaByIdsReq{
 		Ids:      areaIds,
 		PageNum:  pageNum,
 		PageSize: pageSize,
 	})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	results := make([]*biz.Area, 0)
 	for _, a := range as.Areas {
@@ -162,7 +162,7 @@ func (rp *userRepo) ListArea(ctx context.Context, areaIds []uint32, pageNum, pag
 			AreaInfo: a.AreaInfo,
 		})
 	}
-	return results, nil
+	return results, as.PageTotal, nil
 }
 func (rp *userRepo) GetArea(ctx context.Context, areaId uint32) (*biz.Area, error) {
 	a, err := rp.data.ac.GetArea(ctx, &av1.GetAreaReq{Id: areaId})

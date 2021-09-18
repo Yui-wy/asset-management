@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 
@@ -103,16 +104,22 @@ func (repo *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error)
 	}, result.Error
 }
 
-func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*biz.User, error) {
+func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*biz.User, int64, error) {
 	var us []User
-	result := repo.data.db.WithContext(ctx).
+	tx := repo.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
-		Where("is_deleted = false").
-		Find(&us, ids)
+		Where("is_deleted = false").WithContext(ctx)
+	result := tx.Find(&us, ids)
 	if result.Error != nil {
-		return nil, result.Error
+		return nil, 0, result.Error
 	}
+	var total int64
+	result = tx.Count(&total)
+	if result.Error != nil {
+		return nil, 0, result.Error
+	}
+	totalPage := int64(math.Ceil(float64(total) / float64(pageSize)))
 	bus := make([]*biz.User, 0)
 	for _, u := range us {
 		bus = append(bus, &biz.User{
@@ -122,7 +129,7 @@ func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageS
 			UpdataSign: u.UpdataSign,
 		})
 	}
-	return bus, nil
+	return bus, totalPage, nil
 }
 
 func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, error) {

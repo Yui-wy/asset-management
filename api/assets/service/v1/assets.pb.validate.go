@@ -206,7 +206,7 @@ func (m *ListAssetsReq) Validate() error {
 	if v, ok := interface{}(m.GetConf()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
 			return ListAssetsReqValidationError{
-				field:  "Con",
+				field:  "Conf",
 				reason: "embedded message failed validation",
 				cause:  err,
 			}
@@ -296,6 +296,8 @@ func (m *ListAssetsReply) Validate() error {
 		}
 
 	}
+
+	// no validation rules for PageTotal
 
 	return nil
 }
@@ -1087,6 +1089,8 @@ func (m *GetAreaByIdsReply) Validate() error {
 
 	}
 
+	// no validation rules for PageTotal
+
 	return nil
 }
 
@@ -1237,6 +1241,8 @@ func (m *ListAreasReply) Validate() error {
 		}
 
 	}
+
+	// no validation rules for PageTotal
 
 	return nil
 }

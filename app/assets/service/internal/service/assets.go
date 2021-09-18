@@ -41,7 +41,7 @@ func (s *AssetsService) ListAssets(ctx context.Context, req *pb.ListAssetsReq) (
 		SortDesc:     req.Conf.SortDesc,
 		AreaId:       req.Conf.AreaId,
 	}
-	as, err := s.ac.List(ctx, conf, req.PageNum, req.PageSize)
+	as, totalPage, err := s.ac.List(ctx, conf, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,8 @@ func (s *AssetsService) ListAssets(ctx context.Context, req *pb.ListAssetsReq) (
 		})
 	}
 	return &pb.ListAssetsReply{
-		Results: ars,
+		Results:   ars,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *AssetsService) CreateAssets(ctx context.Context, req *pb.CreateAssetsReq) (*pb.CreateAssetsReply, error) {

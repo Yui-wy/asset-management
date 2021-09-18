@@ -15,7 +15,7 @@ func (s *ManageMentInterface) ListAsset(ctx context.Context, req *pb.ListAssetRe
 	if err != nil {
 		return nil, err
 	}
-	as, err := s.ac.List(ctx, &biz.AssetCondition{
+	as, totalPage, err := s.ac.List(ctx, &biz.AssetCondition{
 		Classes:      req.Conf.Classes,
 		Address:      req.Conf.Address,
 		StateNum:     req.Conf.StateNum,
@@ -48,7 +48,8 @@ func (s *ManageMentInterface) ListAsset(ctx context.Context, req *pb.ListAssetRe
 		})
 	}
 	return &pb.ListAssetReply{
-		Results: results,
+		Results:   results,
+		PageTotal: totalPage,
 	}, nil
 }
 
@@ -117,7 +118,7 @@ func (s *ManageMentInterface) UpdateAsset(ctx context.Context, req *pb.UpdateAss
 
 func (s *ManageMentInterface) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
 	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
-	sfs, err := s.ac.ListStorageForm(ctx, &biz.StorageCondition{
+	sfs, totalPage, err := s.ac.ListStorageForm(ctx, &biz.StorageCondition{
 		ApplicantId: req.Conf.ApplicantId,
 		OperatorId:  req.Conf.OperatorId,
 		StateNum:    req.Conf.StateNum,
@@ -146,7 +147,8 @@ func (s *ManageMentInterface) ListStorageForm(ctx context.Context, req *pb.ListS
 		})
 	}
 	return &pb.ListStorageFormReply{
-		Forms: results,
+		Forms:     results,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *ManageMentInterface) GetStorageForm(ctx context.Context, req *pb.GetStorageFormReq) (*pb.GetStorageFormReply, error) {
@@ -276,7 +278,7 @@ func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.List
 	if err != nil {
 		return nil, err
 	}
-	sps, err := s.ac.ListScrappedForm(ctx, &biz.ScrappedCondition{
+	sps, totalPage, err := s.ac.ListScrappedForm(ctx, &biz.ScrappedCondition{
 		ApplicantId: req.Conf.ApplicantId,
 		OperatorId:  req.Conf.OperatorId,
 		StateNum:    req.Conf.StateNum,
@@ -305,7 +307,8 @@ func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.List
 		})
 	}
 	return &pb.ListScrappedFormReply{
-		Forms: results,
+		Forms:     results,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *ManageMentInterface) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFormReq) (*pb.GetScrappedFormReply, error) {

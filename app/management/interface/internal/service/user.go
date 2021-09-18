@@ -89,7 +89,7 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 	if err != nil {
 		return nil, err
 	}
-	users, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize, req.AreaIds, setting.AREA_USER)
+	users, totalPage, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize, req.AreaIds, setting.AREA_USER)
 	if err != nil {
 		return nil, err
 	}
@@ -103,7 +103,8 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 		})
 	}
 	return &pb.ListUserReply{
-		Users: r,
+		Users:     r,
+		PageTotal: totalPage,
 	}, nil
 }
 func (s *ManageMentInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUserPdReq) (*pb.ModifyUserPdReply, error) {
@@ -134,7 +135,7 @@ func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq)
 	if err != nil {
 		return nil, err
 	}
-	areas, err := s.uc.ListArea(ctx, req.Ids, req.PageNum, req.PageSize)
+	areas, totalPage, err := s.uc.ListArea(ctx, req.Ids, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -145,7 +146,7 @@ func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq)
 			AreaInfo: area.AreaInfo,
 		})
 	}
-	return &pb.ListAreaReply{Areas: r}, nil
+	return &pb.ListAreaReply{Areas: r, PageTotal: totalPage}, nil
 }
 
 func (s *ManageMentInterface) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.GetAreaReply, error) {

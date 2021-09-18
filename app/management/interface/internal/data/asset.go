@@ -22,7 +22,7 @@ func NewAssetRepo(data *Data, logger log.Logger) biz.AssetRepo {
 }
 
 // asset
-func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageNum, pageSize int64) ([]*biz.Asset, error) {
+func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageNum, pageSize int64) ([]*biz.Asset, int64, error) {
 	as, err := rp.data.ac.ListAssets(ctx, &av1.ListAssetsReq{
 		PageNum:  pageNum,
 		PageSize: pageSize,
@@ -38,7 +38,7 @@ func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageN
 		},
 	})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	assets := make([]*biz.Asset, 0)
 	for _, a := range as.Results {
@@ -60,7 +60,7 @@ func (rp *assetRepo) ListAsset(ctx context.Context, c *biz.AssetCondition, pageN
 			ScrappedAt: a.ScrappedAt,
 		})
 	}
-	return assets, nil
+	return assets, as.PageTotal, nil
 }
 func (rp *assetRepo) GetAsset(ctx context.Context, assetId uint64) (*biz.Asset, error) {
 	a, err := rp.data.ac.GetAssets(ctx, &av1.GetAssetsReq{Id: assetId})
@@ -155,7 +155,7 @@ func (rp *assetRepo) CreateAsset(ctx context.Context, asset *biz.Asset) (*biz.As
 }
 
 // storage
-func (rp *assetRepo) ListStorageForm(ctx context.Context, c *biz.StorageCondition, pageNum, pageSize int64) ([]*biz.StorageForm, error) {
+func (rp *assetRepo) ListStorageForm(ctx context.Context, c *biz.StorageCondition, pageNum, pageSize int64) ([]*biz.StorageForm, int64, error) {
 	fs, err := rp.data.fc.ListStorageForm(ctx, &fv1.ListStorageFormReq{PageNum: pageNum, PageSize: pageSize,
 		Conf: &fv1.ListStorageFormReq_Conf{
 			ApplicantId: c.ApplicantId,
@@ -166,7 +166,7 @@ func (rp *assetRepo) ListStorageForm(ctx context.Context, c *biz.StorageConditio
 			AreaId:      c.AreaId,
 		}})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	results := make([]*biz.StorageForm, 0)
 	for _, f := range fs.Forms {
@@ -185,7 +185,7 @@ func (rp *assetRepo) ListStorageForm(ctx context.Context, c *biz.StorageConditio
 			AreaId:      f.AreaId,
 		})
 	}
-	return results, nil
+	return results, fs.PageTotal, nil
 }
 func (rp *assetRepo) GetStorageForm(ctx context.Context, id int64) (*biz.StorageForm, error) {
 	f, err := rp.data.fc.GetStorageForm(ctx, &fv1.GetStorageFormReq{Id: id})
@@ -264,7 +264,7 @@ func (rp *assetRepo) UpdateStorageForm(ctx context.Context, form *biz.StorageFor
 }
 
 // scrapp
-func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondition, pageNum, pageSize int64) ([]*biz.ScrappedForm, error) {
+func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondition, pageNum, pageSize int64) ([]*biz.ScrappedForm, int64, error) {
 	fs, err := rp.data.fc.ListScrappedForm(ctx, &fv1.ListScrappedFormReq{PageNum: pageNum, PageSize: pageSize,
 		Conf: &fv1.ListScrappedFormReq_Conf{
 			ApplicantId: c.ApplicantId,
@@ -275,7 +275,7 @@ func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondit
 			AreaId:      c.AreaId,
 		}})
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	results := make([]*biz.ScrappedForm, 0)
 	for _, f := range fs.Forms {
@@ -294,7 +294,7 @@ func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondit
 			AreaId:      f.AreaId,
 		})
 	}
-	return results, nil
+	return results, fs.PageTotal, nil
 }
 func (rp *assetRepo) GetScrappedForm(ctx context.Context, id int64) (*biz.ScrappedForm, error) {
 	f, err := rp.data.fc.GetScrappedForm(ctx, &fv1.GetScrappedFormReq{Id: id})

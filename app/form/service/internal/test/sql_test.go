@@ -59,7 +59,7 @@ func TestSql(t *testing.T) {
 	// 	},
 	// })
 	// fmt.Printf("%+v\n", a.BaseForm)
-	as, err := str.ListForm(ctx, &biz.StConfig{BaseConfig: &biz.BaseConfig{
+	as, _, err := str.ListForm(ctx, &biz.StConfig{BaseConfig: &biz.BaseConfig{
 		AreaId: []uint32{1, 2},
 	}}, 1, 5)
 	if err != nil {

@@ -23,7 +23,7 @@ func NewHTTPServer(c *conf.Server, logger log.Logger, s *service.ManageMentInter
 			jwt.NewAuthMiddleware(s.GetAuthUseCase()),
 		),
 		http.Filter(handlers.CORS(
-			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Token"}),
+			handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "asmg-token"}),
 			handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"}),
 			handlers.AllowedOrigins([]string{"*"}),
 		)),

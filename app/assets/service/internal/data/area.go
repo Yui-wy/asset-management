@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"math"
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
@@ -46,7 +47,7 @@ func (repo *areaRepo) GetArea(ctx context.Context, id uint32) (*biz.Area, error)
 	}, nil
 }
 
-func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32, pageNum, pageSize int64) ([]*biz.Area, error) {
+func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32, pageNum, pageSize int64) ([]*biz.Area, int64, error) {
 	var as []Area
 	result := repo.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
@@ -56,29 +57,20 @@ func (repo *areaRepo) GetAreasByIds(ctx context.Context, ids []uint32, pageNum, 
 		Find(&as)
 	if result.Error != nil {
 		repo.log.Errorf(" GetAreasByIds. Error:%d", result.Error)
-		return nil, result.Error
+		return nil, 0, result.Error
 	}
-	bas := make([]*biz.Area, 0)
-	for _, a := range as {
-		bas = append(bas, &biz.Area{
-			Id:       a.ID,
-			AreaInfo: a.AreaInfo,
-		})
-	}
-	return bas, nil
-}
-
-func (repo *areaRepo) ListArea(ctx context.Context, pageNum, pageSize int64) ([]*biz.Area, error) {
-	var as []Area
-	result := repo.data.db.WithContext(ctx).
+	var total int64
+	result = repo.data.db.WithContext(ctx).
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
 		Where("is_deleted = false").
-		Find(&as)
+		Where("id IN ?", ids).
+		Count(&total)
 	if result.Error != nil {
-		repo.log.Errorf(" ListArea. %d", result.Error)
-		return nil, result.Error
+		repo.log.Errorf(" GetAreasByIds. Error:%d", result.Error)
+		return nil, 0, result.Error
 	}
+	totalPage := int64(math.Ceil(float64(total) / float64(pageSize)))
 	bas := make([]*biz.Area, 0)
 	for _, a := range as {
 		bas = append(bas, &biz.Area{
@@ -86,7 +78,35 @@ func (repo *areaRepo) ListArea(ctx context.Context, pageNum, pageSize int64) ([]
 			AreaInfo: a.AreaInfo,
 		})
 	}
-	return bas, nil
+	return bas, totalPage, nil
+}
+
+func (repo *areaRepo) ListArea(ctx context.Context, pageNum, pageSize int64) ([]*biz.Area, int64, error) {
+	var as []Area
+	tx := repo.data.db.WithContext(ctx).
+		Limit(int(pageSize)).
+		Offset(int(pagination.GetPageOffset(pageNum, pageSize))).
+		Where("is_deleted = false").WithContext(ctx)
+	result := tx.Find(&as)
+	if result.Error != nil {
+		repo.log.Errorf(" ListArea. %d", result.Error)
+		return nil, 0, result.Error
+	}
+	var total int64
+	result = tx.Count(&total)
+	if result.Error != nil {
+		repo.log.Errorf(" GetAreasByIds. Error:%d", result.Error)
+		return nil, 0, result.Error
+	}
+	totalPage := int64(math.Ceil(float64(total) / float64(pageSize)))
+	bas := make([]*biz.Area, 0)
+	for _, a := range as {
+		bas = append(bas, &biz.Area{
+			Id:       a.ID,
+			AreaInfo: a.AreaInfo,
+		})
+	}
+	return bas, totalPage, nil
 }
 
 func (repo *areaRepo) CreateArea(ctx context.Context, a *biz.Area) (*biz.Area, error) {

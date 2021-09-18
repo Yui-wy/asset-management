@@ -50,7 +50,7 @@ func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetU
 }
 
 func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
-	users, err := s.uc.List(ctx, req.Ids, req.PageNum, req.PageSize)
+	users, totalPage, err := s.uc.List(ctx, req.Ids, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,8 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 		})
 	}
 	return &pb.ListUserReply{
-		Results: rs,
+		Results:   rs,
+		PageTotal: totalPage,
 	}, nil
 }
 

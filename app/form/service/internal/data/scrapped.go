@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"math"
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/form/service/internal/biz"
@@ -51,16 +52,16 @@ func (repo *scrappedRepo) GetForm(ctx context.Context, id int64) (*biz.ScrappedF
 	return repo.setbiz(&form), nil
 }
 
-func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, pageNum, pageSize int64) ([]*biz.ScrappedForm, error) {
+func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, pageNum, pageSize int64) ([]*biz.ScrappedForm, int64, error) {
 	var forms []ScrappedForm
-	result := repo.data.db.WithContext(ctx).
+	result := repo.data.db.
 		Limit(int(pageSize)).
 		Offset(int(pagination.GetPageOffset(pageNum, pageSize)))
 
 	if inspection.IsZeros(conf.AreaId) {
 		err := errors.New(500, "AreaId is nil", "please set areaId")
 		repo.log.Errorf(" ListForm1. Error:%d", err)
-		return nil, err
+		return nil, 0, err
 	}
 	result = result.Where("area_id IN ?", conf.AreaId)
 	if !inspection.IsZeros(conf.ApplicantId) {
@@ -78,16 +79,24 @@ func (repo *scrappedRepo) ListForm(ctx context.Context, conf *biz.ScConfig, page
 	if !inspection.IsZeros(conf.AssetCode) {
 		result = result.Where("asset_code like ?", conf.AssetCode)
 	}
-	result = result.Find(&forms)
+	tx := result.WithContext(ctx)
+	result = tx.Find(&forms)
 	if result.Error != nil {
 		repo.log.Errorf(" ListForm2. Error:%d", result.Error)
-		return nil, result.Error
+		return nil, 0, result.Error
 	}
+	var total int64
+	result = tx.Count(&total)
+	if result.Error != nil {
+		repo.log.Errorf(" ListForm2. Error:%d", result.Error)
+		return nil, 0, result.Error
+	}
+	totalPage := int64(math.Ceil(float64(total) / float64(pageSize)))
 	bsps := make([]*biz.ScrappedForm, 0)
 	for _, f := range forms {
 		bsps = append(bsps, repo.setbiz(&f))
 	}
-	return bsps, nil
+	return bsps, totalPage, nil
 }
 func (repo *scrappedRepo) CreateForm(ctx context.Context, sf *biz.ScrappedForm) (*biz.ScrappedForm, error) {
 	id, err := repo.data.sf.NextVal()
