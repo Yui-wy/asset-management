@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/Yui-wy/asset-management/pkg/setting"
@@ -54,10 +55,11 @@ type StorageForm struct {
 }
 
 type StorageCondition struct {
+	Applicant   string
+	Operator    string
 	ApplicantId uint64
 	OperatorId  uint64
 	StateNum    int32
-	AssetId     uint64
 	AssetCode   string
 	AreaId      []uint32
 }
@@ -78,20 +80,13 @@ type ScrappedForm struct {
 }
 
 type ScrappedCondition struct {
+	Applicant   string
+	Operator    string
 	ApplicantId uint64
 	OperatorId  uint64
 	StateNum    int32
-	AssetId     uint64
 	AssetCode   string
 	AreaId      []uint32
-}
-
-type Class struct {
-	Id      uint64
-	Code    string
-	ClzInfo string
-	Level   uint32
-	Pcode   string
 }
 
 type AssetRepo interface {
@@ -112,6 +107,7 @@ type AssetRepo interface {
 	UpdateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error)
 	// classes
 	GetClasses(ctx context.Context) ([]*Class, error)
+	CreateClzz(ctx context.Context, clzz []*Class) error
 }
 
 type AssetUseCase struct {
@@ -144,7 +140,7 @@ func (s *AssetUseCase) ListStorageForm(ctx context.Context, condition *StorageCo
 func (s *AssetUseCase) GetStorageForm(ctx context.Context, id int64) (*StorageForm, error) {
 	return s.repo.GetStorageForm(ctx, id)
 }
-func (s *AssetUseCase) CreateStorageForm(ctx context.Context, asset *Asset, uid uint64, username string) (*StorageForm, error) {
+func (s *AssetUseCase) CreateStorageForm(ctx context.Context, asset *Asset, uid uint64, nickname string) (*StorageForm, error) {
 	asset.AppliedAt = time.Now().Unix()
 	asset.StateNum = setting.ASSETS_STATE_ST_APPLY
 	a, err := s.repo.CreateAsset(ctx, asset)
@@ -157,7 +153,7 @@ func (s *AssetUseCase) CreateStorageForm(ctx context.Context, asset *Asset, uid 
 		AreaId:      a.AreaId,
 		StateNum:    setting.FORM_SUBMITTED,
 		ApplicantId: uid,
-		Applicant:   username,
+		Applicant:   nickname,
 		AppliedAt:   a.AppliedAt,
 	})
 	if err != nil {
@@ -166,6 +162,13 @@ func (s *AssetUseCase) CreateStorageForm(ctx context.Context, asset *Asset, uid 
 	return form, nil
 }
 func (s *AssetUseCase) UpdateStorageForm(ctx context.Context, form *StorageForm) (*StorageForm, error) {
+	of, err := s.repo.GetStorageForm(ctx, form.Id)
+	if err != nil {
+		return nil, err
+	}
+	if of.StateNum != setting.FORM_SUBMITTED {
+		return nil, errors.New(500, "cannot update stateNum.", "cannot update stateNum.")
+	}
 	f, err := s.repo.UpdateStorageForm(ctx, form)
 	if err != nil {
 		return nil, err
@@ -198,10 +201,7 @@ func (s *AssetUseCase) CreateScrappedForm(ctx context.Context, form *ScrappedFor
 	if err != nil {
 		return nil, err
 	}
-	if (asset.StateNum == setting.ASSETS_STATE_SP) ||
-		(asset.StateNum == setting.ASSETS_STATE_SP_APPLY) ||
-		(asset.StateNum == setting.ASSETS_STATE_ST_APPLY) ||
-		(asset.StateNum == setting.ASSETS_STATE_ORDER_APPLY) {
+	if asset.StateNum != setting.ASSETS_STATE_ST {
 		return nil, errors.New(500, "cannot scrapped", "cannot scrapped")
 	}
 	f, err := s.repo.CreateScrappedForm(ctx, form)
@@ -215,6 +215,13 @@ func (s *AssetUseCase) CreateScrappedForm(ctx context.Context, form *ScrappedFor
 	return f, nil
 }
 func (s *AssetUseCase) UpdateScrappedForm(ctx context.Context, form *ScrappedForm) (*ScrappedForm, error) {
+	of, err := s.repo.GetScrappedForm(ctx, form.Id)
+	if err != nil {
+		return nil, err
+	}
+	if of.StateNum != setting.FORM_SUBMITTED {
+		return nil, errors.New(500, "cannot update stateNum.", fmt.Sprintf("cannot update stateNum. StateNum: %d", of.StateNum))
+	}
 	f, err := s.repo.UpdateScrappedForm(ctx, form)
 	if err != nil {
 		return nil, err
@@ -238,4 +245,8 @@ func (s *AssetUseCase) UpdateScrappedForm(ctx context.Context, form *ScrappedFor
 
 func (s *AssetUseCase) GetClasses(ctx context.Context) ([]*Class, error) {
 	return s.GetClasses(ctx)
+}
+
+func (s *AssetUseCase) CreateClasses(ctx context.Context, clzz []*Class) ([]*Class, error) {
+	return s.CreateClasses(ctx, clzz)
 }

@@ -12,6 +12,7 @@ type User struct {
 	Id         uint64
 	Username   string
 	Password   string
+	Nickname   string
 	UpdataSign string
 	Power      int32
 	AreaIds    []uint32
@@ -34,6 +35,8 @@ type UserRepo interface {
 	// area
 	ListArea(ctx context.Context, areaIds []uint32, pageNum, pageSize int64) ([]*Area, int64, error)
 	GetArea(ctx context.Context, areaId uint32) (*Area, error)
+	// superAdmin
+	CreateArea(ctx context.Context, areaInfo string) (*Area, error)
 }
 
 type UserUseCase struct {
@@ -51,21 +54,40 @@ func NewUserUseCase(repo UserRepo, logger log.Logger) *UserUseCase {
 		priKey: priKey,
 		pubKey: pubKey,
 	}
-	_, err := uc.Create(context.Background(), &User{
-		Username: "Admin0",
-		Password: "Admin0",
-		Power:    setting.SUPER_ADMIN_USER,
-	})
+	err := uc.init(context.Background())
 	if err != nil {
 	}
-	// uc.Create(context.Background(), &User{
-	// 	Username: "Admin1",
-	// 	Password: "Admin1",
-	// 	Power:    setting.AREA_ADMIN_USER,
-	// 	AreaIds:  []uint32{1, 2},
-	// })
-
 	return uc
+}
+
+func (uc *UserUseCase) init(ctx context.Context) error {
+	// 创建一系列数据
+	// 超级管理员
+	_, err := uc.Create(ctx, &User{
+		Username: "SuperAdmin",
+		Password: "admin12345",
+		Power:    setting.SUPER_ADMIN_USER,
+		Nickname: "超级管理员",
+	})
+	if err != nil {
+		return err
+	}
+	// 创建区域
+	area, err := uc.CreateArea(ctx, "复旦上雅园物业")
+	if err != nil {
+		return err
+	}
+	// 创建分类
+
+	// 创建区域管理员
+	_, err = uc.Create(ctx, &User{
+		Username: "fdsyyAdmin",
+		Password: "fdsyy12345",
+		Power:    setting.AREA_ADMIN_USER,
+		Nickname: "复旦上雅园管理员",
+		AreaIds:  []uint32{area.Id},
+	})
+	return nil
 }
 
 func (uc *UserUseCase) Login(ctx context.Context, username, password string) (*User, error) {
@@ -122,4 +144,8 @@ func (uc *UserUseCase) ListArea(ctx context.Context, areaIds []uint32, pageNum, 
 
 func (uc *UserUseCase) GetArea(ctx context.Context, areaId uint32) (*Area, error) {
 	return uc.repo.GetArea(ctx, areaId)
+}
+
+func (uc *UserUseCase) CreateArea(ctx context.Context, areaInfo string) (*Area, error) {
+	return uc.repo.CreateArea(ctx, areaInfo)
 }

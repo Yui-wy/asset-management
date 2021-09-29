@@ -11,6 +11,7 @@ type User struct {
 	Id         uint64
 	Username   string
 	Password   string
+	Nickname   string
 	UpdataSign string
 	IsDeleted  bool
 	CreatedAt  time.Time
@@ -25,6 +26,7 @@ type UserRepo interface {
 	UpdateUser(ctx context.Context, u *User) (*User, error)
 	ListUser(ctx context.Context, ids []uint64, pageNum, pageSize int64) ([]*User, int64, error)
 	VerifyPassword(ctx context.Context, u *User) (*User, error)
+	UpdateNickname(ctx context.Context, u *User) (*User, error)
 }
 
 type UserUseCase struct {
@@ -53,6 +55,10 @@ func (uc *UserUseCase) List(ctx context.Context, ids []uint64, pageNum, pageSize
 
 func (uc *UserUseCase) Update(ctx context.Context, user *User) (*User, error) {
 	return uc.repo.UpdateUser(ctx, user)
+}
+
+func (uc *UserUseCase) UpdateNickname(ctx context.Context, user *User) (*User, error) {
+	return uc.repo.UpdateNickname(ctx, user)
 }
 
 func (uc *UserUseCase) Deleted(ctx context.Context, id uint64) (bool, error) {

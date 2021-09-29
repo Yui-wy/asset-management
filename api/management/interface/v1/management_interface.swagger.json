@@ -520,8 +520,8 @@
         ]
       }
     },
-    "/v1/user": {
-      "delete": {
+    "/v1/user/delete": {
+      "post": {
         "summary": "删除用户 admin",
         "operationId": "ManagementInterface_DeleteUser",
         "responses": {
@@ -540,22 +540,12 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "uint64"
-          },
-          {
-            "name": "areaId",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "collectionFormat": "multi"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1DeleteUserReq"
+            }
           }
         ],
         "tags": [
@@ -677,6 +667,39 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/v1LogoutReq"
+            }
+          }
+        ],
+        "tags": [
+          "ManagementInterface"
+        ]
+      }
+    },
+    "/v1/user/nikename": {
+      "post": {
+        "summary": "修改用户别名",
+        "operationId": "ManagementInterface_ModifyNickname",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ModifyNicknameReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ModifyNicknameReq"
             }
           }
         ],
@@ -955,6 +978,9 @@
         "username": {
           "type": "string"
         },
+        "nickname": {
+          "type": "string"
+        },
         "power": {
           "type": "integer",
           "format": "int32"
@@ -1171,6 +1197,22 @@
         }
       }
     },
+    "v1DeleteUserReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "areaId": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
     "v1GetAreaReply": {
       "type": "object",
       "properties": {
@@ -1319,6 +1361,9 @@
         "username": {
           "type": "string"
         },
+        "nickname": {
+          "type": "string"
+        },
         "power": {
           "type": "integer",
           "format": "int32"
@@ -1389,6 +1434,9 @@
           "format": "uint64"
         },
         "username": {
+          "type": "string"
+        },
+        "nickname": {
           "type": "string"
         },
         "power": {
@@ -1555,6 +1603,12 @@
     "v1ListScrappedFormReqConf": {
       "type": "object",
       "properties": {
+        "applicant": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
         "applicantId": {
           "type": "string",
           "format": "uint64"
@@ -1566,10 +1620,6 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
-        },
-        "assetId": {
-          "type": "string",
-          "format": "uint64"
         },
         "assetCode": {
           "type": "string"
@@ -1666,6 +1716,12 @@
     "v1ListStorageFormReqConf": {
       "type": "object",
       "properties": {
+        "applicant": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
         "applicantId": {
           "type": "string",
           "format": "uint64"
@@ -1677,10 +1733,6 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
-        },
-        "assetId": {
-          "type": "string",
-          "format": "uint64"
         },
         "assetCode": {
           "type": "string"
@@ -1765,6 +1817,44 @@
         }
       }
     },
+    "v1ModifyNicknameReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "power": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "areaIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1ModifyNicknameReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "nickname": {
+          "type": "string"
+        }
+      }
+    },
     "v1ModifyUserPdReply": {
       "type": "object",
       "properties": {
@@ -1807,6 +1897,9 @@
           "type": "string"
         },
         "password": {
+          "type": "string"
+        },
+        "nickname": {
           "type": "string"
         },
         "areaId": {
@@ -1902,6 +1995,10 @@
         },
         "orderNum": {
           "type": "string"
+        },
+        "areaId": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },

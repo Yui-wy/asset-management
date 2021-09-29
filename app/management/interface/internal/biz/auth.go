@@ -37,6 +37,7 @@ type AuthUser struct {
 	Uid      uint64
 	Username string
 	Power    int32
+	Nickname string
 	AreaIds  []uint32
 }
 
@@ -106,6 +107,7 @@ func (r AuthUseCase) CheckJWT(ctx context.Context) (context.Context, error) {
 	r.log.Debugf("Token user: %+v", u)
 	info := &AuthUser{
 		Uid:      u.Id,
+		Nickname: u.Nickname,
 		Username: u.Username,
 		Power:    u.Power,
 		AreaIds:  u.AreaIds,

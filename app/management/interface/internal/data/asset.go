@@ -161,7 +161,8 @@ func (rp *assetRepo) ListStorageForm(ctx context.Context, c *biz.StorageConditio
 			ApplicantId: c.ApplicantId,
 			OperatorId:  c.OperatorId,
 			StateNum:    c.StateNum,
-			AssetId:     c.AssetId,
+			Operator:    c.Operator,
+			Applicant:   c.Applicant,
 			AssetCode:   c.AssetCode,
 			AreaId:      c.AreaId,
 		}})
@@ -270,7 +271,8 @@ func (rp *assetRepo) ListScrappedForm(ctx context.Context, c *biz.ScrappedCondit
 			ApplicantId: c.ApplicantId,
 			OperatorId:  c.OperatorId,
 			StateNum:    c.StateNum,
-			AssetId:     c.AssetId,
+			Operator:    c.Operator,
+			Applicant:   c.Applicant,
 			AssetCode:   c.AssetCode,
 			AreaId:      c.AreaId,
 		}})
@@ -388,4 +390,20 @@ func (rp *assetRepo) GetClasses(ctx context.Context) ([]*biz.Class, error) {
 		})
 	}
 	return results, nil
+}
+
+func (rp *assetRepo) CreateClzz(ctx context.Context, clzz []*biz.Class) error {
+	clzzReq := make([]*av1.CreateClassesReq_Classes, 0)
+	for _, clz := range clzz {
+		clzzReq = append(clzzReq, &av1.CreateClassesReq_Classes{
+			Code:    clz.Code,
+			ClzInfo: clz.ClzInfo,
+			Level:   clz.Level,
+			Pcode:   clz.Pcode,
+		})
+	}
+	_, err := rp.data.ac.CreateClasses(ctx, &av1.CreateClassesReq{
+		Clz: clzzReq,
+	})
+	return err
 }

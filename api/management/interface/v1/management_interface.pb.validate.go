@@ -312,6 +312,8 @@ func (m *RegisterReq) Validate() error {
 
 	// no validation rules for Password
 
+	// no validation rules for Nickname
+
 	return nil
 }
 
@@ -514,6 +516,8 @@ func (m *GetUserReply) Validate() error {
 
 	// no validation rules for Username
 
+	// no validation rules for Nickname
+
 	// no validation rules for Power
 
 	return nil
@@ -648,6 +652,8 @@ func (m *GetSelfReply) Validate() error {
 	// no validation rules for Id
 
 	// no validation rules for Username
+
+	// no validation rules for Nickname
 
 	// no validation rules for Power
 
@@ -1128,6 +1134,152 @@ var _ interface {
 	ErrorName() string
 } = ModifyUserPdReplyValidationError{}
 
+// Validate checks the field values on ModifyNicknameReq with the rules defined
+// in the proto definition for this message. If any rules are violated, an
+// error is returned.
+func (m *ModifyNicknameReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Nickname
+
+	return nil
+}
+
+// ModifyNicknameReqValidationError is the validation error returned by
+// ModifyNicknameReq.Validate if the designated constraints aren't met.
+type ModifyNicknameReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ModifyNicknameReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ModifyNicknameReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ModifyNicknameReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ModifyNicknameReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ModifyNicknameReqValidationError) ErrorName() string {
+	return "ModifyNicknameReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ModifyNicknameReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sModifyNicknameReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ModifyNicknameReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ModifyNicknameReqValidationError{}
+
+// Validate checks the field values on ModifyNicknameReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *ModifyNicknameReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Username
+
+	// no validation rules for Nickname
+
+	// no validation rules for Power
+
+	return nil
+}
+
+// ModifyNicknameReplyValidationError is the validation error returned by
+// ModifyNicknameReply.Validate if the designated constraints aren't met.
+type ModifyNicknameReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ModifyNicknameReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ModifyNicknameReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ModifyNicknameReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ModifyNicknameReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ModifyNicknameReplyValidationError) ErrorName() string {
+	return "ModifyNicknameReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ModifyNicknameReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sModifyNicknameReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ModifyNicknameReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ModifyNicknameReplyValidationError{}
+
 // Validate checks the field values on DeleteUserReq with the rules defined in
 // the proto definition for this message. If any rules are violated, an error
 // is returned.
@@ -1606,6 +1758,8 @@ func (m *UpdateAssetReq) Validate() error {
 	// no validation rules for OrderAt
 
 	// no validation rules for OrderNum
+
+	// no validation rules for AreaId
 
 	return nil
 }
@@ -3669,6 +3823,8 @@ func (m *ListUserReply_Users) Validate() error {
 
 	// no validation rules for Username
 
+	// no validation rules for Nickname
+
 	// no validation rules for Power
 
 	return nil
@@ -3987,13 +4143,15 @@ func (m *ListStorageFormReq_Conf) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Applicant
+
+	// no validation rules for Operator
+
 	// no validation rules for ApplicantId
 
 	// no validation rules for OperatorId
 
 	// no validation rules for StateNum
-
-	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
 
@@ -4239,13 +4397,15 @@ func (m *ListScrappedFormReq_Conf) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Applicant
+
+	// no validation rules for Operator
+
 	// no validation rules for ApplicantId
 
 	// no validation rules for OperatorId
 
 	// no validation rules for StateNum
-
-	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
 

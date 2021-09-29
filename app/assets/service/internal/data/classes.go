@@ -17,7 +17,7 @@ type classRepo struct {
 
 type Class struct {
 	ID        uint64 `gorm:"primarykey"`
-	Code      string `gorm:"not null;"`
+	Code      string `gorm:"not null;size:64;uniqueIndex:class_code"`
 	Level     uint32 `gorm:"not null;autoIncrement:false"`
 	Pcode     string
 	ClzInfo   string `gorm:"not null"`

@@ -64,10 +64,20 @@ service ManagementInterface {
             body: "*"
         };
     }
+
+    // 修改用户别名
+    rpc ModifyNickname(ModifyNicknameReq) returns (ModifyNicknameReply) {
+        option (google.api.http) = {
+            post: "/v1/user/nikename"
+            body: "*"
+        };
+    }
+
     // 删除用户 admin
     rpc DeleteUser(DeleteUserReq) returns (DeleteUserReply) {
         option (google.api.http) = {
-            delete: "/v1/user"
+            post: "/v1/user/delete"
+            body:"*"
         };
     }
     // 区域系统 =================================
@@ -205,7 +215,8 @@ message LogoutReply {
 message RegisterReq {
     string username        = 1;
     string password        = 2;
-    repeated uint32 areaId = 3;
+    string nickname        = 3;
+    repeated uint32 areaId = 4;
 }
 
 message RegisterReply {
@@ -219,8 +230,9 @@ message GetUserReq {
 message GetUserReply {
     uint64 id               = 1;
     string username         = 2;
-    int32 power             = 3;
-    repeated uint32 areaIds = 4;
+    string nickname         = 3;
+    int32 power             = 4;
+    repeated uint32 areaIds = 5;
 }
 
 message GetSelfReq {}
@@ -228,8 +240,9 @@ message GetSelfReq {}
 message GetSelfReply {
     uint64 id               = 1;
     string username         = 2;
-    int32 power             = 3;
-    repeated uint32 areaIds = 4;
+    string nickname         = 3;
+    int32 power             = 4;
+    repeated uint32 areaIds = 5;
 }
 
 message ListUserReq {
@@ -242,8 +255,9 @@ message ListUserReply {
     message Users {
         uint64 id               = 1;
         string username         = 2;
-        int32 power             = 3;
-        repeated uint32 areaIds = 4;
+        string nickname         = 3;
+        int32 power             = 4;
+        repeated uint32 areaIds = 5;
     }
     repeated Users users = 1;
     int64 pageTotal      = 2;
@@ -262,6 +276,19 @@ message ModifyUserPdReq {
 }
 message ModifyUserPdReply {
     bool ok = 1;
+}
+
+message ModifyNicknameReq {
+    uint64 id       = 1;
+    string nickname = 2;
+}
+
+message ModifyNicknameReply {
+    uint64 id               = 1;
+    string username         = 2;
+    string nickname         = 3;
+    int32 power             = 4;
+    repeated uint32 areaIds = 5;
 }
 
 message DeleteUserReq {
@@ -339,6 +366,7 @@ message UpdateAssetReq {
     float price      = 5;
     int64 orderAt    = 6;
     string orderNum  = 7;
+    uint32 areaId    = 8;
 }
 
 message UpdateAssetReply {
@@ -384,12 +412,13 @@ message GetAreaReply {
 
 message ListStorageFormReq {
     message Conf {
-        uint64 applicantId     = 1;
-        uint64 operatorId      = 2;
-        int32 stateNum         = 3;
-        uint64 assetId         = 4;
-        string assetCode       = 5;
-        repeated uint32 areaId = 6;
+        string applicant       = 1;
+        string operator        = 2;
+        uint64 applicantId     = 3;
+        uint64 operatorId      = 4;
+        int32 stateNum         = 5;
+        string assetCode       = 6;
+        repeated uint32 areaId = 7;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;
@@ -498,12 +527,13 @@ message UpdateStorageFormReply {
 
 message ListScrappedFormReq {
     message Conf {
-        uint64 applicantId     = 1;
-        uint64 operatorId      = 2;
-        int32 stateNum         = 3;
-        uint64 assetId         = 4;
-        string assetCode       = 5;
-        repeated uint32 areaId = 6;
+        string applicant       = 1;
+        string operator        = 2;
+        uint64 applicantId     = 3;
+        uint64 operatorId      = 4;
+        int32 stateNum         = 5;
+        string assetCode       = 6;
+        repeated uint32 areaId = 7;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;

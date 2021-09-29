@@ -35,6 +35,8 @@ type ManagementInterfaceClient interface {
 	ListUser(ctx context.Context, in *ListUserReq, opts ...grpc.CallOption) (*ListUserReply, error)
 	// 修改密码 admin
 	ModifyUserPd(ctx context.Context, in *ModifyUserPdReq, opts ...grpc.CallOption) (*ModifyUserPdReply, error)
+	// 修改用户别名
+	ModifyNickname(ctx context.Context, in *ModifyNicknameReq, opts ...grpc.CallOption) (*ModifyNicknameReply, error)
 	// 删除用户 admin
 	DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...grpc.CallOption) (*DeleteUserReply, error)
 	// 区域系统 =================================
@@ -146,6 +148,15 @@ func (c *managementInterfaceClient) ListUser(ctx context.Context, in *ListUserRe
 func (c *managementInterfaceClient) ModifyUserPd(ctx context.Context, in *ModifyUserPdReq, opts ...grpc.CallOption) (*ModifyUserPdReply, error) {
 	out := new(ModifyUserPdReply)
 	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/ModifyUserPd", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *managementInterfaceClient) ModifyNickname(ctx context.Context, in *ModifyNicknameReq, opts ...grpc.CallOption) (*ModifyNicknameReply, error) {
+	out := new(ModifyNicknameReply)
+	err := c.cc.Invoke(ctx, "/management.interface.v1.ManagementInterface/ModifyNickname", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -317,6 +328,8 @@ type ManagementInterfaceServer interface {
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
 	// 修改密码 admin
 	ModifyUserPd(context.Context, *ModifyUserPdReq) (*ModifyUserPdReply, error)
+	// 修改用户别名
+	ModifyNickname(context.Context, *ModifyNicknameReq) (*ModifyNicknameReply, error)
 	// 删除用户 admin
 	DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error)
 	// 区域系统 =================================
@@ -382,6 +395,9 @@ func (UnimplementedManagementInterfaceServer) ListUser(context.Context, *ListUse
 }
 func (UnimplementedManagementInterfaceServer) ModifyUserPd(context.Context, *ModifyUserPdReq) (*ModifyUserPdReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ModifyUserPd not implemented")
+}
+func (UnimplementedManagementInterfaceServer) ModifyNickname(context.Context, *ModifyNicknameReq) (*ModifyNicknameReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ModifyNickname not implemented")
 }
 func (UnimplementedManagementInterfaceServer) DeleteUser(context.Context, *DeleteUserReq) (*DeleteUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
@@ -584,6 +600,24 @@ func _ManagementInterface_ModifyUserPd_Handler(srv interface{}, ctx context.Cont
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ManagementInterfaceServer).ModifyUserPd(ctx, req.(*ModifyUserPdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManagementInterface_ModifyNickname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ModifyNicknameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManagementInterfaceServer).ModifyNickname(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/management.interface.v1.ManagementInterface/ModifyNickname",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManagementInterfaceServer).ModifyNickname(ctx, req.(*ModifyNicknameReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -914,6 +948,10 @@ var ManagementInterface_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ModifyUserPd",
 			Handler:    _ManagementInterface_ModifyUserPd_Handler,
+		},
+		{
+			MethodName: "ModifyNickname",
+			Handler:    _ManagementInterface_ModifyNickname_Handler,
 		},
 		{
 			MethodName: "DeleteUser",

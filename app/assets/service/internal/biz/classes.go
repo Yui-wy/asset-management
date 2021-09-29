@@ -12,7 +12,6 @@ type Class struct {
 	Level   uint32
 	Pcode   string
 	ClzInfo string
-	power   uint32
 }
 
 type ClassRepo interface {

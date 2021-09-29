@@ -14,7 +14,7 @@ var ASSETS_STATE_MAP = map[int32]string{
 }
 
 const (
-	ASSETS_STATE_UNKNOWN     = 0
+	ASSETS_STATE_UNKNOWN     = -1
 	ASSETS_STATE_ST          = 1
 	ASSETS_STATE_ST_APPLY    = 2
 	ASSETS_STATE_ORDER       = 3

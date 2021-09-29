@@ -37,6 +37,7 @@ type ManagementInterfaceHTTPServer interface {
 	ListUser(context.Context, *ListUserReq) (*ListUserReply, error)
 	Login(context.Context, *LoginReq) (*LoginReply, error)
 	Logout(context.Context, *LogoutReq) (*LogoutReply, error)
+	ModifyNickname(context.Context, *ModifyNicknameReq) (*ModifyNicknameReply, error)
 	ModifyUserPd(context.Context, *ModifyUserPdReq) (*ModifyUserPdReply, error)
 	Register(context.Context, *RegisterReq) (*RegisterReply, error)
 	UpdateAsset(context.Context, *UpdateAssetReq) (*UpdateAssetReply, error)
@@ -54,7 +55,8 @@ func RegisterManagementInterfaceHTTPServer(s *http.Server, srv ManagementInterfa
 	r.GET("/v1/self", _ManagementInterface_GetSelf0_HTTP_Handler(srv))
 	r.POST("/v1/user/list", _ManagementInterface_ListUser0_HTTP_Handler(srv))
 	r.POST("/v1/user/pd", _ManagementInterface_ModifyUserPd0_HTTP_Handler(srv))
-	r.DELETE("/v1/user", _ManagementInterface_DeleteUser0_HTTP_Handler(srv))
+	r.POST("/v1/user/nikename", _ManagementInterface_ModifyNickname0_HTTP_Handler(srv))
+	r.POST("/v1/user/delete", _ManagementInterface_DeleteUser0_HTTP_Handler(srv))
 	r.POST("/v1/area/list", _ManagementInterface_ListArea0_HTTP_Handler(srv))
 	r.GET("/v1/area/detail/{id}", _ManagementInterface_GetArea0_HTTP_Handler(srv))
 	r.POST("/v1/asset/list", _ManagementInterface_ListAsset0_HTTP_Handler(srv))
@@ -227,10 +229,29 @@ func _ManagementInterface_ModifyUserPd0_HTTP_Handler(srv ManagementInterfaceHTTP
 	}
 }
 
+func _ManagementInterface_ModifyNickname0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in ModifyNicknameReq
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/ModifyNickname")
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ModifyNickname(ctx, req.(*ModifyNicknameReq))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ModifyNicknameReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 func _ManagementInterface_DeleteUser0_HTTP_Handler(srv ManagementInterfaceHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in DeleteUserReq
-		if err := ctx.BindQuery(&in); err != nil {
+		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, "/management.interface.v1.ManagementInterface/DeleteUser")
@@ -563,6 +584,7 @@ type ManagementInterfaceHTTPClient interface {
 	ListUser(ctx context.Context, req *ListUserReq, opts ...http.CallOption) (rsp *ListUserReply, err error)
 	Login(ctx context.Context, req *LoginReq, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Logout(ctx context.Context, req *LogoutReq, opts ...http.CallOption) (rsp *LogoutReply, err error)
+	ModifyNickname(ctx context.Context, req *ModifyNicknameReq, opts ...http.CallOption) (rsp *ModifyNicknameReply, err error)
 	ModifyUserPd(ctx context.Context, req *ModifyUserPdReq, opts ...http.CallOption) (rsp *ModifyUserPdReply, err error)
 	Register(ctx context.Context, req *RegisterReq, opts ...http.CallOption) (rsp *RegisterReply, err error)
 	UpdateAsset(ctx context.Context, req *UpdateAssetReq, opts ...http.CallOption) (rsp *UpdateAssetReply, err error)
@@ -619,11 +641,11 @@ func (c *ManagementInterfaceHTTPClientImpl) CreateStorageForms(ctx context.Conte
 
 func (c *ManagementInterfaceHTTPClientImpl) DeleteUser(ctx context.Context, in *DeleteUserReq, opts ...http.CallOption) (*DeleteUserReply, error) {
 	var out DeleteUserReply
-	pattern := "/v1/user"
-	path := binding.EncodeURL(pattern, in, true)
+	pattern := "/v1/user/delete"
+	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/DeleteUser"))
 	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -817,6 +839,19 @@ func (c *ManagementInterfaceHTTPClientImpl) Logout(ctx context.Context, in *Logo
 	pattern := "/v1/user/logout"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/Logout"))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *ManagementInterfaceHTTPClientImpl) ModifyNickname(ctx context.Context, in *ModifyNicknameReq, opts ...http.CallOption) (*ModifyNicknameReply, error) {
+	var out ModifyNicknameReply
+	pattern := "/v1/user/nikename"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation("/management.interface.v1.ManagementInterface/ModifyNickname"))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
 	if err != nil {

@@ -1371,13 +1371,15 @@ func (m *ListStorageFormReq_Conf) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Applicant
+
+	// no validation rules for Operator
+
 	// no validation rules for ApplicantId
 
 	// no validation rules for OperatorId
 
 	// no validation rules for StateNum
-
-	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
 
@@ -1539,13 +1541,15 @@ func (m *ListScrappedFormReq_Conf) Validate() error {
 		return nil
 	}
 
+	// no validation rules for Applicant
+
+	// no validation rules for Operator
+
 	// no validation rules for ApplicantId
 
 	// no validation rules for OperatorId
 
 	// no validation rules for StateNum
-
-	// no validation rules for AssetId
 
 	// no validation rules for AssetCode
 

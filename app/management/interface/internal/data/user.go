@@ -6,6 +6,8 @@ import (
 	av1 "github.com/Yui-wy/asset-management/api/assets/service/v1"
 	uv1 "github.com/Yui-wy/asset-management/api/user/service/v1"
 	"github.com/Yui-wy/asset-management/app/management/interface/internal/biz"
+	"github.com/Yui-wy/asset-management/pkg/setting"
+	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -120,7 +122,14 @@ func (rp *userRepo) ListUser(ctx context.Context, pageNum, pageSize int64, areaI
 	return results, us.PageTotal, nil
 }
 func (rp *userRepo) ModifyPd(ctx context.Context, id uint64, password string) (bool, error) {
-	_, err := rp.data.uc.UpdatePassword(ctx, &uv1.UpdatePasswordReq{
+	au, err := rp.data.ac.GetUser(ctx, &av1.GetUserReq{Uid: id})
+	if err != nil {
+		return false, err
+	}
+	if au.Power != setting.AREA_USER {
+		return false, errors.New(403, "管理员无法操作管理员", "管理员无法操作管理员")
+	}
+	_, err = rp.data.uc.UpdatePassword(ctx, &uv1.UpdatePasswordReq{
 		Id:       id,
 		Password: password,
 	})
@@ -130,7 +139,14 @@ func (rp *userRepo) ModifyPd(ctx context.Context, id uint64, password string) (b
 	return true, nil
 }
 func (rp *userRepo) DeleteUser(ctx context.Context, id uint64) (bool, error) {
-	_, err := rp.data.ac.UpdateUserArea(ctx, &av1.UpdateUserAreaReq{
+	au, err := rp.data.ac.GetUser(ctx, &av1.GetUserReq{Uid: id})
+	if err != nil {
+		return false, err
+	}
+	if au.Power != setting.AREA_USER {
+		return false, errors.New(403, "管理员无法操作管理员", "管理员无法操作管理员")
+	}
+	_, err = rp.data.ac.UpdateUserArea(ctx, &av1.UpdateUserAreaReq{
 		Uid: id,
 	})
 	if err != nil {
@@ -172,5 +188,18 @@ func (rp *userRepo) GetArea(ctx context.Context, areaId uint32) (*biz.Area, erro
 	return &biz.Area{
 		Id:       a.Id,
 		AreaInfo: a.AreaInfo,
+	}, nil
+}
+
+func (rp *userRepo) CreateArea(ctx context.Context, areaInfo string) (*biz.Area, error) {
+	reply, err := rp.data.ac.CreateArea(ctx, &av1.CreateAreaReq{
+		AreaInfo: areaInfo,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &biz.Area{
+		Id:       reply.Id,
+		AreaInfo: areaInfo,
 	}, nil
 }

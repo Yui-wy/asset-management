@@ -30,12 +30,13 @@ func (s *FormService) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFo
 func (s *FormService) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
 	forms, totalPage, err := s.spu.List(ctx, &biz.ScConfig{
 		BaseConfig: &biz.BaseConfig{
+			AreaId:      req.Conf.AreaId,
 			ApplicantId: req.Conf.ApplicantId,
 			OperatorId:  req.Conf.OperatorId,
 			StateNum:    req.Conf.StateNum,
-			AssetId:     req.Conf.AssetId,
 			AssetCode:   req.Conf.AssetCode,
-			AreaId:      req.Conf.AreaId,
+			Applicant:   req.Conf.Applicant,
+			Operator:    req.Conf.Operator,
 		},
 	}, req.PageNum, req.PageSize)
 	if err != nil {

@@ -26,6 +26,9 @@
         },
         "username": {
           "type": "string"
+        },
+        "nickname": {
+          "type": "string"
         }
       }
     },
@@ -68,6 +71,9 @@
         },
         "username": {
           "type": "string"
+        },
+        "nickname": {
+          "type": "string"
         }
       }
     },
@@ -89,6 +95,9 @@
         "username": {
           "type": "string"
         },
+        "nickname": {
+          "type": "string"
+        },
         "updataSign": {
           "type": "string"
         }
@@ -106,6 +115,21 @@
         "pageTotal": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "v1UpdateNicknameReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
         }
       }
     },

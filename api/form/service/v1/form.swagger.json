@@ -310,6 +310,12 @@
     "v1ListScrappedFormReqConf": {
       "type": "object",
       "properties": {
+        "applicant": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
         "applicantId": {
           "type": "string",
           "format": "uint64"
@@ -321,10 +327,6 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
-        },
-        "assetId": {
-          "type": "string",
-          "format": "uint64"
         },
         "assetCode": {
           "type": "string"
@@ -405,6 +407,12 @@
     "v1ListStorageFormReqConf": {
       "type": "object",
       "properties": {
+        "applicant": {
+          "type": "string"
+        },
+        "operator": {
+          "type": "string"
+        },
         "applicantId": {
           "type": "string",
           "format": "uint64"
@@ -416,10 +424,6 @@
         "stateNum": {
           "type": "integer",
           "format": "int32"
-        },
-        "assetId": {
-          "type": "string",
-          "format": "uint64"
         },
         "assetCode": {
           "type": "string"

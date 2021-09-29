@@ -55,12 +55,13 @@ message GetStorageFormReply {
 
 message ListStorageFormReq {
     message Conf {
-        uint64 applicantId     = 1;
-        uint64 operatorId      = 2;
-        int32 stateNum         = 3;
-        uint64 assetId         = 4;
-        string assetCode       = 5;
-        repeated uint32 areaId = 6;
+        string applicant       = 1;
+        string operator        = 2;
+        uint64 applicantId     = 3;
+        uint64 operatorId      = 4;
+        int32 stateNum         = 5;
+        string assetCode       = 6;
+        repeated uint32 areaId = 7;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;
@@ -155,12 +156,13 @@ message GetScrappedFormReply {
 
 message ListScrappedFormReq {
     message Conf {
-        uint64 applicantId     = 1;
-        uint64 operatorId      = 2;
-        int32 stateNum         = 3;
-        uint64 assetId         = 4;
-        string assetCode       = 5;
-        repeated uint32 areaId = 6;
+        string applicant       = 1;
+        string operator        = 2;
+        uint64 applicantId     = 3;
+        uint64 operatorId      = 4;
+        int32 stateNum         = 5;
+        string assetCode       = 6;
+        repeated uint32 areaId = 7;
     }
     Conf conf      = 1;
     int64 pageNum  = 2;

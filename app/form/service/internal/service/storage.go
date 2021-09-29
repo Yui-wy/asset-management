@@ -35,8 +35,9 @@ func (s *FormService) ListStorageForm(ctx context.Context, req *pb.ListStorageFo
 				ApplicantId: req.Conf.ApplicantId,
 				OperatorId:  req.Conf.OperatorId,
 				StateNum:    req.Conf.StateNum,
-				AssetId:     req.Conf.AssetId,
 				AssetCode:   req.Conf.AssetCode,
+				Applicant:   req.Conf.Applicant,
+				Operator:    req.Conf.Operator,
 			},
 		}, req.PageNum, req.PageSize)
 	if err != nil {

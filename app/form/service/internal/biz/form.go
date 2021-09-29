@@ -20,6 +20,7 @@ type BaseConfig struct {
 	ApplicantId uint64
 	OperatorId  uint64
 	StateNum    int32
-	AssetId     uint64
 	AssetCode   string
+	Applicant   string
+	Operator    string
 }

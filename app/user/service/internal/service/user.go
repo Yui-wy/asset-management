@@ -26,6 +26,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*p
 	user, err := s.uc.Create(ctx, &biz.User{
 		Username:  req.Username,
 		Password:  req.Password,
+		Nickname:  req.Nickname,
 		IsDeleted: false,
 	})
 	if err != nil {
@@ -34,6 +35,7 @@ func (s *UserService) CreateUser(ctx context.Context, req *pb.CreateUserReq) (*p
 	return &pb.CreateUserReply{
 		Id:       user.Id,
 		Username: user.Username,
+		Nickname: user.Nickname,
 	}, nil
 }
 
@@ -45,6 +47,7 @@ func (s *UserService) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetU
 	return &pb.GetUserReply{
 		Id:         user.Id,
 		Username:   user.Username,
+		Nickname:   user.Nickname,
 		UpdataSign: user.UpdataSign,
 	}, nil
 }
@@ -59,6 +62,7 @@ func (s *UserService) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.Li
 		rs = append(rs, &pb.ListUserReply_User{
 			Id:       x.Id,
 			Username: x.Username,
+			Nickname: x.Nickname,
 		})
 	}
 	return &pb.ListUserReply{
@@ -88,6 +92,21 @@ func (s *UserService) UpdatePassword(ctx context.Context, req *pb.UpdatePassword
 	return &pb.UpdatePasswordReply{
 		Id:       user.Id,
 		Username: user.Username,
+	}, nil
+}
+
+func (s *UserService) UpdateNickname(ctx context.Context, req *pb.UpdateNicknamedReq) (*pb.UpdateNicknameReply, error) {
+	user, err := s.uc.UpdateNickname(ctx, &biz.User{
+		Id:       req.Id,
+		Nickname: req.Nickname,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &pb.UpdateNicknameReply{
+		Id:       user.Id,
+		Username: user.Username,
+		Nickname: user.Nickname,
 	}, nil
 }
 

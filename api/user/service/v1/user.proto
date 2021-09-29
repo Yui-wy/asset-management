@@ -22,6 +22,8 @@ service User {
     rpc VerifyPassword(VerifyPasswordReq) returns (VerifyPasswordReply) {}
     // 修改密码
     rpc UpdatePassword(UpdatePasswordReq) returns (UpdatePasswordReply) {}
+    // 修改密码
+    rpc UpdateNickname(UpdateNicknamedReq) returns (UpdateNicknameReply) {}
 }
 
 message GetUserReq {
@@ -31,17 +33,20 @@ message GetUserReq {
 message GetUserReply {
     uint64 id         = 1;
     string username   = 2;
-    string updataSign = 3;
+    string nickname   = 3;
+    string updataSign = 4;
 }
 
 message CreateUserReq {
     string username = 1;
     string password = 2;
+    string nickname = 3;
 }
 
 message CreateUserReply {
     uint64 id       = 1;
     string username = 2;
+    string nickname = 3;
 }
 
 message ListUserReq {
@@ -54,6 +59,7 @@ message ListUserReply {
     message User {
         uint64 id       = 1;
         string username = 2;
+        string nickname = 3;
     }
     repeated User results = 1;
     int64 pageTotal       = 2;
@@ -86,4 +92,15 @@ message UpdatePasswordReq {
 message UpdatePasswordReply {
     uint64 id       = 1;
     string username = 2;
+}
+
+message UpdateNicknamedReq {
+    uint64 id       = 1;
+    string nickname = 2;
+}
+
+message UpdateNicknameReply {
+    uint64 id       = 1;
+    string username = 2;
+    string nickname = 3;
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/Yui-wy/asset-management/pkg/setting"
 )
 
-func (s *ManageMentInterface) ListAsset(ctx context.Context, req *pb.ListAssetReq) (*pb.ListAssetReply, error) {
+func (s *ManagementInterface) ListAsset(ctx context.Context, req *pb.ListAssetReq) (*pb.ListAssetReply, error) {
 	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
 	if err != nil {
 		return nil, err
@@ -53,15 +53,15 @@ func (s *ManageMentInterface) ListAsset(ctx context.Context, req *pb.ListAssetRe
 	}, nil
 }
 
-func (s *ManageMentInterface) GetAsset(ctx context.Context, req *pb.GetAssetReq) (*pb.GetAssetReply, error) {
+func (s *ManagementInterface) GetAsset(ctx context.Context, req *pb.GetAssetReq) (*pb.GetAssetReply, error) {
 	r, err := s.ac.Get(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}
-	_, err = s.getUserDetail(ctx, []uint32{r.AreaId})
-	if err != nil {
-		return nil, err
-	}
+	// _, err = s.getUserDetail(ctx, []uint32{r.AreaId})
+	// if err != nil {
+	// 	return nil, err
+	// }
 	return &pb.GetAssetReply{
 		Id:         r.Id,
 		Classes:    r.Classes,
@@ -81,7 +81,8 @@ func (s *ManageMentInterface) GetAsset(ctx context.Context, req *pb.GetAssetReq)
 	}, nil
 }
 
-func (s *ManageMentInterface) UpdateAsset(ctx context.Context, req *pb.UpdateAssetReq) (*pb.UpdateAssetReply, error) {
+func (s *ManagementInterface) UpdateAsset(ctx context.Context, req *pb.UpdateAssetReq) (*pb.UpdateAssetReply, error) {
+	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, []uint32{req.AreaId})
 	r, err := s.ac.Update(ctx, &biz.Asset{
 		Id:        req.Id,
 		Address:   req.Address,
@@ -116,15 +117,16 @@ func (s *ManageMentInterface) UpdateAsset(ctx context.Context, req *pb.UpdateAss
 		ScrappedAt: r.ScrappedAt}, nil
 }
 
-func (s *ManageMentInterface) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
+func (s *ManagementInterface) ListStorageForm(ctx context.Context, req *pb.ListStorageFormReq) (*pb.ListStorageFormReply, error) {
 	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
 	sfs, totalPage, err := s.ac.ListStorageForm(ctx, &biz.StorageCondition{
 		ApplicantId: req.Conf.ApplicantId,
 		OperatorId:  req.Conf.OperatorId,
 		StateNum:    req.Conf.StateNum,
-		AssetId:     req.Conf.AssetId,
 		AssetCode:   req.Conf.AssetCode,
 		AreaId:      req.Conf.AreaId,
+		Applicant:   req.Conf.Applicant,
+		Operator:    req.Conf.Operator,
 	}, req.PageNum, req.PageSize)
 	if err != nil {
 		return nil, err
@@ -151,7 +153,7 @@ func (s *ManageMentInterface) ListStorageForm(ctx context.Context, req *pb.ListS
 		PageTotal: totalPage,
 	}, nil
 }
-func (s *ManageMentInterface) GetStorageForm(ctx context.Context, req *pb.GetStorageFormReq) (*pb.GetStorageFormReply, error) {
+func (s *ManagementInterface) GetStorageForm(ctx context.Context, req *pb.GetStorageFormReq) (*pb.GetStorageFormReply, error) {
 	sf, err := s.ac.GetStorageForm(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -175,7 +177,7 @@ func (s *ManageMentInterface) GetStorageForm(ctx context.Context, req *pb.GetSto
 		AreaId:      sf.AreaId,
 	}, nil
 }
-func (s *ManageMentInterface) CreateStorageForm(ctx context.Context, req *pb.CreateStorageFormReq) (*pb.CreateStorageFormReply, error) {
+func (s *ManagementInterface) CreateStorageForm(ctx context.Context, req *pb.CreateStorageFormReq) (*pb.CreateStorageFormReply, error) {
 	u, err := s.getUserDetail(ctx, []uint32{req.AreaId})
 	if err != nil {
 		s.log.Error(err)
@@ -190,7 +192,7 @@ func (s *ManageMentInterface) CreateStorageForm(ctx context.Context, req *pb.Cre
 		Price:     req.Price,
 		OrderAt:   req.OrderAt,
 		OrderNum:  req.OrderNum,
-	}, u.Uid, u.Username)
+	}, u.Uid, u.Nickname)
 	if err != nil {
 		s.log.Error(err)
 		return nil, err
@@ -212,7 +214,7 @@ func (s *ManageMentInterface) CreateStorageForm(ctx context.Context, req *pb.Cre
 }
 
 // 重写
-func (s *ManageMentInterface) CreateStorageForms(ctx context.Context, req *pb.CreateStorageFormsReq) (*pb.CreateStorageFormsReply, error) {
+func (s *ManagementInterface) CreateStorageForms(ctx context.Context, req *pb.CreateStorageFormsReq) (*pb.CreateStorageFormsReply, error) {
 	for _, v := range req.Assets {
 		_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, []uint32{v.AreaId})
 		if err != nil {
@@ -239,7 +241,7 @@ func (s *ManageMentInterface) CreateStorageForms(ctx context.Context, req *pb.Cr
 	}, nil
 }
 
-func (s *ManageMentInterface) UpdateStorageForm(ctx context.Context, req *pb.UpdateStorageFormReq) (*pb.UpdateStorageFormReply, error) {
+func (s *ManagementInterface) UpdateStorageForm(ctx context.Context, req *pb.UpdateStorageFormReq) (*pb.UpdateStorageFormReply, error) {
 	u, err := s.getUserDetail(ctx, []uint32{req.AreaId})
 	if err != nil {
 		return nil, err
@@ -273,7 +275,7 @@ func (s *ManageMentInterface) UpdateStorageForm(ctx context.Context, req *pb.Upd
 	}, nil
 }
 
-func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
+func (s *ManagementInterface) ListScrappedForm(ctx context.Context, req *pb.ListScrappedFormReq) (*pb.ListScrappedFormReply, error) {
 	_, err := s.getUserDetail(ctx, req.Conf.AreaId)
 	if err != nil {
 		return nil, err
@@ -282,7 +284,8 @@ func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.List
 		ApplicantId: req.Conf.ApplicantId,
 		OperatorId:  req.Conf.OperatorId,
 		StateNum:    req.Conf.StateNum,
-		AssetId:     req.Conf.AssetId,
+		Applicant:   req.Conf.Applicant,
+		Operator:    req.Conf.Operator,
 		AssetCode:   req.Conf.AssetCode,
 		AreaId:      req.Conf.AreaId,
 	}, req.PageNum, req.PageSize)
@@ -311,7 +314,7 @@ func (s *ManageMentInterface) ListScrappedForm(ctx context.Context, req *pb.List
 		PageTotal: totalPage,
 	}, nil
 }
-func (s *ManageMentInterface) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFormReq) (*pb.GetScrappedFormReply, error) {
+func (s *ManagementInterface) GetScrappedForm(ctx context.Context, req *pb.GetScrappedFormReq) (*pb.GetScrappedFormReply, error) {
 	sp, err := s.ac.GetScrappedForm(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -335,7 +338,7 @@ func (s *ManageMentInterface) GetScrappedForm(ctx context.Context, req *pb.GetSc
 		AreaId:      sp.AreaId,
 	}, nil
 }
-func (s *ManageMentInterface) CreateScrappedForm(ctx context.Context, req *pb.CreateScrappedFormReq) (*pb.CreateScrappedFormReply, error) {
+func (s *ManagementInterface) CreateScrappedForm(ctx context.Context, req *pb.CreateScrappedFormReq) (*pb.CreateScrappedFormReply, error) {
 	u, err := s.getUserDetail(ctx, []uint32{req.AreaId})
 	if err != nil {
 		return nil, err
@@ -345,7 +348,7 @@ func (s *ManageMentInterface) CreateScrappedForm(ctx context.Context, req *pb.Cr
 		AssetCode:   req.AssetCode,
 		AreaId:      req.AreaId,
 		ApplicantId: u.Uid,
-		Applicant:   u.Username,
+		Applicant:   u.Nickname,
 		AppliedAt:   time.Now().Unix(),
 		StateNum:    setting.FORM_SUBMITTED,
 	})
@@ -367,7 +370,7 @@ func (s *ManageMentInterface) CreateScrappedForm(ctx context.Context, req *pb.Cr
 		AreaId:      form.AreaId,
 	}, nil
 }
-func (s *ManageMentInterface) UpdateScrappedForm(ctx context.Context, req *pb.UpdateScrappedFormReq) (*pb.UpdateScrappedFormReply, error) {
+func (s *ManagementInterface) UpdateScrappedForm(ctx context.Context, req *pb.UpdateScrappedFormReq) (*pb.UpdateScrappedFormReply, error) {
 	u, err := s.getUserDetail(ctx, []uint32{req.AreaId})
 	if err != nil {
 		return nil, err
@@ -401,7 +404,7 @@ func (s *ManageMentInterface) UpdateScrappedForm(ctx context.Context, req *pb.Up
 	}, nil
 }
 
-func (s *ManageMentInterface) GetClasses(ctx context.Context, req *pb.GetClassesReq) (*pb.GetClassesReply, error) {
+func (s *ManagementInterface) GetClasses(ctx context.Context, req *pb.GetClassesReq) (*pb.GetClassesReply, error) {
 	cs, err := s.ac.GetClasses(ctx)
 	if err != nil {
 		return nil, err

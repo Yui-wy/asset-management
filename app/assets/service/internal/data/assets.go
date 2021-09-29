@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/Yui-wy/asset-management/app/assets/service/internal/biz"
@@ -140,7 +141,7 @@ func (repo *assetRepo) CreatAsset(ctx context.Context, ba *biz.Asset) (*biz.Asse
 		Classes:    ba.Classes,
 		AreaId:     ba.AreaId,
 		SuffCode:   suffCode,
-		Code:       fmt.Sprintf("%03d-%s-%05d", ba.AreaId, ba.Classes, suffCode),
+		Code:       fmt.Sprintf("%03d-%s-%05d", ba.AreaId, strings.Replace(ba.Classes, "-", "", -1), suffCode),
 		Address:    ba.Address,
 		AssetInfo:  ba.AssetInfo,
 		PicUrl:     ba.PicUrl,

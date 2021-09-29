@@ -111,6 +111,8 @@ func (m *GetUserReply) Validate() error {
 
 	// no validation rules for Username
 
+	// no validation rules for Nickname
+
 	// no validation rules for UpdataSign
 
 	return nil
@@ -182,6 +184,8 @@ func (m *CreateUserReq) Validate() error {
 
 	// no validation rules for Password
 
+	// no validation rules for Nickname
+
 	return nil
 }
 
@@ -250,6 +254,8 @@ func (m *CreateUserReply) Validate() error {
 	// no validation rules for Id
 
 	// no validation rules for Username
+
+	// no validation rules for Nickname
 
 	return nil
 }
@@ -879,6 +885,150 @@ var _ interface {
 	ErrorName() string
 } = UpdatePasswordReplyValidationError{}
 
+// Validate checks the field values on UpdateNicknamedReq with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *UpdateNicknamedReq) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Nickname
+
+	return nil
+}
+
+// UpdateNicknamedReqValidationError is the validation error returned by
+// UpdateNicknamedReq.Validate if the designated constraints aren't met.
+type UpdateNicknamedReqValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateNicknamedReqValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateNicknamedReqValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateNicknamedReqValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateNicknamedReqValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateNicknamedReqValidationError) ErrorName() string {
+	return "UpdateNicknamedReqValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateNicknamedReqValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateNicknamedReq.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateNicknamedReqValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateNicknamedReqValidationError{}
+
+// Validate checks the field values on UpdateNicknameReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *UpdateNicknameReply) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Username
+
+	// no validation rules for Nickname
+
+	return nil
+}
+
+// UpdateNicknameReplyValidationError is the validation error returned by
+// UpdateNicknameReply.Validate if the designated constraints aren't met.
+type UpdateNicknameReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UpdateNicknameReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UpdateNicknameReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UpdateNicknameReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UpdateNicknameReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UpdateNicknameReplyValidationError) ErrorName() string {
+	return "UpdateNicknameReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UpdateNicknameReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUpdateNicknameReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UpdateNicknameReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UpdateNicknameReplyValidationError{}
+
 // Validate checks the field values on ListUserReply_User with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -890,6 +1040,8 @@ func (m *ListUserReply_User) Validate() error {
 	// no validation rules for Id
 
 	// no validation rules for Username
+
+	// no validation rules for Nickname
 
 	return nil
 }

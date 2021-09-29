@@ -26,6 +26,7 @@ type userRepo struct {
 type User struct {
 	ID         uint64 `gorm:"primarykey"`
 	Username   string `gorm:"not null;size:64;uniqueIndex:user_name"`
+	Nickname   string `gorm:"not null"`
 	Password   string
 	UpdataSign string `gorm:"not null"`
 	IsDeleted  bool   `gorm:"not null"`
@@ -65,9 +66,13 @@ func (repo *userRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, e
 		repo.log.Errorf("CreateUser1 error. Error:%d", err)
 		return nil, err
 	}
+	if inspection.IsZeros(b.Nickname) {
+		b.Nickname = b.Username
+	}
 	u := User{
 		Username:   b.Username,
 		Password:   hashPassword,
+		Nickname:   b.Nickname,
 		UpdataSign: util.CreateMD5Random(b.Username),
 		IsDeleted:  false,
 	}
@@ -85,6 +90,7 @@ func (repo *userRepo) CreateUser(ctx context.Context, b *biz.User) (*biz.User, e
 	return &biz.User{
 		Id:         uu.ID,
 		Username:   uu.Username,
+		Nickname:   uu.Nickname,
 		CreatedAt:  uu.CreatedAt,
 		UpdataSign: uu.UpdataSign,
 	}, result.Error
@@ -99,6 +105,7 @@ func (repo *userRepo) GetUser(ctx context.Context, id uint64) (*biz.User, error)
 	return &biz.User{
 		Id:         u.ID,
 		Username:   u.Username,
+		Nickname:   u.Nickname,
 		CreatedAt:  u.CreatedAt,
 		UpdataSign: u.UpdataSign,
 	}, result.Error
@@ -125,6 +132,7 @@ func (repo *userRepo) ListUser(ctx context.Context, ids []uint64, pageNum, pageS
 		bus = append(bus, &biz.User{
 			Id:         u.ID,
 			Username:   u.Username,
+			Nickname:   u.Nickname,
 			CreatedAt:  u.CreatedAt,
 			UpdataSign: u.UpdataSign,
 		})
@@ -147,6 +155,37 @@ func (repo *userRepo) UpdateUser(ctx context.Context, b *biz.User) (*biz.User, e
 	u.ID = b.Id
 	u.Password = hp
 	u.UpdataSign = util.CreateMD5Random(u.Username)
+	result = repo.data.db.WithContext(ctx).Save(&u)
+	if result.Error != nil {
+		repo.log.Errorf("UpdateUser3 error. Error:%d", result.Error)
+		return nil, result.Error
+	}
+	uu := User{}
+	result = repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&uu, u.ID)
+	if result.Error != nil {
+		repo.log.Errorf("UpdateUser4 error. Error:%d", result.Error)
+		return nil, result.Error
+	}
+	return &biz.User{
+		Id:         uu.ID,
+		Username:   uu.Username,
+		CreatedAt:  uu.CreatedAt,
+		UpdataSign: uu.UpdataSign,
+	}, nil
+}
+
+func (repo *userRepo) UpdateNickname(ctx context.Context, b *biz.User) (*biz.User, error) {
+	if inspection.IsZeros(b.Nickname) {
+		return nil, errors.Errorf(500, "请输入用户名", "请输入用户名")
+	}
+	u := User{}
+	result := repo.data.db.WithContext(ctx).Where("is_deleted = false").First(&u, b.Id)
+	if result.Error != nil {
+		repo.log.Errorf("UpdateUser1 error. Error:%d", result.Error)
+		return nil, result.Error
+	}
+	u.ID = b.Id
+	u.Nickname = b.Nickname
 	result = repo.data.db.WithContext(ctx).Save(&u)
 	if result.Error != nil {
 		repo.log.Errorf("UpdateUser3 error. Error:%d", result.Error)

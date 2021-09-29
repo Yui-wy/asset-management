@@ -72,11 +72,14 @@ func (repo *storageRepo) ListForm(ctx context.Context, conf *biz.StConfig, pageN
 	if !inspection.IsZeros(conf.StateNum) {
 		result = result.Where("state_num = ?", conf.StateNum)
 	}
-	if !inspection.IsZeros(conf.AssetId) {
-		result = result.Where("asset_id = ?", conf.AssetId)
+	if !inspection.IsZeros(conf.Applicant) {
+		result = result.Where("INSTR(applicant, ?) > 0", conf.Applicant)
+	}
+	if !inspection.IsZeros(conf.Operator) {
+		result = result.Where("INSTR(operator, ?) > 0", conf.Operator)
 	}
 	if !inspection.IsZeros(conf.AssetCode) {
-		result = result.Where("asset_code like ?", conf.AssetCode)
+		result = result.Where("INSTR(asset_code, ?) > 0", conf.AssetCode)
 	}
 	tx := result.WithContext(ctx)
 	result = result.Find(&forms)

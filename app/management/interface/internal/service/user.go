@@ -9,7 +9,7 @@ import (
 	"github.com/Yui-wy/asset-management/pkg/setting"
 )
 
-func (s *ManageMentInterface) Login(ctx context.Context, req *pb.LoginReq) (*pb.LoginReply, error) {
+func (s *ManagementInterface) Login(ctx context.Context, req *pb.LoginReq) (*pb.LoginReply, error) {
 	user, err := s.uc.Login(ctx, req.Username, req.Password)
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func (s *ManageMentInterface) Login(ctx context.Context, req *pb.LoginReq) (*pb.
 		Token: token,
 	}, nil
 }
-func (s *ManageMentInterface) GetKey(ctx context.Context, req *pb.GetKeyReq) (*pb.GetKeyReply, error) {
+func (s *ManagementInterface) GetKey(ctx context.Context, req *pb.GetKeyReq) (*pb.GetKeyReply, error) {
 	key, err := s.uc.GetKey(ctx)
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func (s *ManageMentInterface) GetKey(ctx context.Context, req *pb.GetKeyReq) (*p
 	}, nil
 }
 
-func (s *ManageMentInterface) Logout(ctx context.Context, req *pb.LogoutReq) (*pb.LogoutReply, error) {
+func (s *ManagementInterface) Logout(ctx context.Context, req *pb.LogoutReq) (*pb.LogoutReply, error) {
 	ok, err := s.uc.Logout(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -42,7 +42,7 @@ func (s *ManageMentInterface) Logout(ctx context.Context, req *pb.LogoutReq) (*p
 	}, nil
 }
 
-func (s *ManageMentInterface) Register(ctx context.Context, req *pb.RegisterReq) (*pb.RegisterReply, error) {
+func (s *ManagementInterface) Register(ctx context.Context, req *pb.RegisterReq) (*pb.RegisterReply, error) {
 	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
 	if err != nil {
 		return nil, err
@@ -50,6 +50,7 @@ func (s *ManageMentInterface) Register(ctx context.Context, req *pb.RegisterReq)
 	_, err = s.uc.Create(ctx, &biz.User{
 		Username: req.Username,
 		Password: req.Password,
+		Nickname: req.Nickname,
 		Power:    setting.AREA_USER,
 		AreaIds:  req.AreaId,
 	})
@@ -60,7 +61,7 @@ func (s *ManageMentInterface) Register(ctx context.Context, req *pb.RegisterReq)
 		Ok: true,
 	}, nil
 }
-func (s *ManageMentInterface) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetUserReply, error) {
+func (s *ManagementInterface) GetUser(ctx context.Context, req *pb.GetUserReq) (*pb.GetUserReply, error) {
 	user, err := s.uc.GetUser(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -68,11 +69,12 @@ func (s *ManageMentInterface) GetUser(ctx context.Context, req *pb.GetUserReq) (
 	return &pb.GetUserReply{
 		Id:       user.Id,
 		Username: user.Username,
+		Nickname: user.Nickname,
 		Power:    user.Power,
 		AreaIds:  user.AreaIds,
 	}, nil
 }
-func (s *ManageMentInterface) GetSelf(ctx context.Context, req *pb.GetSelfReq) (*pb.GetSelfReply, error) {
+func (s *ManagementInterface) GetSelf(ctx context.Context, req *pb.GetSelfReq) (*pb.GetSelfReply, error) {
 	userAuth, ok := s.authUc.FromContext(ctx)
 	if !ok {
 		return nil, auth.ErrWrongContext
@@ -80,16 +82,17 @@ func (s *ManageMentInterface) GetSelf(ctx context.Context, req *pb.GetSelfReq) (
 	return &pb.GetSelfReply{
 		Id:       userAuth.Uid,
 		Username: userAuth.Username,
+		Nickname: userAuth.Nickname,
 		Power:    userAuth.Power,
 		AreaIds:  userAuth.AreaIds,
 	}, nil
 }
-func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
-	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaIds)
+func (s *ManagementInterface) ListUser(ctx context.Context, req *pb.ListUserReq) (*pb.ListUserReply, error) {
+	authu, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaIds)
 	if err != nil {
 		return nil, err
 	}
-	users, totalPage, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize, req.AreaIds, setting.AREA_USER)
+	users, totalPage, err := s.uc.ListUser(ctx, req.PageNum, req.PageSize, req.AreaIds, authu.Power-1)
 	if err != nil {
 		return nil, err
 	}
@@ -98,6 +101,7 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 		r = append(r, &pb.ListUserReply_Users{
 			Id:       user.Id,
 			Username: user.Username,
+			Nickname: user.Nickname,
 			Power:    user.Power,
 			AreaIds:  user.AreaIds,
 		})
@@ -107,7 +111,7 @@ func (s *ManageMentInterface) ListUser(ctx context.Context, req *pb.ListUserReq)
 		PageTotal: totalPage,
 	}, nil
 }
-func (s *ManageMentInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUserPdReq) (*pb.ModifyUserPdReply, error) {
+func (s *ManagementInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUserPdReq) (*pb.ModifyUserPdReply, error) {
 	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
 	if err != nil {
 		return nil, err
@@ -118,7 +122,7 @@ func (s *ManageMentInterface) ModifyUserPd(ctx context.Context, req *pb.ModifyUs
 	}
 	return &pb.ModifyUserPdReply{Ok: ok}, nil
 }
-func (s *ManageMentInterface) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
+func (s *ManagementInterface) DeleteUser(ctx context.Context, req *pb.DeleteUserReq) (*pb.DeleteUserReply, error) {
 	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.AreaId)
 	if err != nil {
 		return nil, err
@@ -130,7 +134,7 @@ func (s *ManageMentInterface) DeleteUser(ctx context.Context, req *pb.DeleteUser
 	return &pb.DeleteUserReply{Ok: ok}, nil
 }
 
-func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq) (*pb.ListAreaReply, error) {
+func (s *ManagementInterface) ListArea(ctx context.Context, req *pb.ListAreaReq) (*pb.ListAreaReply, error) {
 	_, err := s.checkPower(ctx, setting.AREA_ADMIN_USER, req.Ids)
 	if err != nil {
 		return nil, err
@@ -149,7 +153,7 @@ func (s *ManageMentInterface) ListArea(ctx context.Context, req *pb.ListAreaReq)
 	return &pb.ListAreaReply{Areas: r, PageTotal: totalPage}, nil
 }
 
-func (s *ManageMentInterface) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.GetAreaReply, error) {
+func (s *ManagementInterface) GetArea(ctx context.Context, req *pb.GetAreaReq) (*pb.GetAreaReply, error) {
 	area, err := s.uc.GetArea(ctx, req.Id)
 	if err != nil {
 		return nil, err
